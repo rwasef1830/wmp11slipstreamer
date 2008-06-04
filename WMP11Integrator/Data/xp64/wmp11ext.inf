@@ -1,0 +1,196 @@
+; Boooggy's WMP11 x64 Addon
+
+[Version]
+Signature="$Windows NT$"
+
+[DefaultInstall]
+OptionDesc	="Windows Media Player 11"
+Tip		="Windows Media Player 11 Additional Files"
+Modes		=0,1,2,3
+CopyFiles	=WMPlayer.Copy,NetShare.Copy
+AddReg	        =WMP11.AddReg
+DelReg		=WMP11.DelReg
+RegisterDlls	=WMP11.Register
+
+[Optional Components]
+WMP11Files
+
+[WMP11Files]
+OptionDesc	="Windows Media Player 11"
+Tip		="Windows Media Player 11 Additional Files"
+Modes		=0,1,2,3
+CopyFiles	=WMPlayer.Copy,NetShare.Copy
+AddReg	        =WMP11.AddReg
+DelReg		=WMP11.DelReg
+RegisterDlls	=WMP11.Register
+
+[SourceDisksNames.amd64]
+1="Windows Media Player Files","wmp11.cab",,"amd64"
+
+[DestinationDirs]
+WMPlayer.Copy	=16426,"Windows Media Player"
+NetShare.Copy	=16426,"Windows Media Player\Network Sharing"
+
+[SourceDisksFiles]
+connectionmanager.xml=1
+contentdirectory.xml=1
+mediareceiverregistrar.xml=1
+wmdbexport.exe=1
+wmpnetwk.exe=1
+wmpnscfg.exe=1
+wmpnss_bw32.bmp=1
+wmpnss_bw32.jpg=1
+wmpnss_bw48.bmp=1
+wmpnss_bw48.jpg=1
+wmpnss_bw48.png=1
+wmpnss_bw120.jpg=1
+wmpnss_bw120.png=1
+wmpnss_color32.bmp=1
+wmpnss_color32.jpg=1
+wmpnss_color48.bmp=1
+wmpnss_color48.jpg=1
+wmpnss_color48.png=1
+wmpnss_color120.jpg=1
+wmpnss_color120.png=1
+wmpnssci.dll=1
+wmpshare.exe=1
+wmsetsdk.exe=1
+eula.txt=1
+LegitLibM.dll=1
+
+[WMPlayer.Copy]
+wmdbexport.exe
+wmpnetwk.exe
+wmpnscfg.exe
+wmpnssci.dll
+wmpshare.exe
+wmsetsdk.exe
+eula.txt
+LegitLibM.dll
+
+[NetShare.Copy]
+connectionmanager.xml
+contentdirectory.xml
+mediareceiverregistrar.xml
+wmpnss_bw32.bmp
+wmpnss_bw32.jpg
+wmpnss_bw48.bmp
+wmpnss_bw48.jpg
+wmpnss_bw48.png
+wmpnss_bw120.jpg
+wmpnss_bw120.png
+wmpnss_color32.bmp
+wmpnss_color32.jpg
+wmpnss_color48.bmp
+wmpnss_color48.jpg
+wmpnss_color48.png
+wmpnss_color120.jpg
+wmpnss_color120.png
+
+[WMP11.AddReg]
+;runonce
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_1",0,"%10%\SysWoW64\regsvr32 /s ""%16426%\Windows Media Player\wmpnssci.dll"""
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_2",0,"%10%\syswow64\logagent.exe /RegServer"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_3",0,"""%16426%\Windows Media Player\WMPNetwk.exe"" install"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_4",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpdxm.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_5",0,"%17%\unregmp2.exe /MigrateLibrary"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_6",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpasf.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_7",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpshell.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_8",0,"%%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_9",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpsrcwp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_10",0,"%17%\unregmp2.exe /Shortcuts /RegExts"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_11",0,"""%16426%\Windows Media Player\WMPEnc.exe"" /RegServer"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_12",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpencen.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_13",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\Audiodev.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_14",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmadmod.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_15",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmspdmod.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_16",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\msnetobj.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_17",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\drmv2clt.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_18",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\blackbox.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_19",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmdrmsdk.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_20",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMVDECOD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_21",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMVENCOD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_22",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMVSENCD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_23",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMVSDECD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_24",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMVXENCD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_25",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MP4SDECD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_26",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MP43DECD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_27",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MPG4DECD.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_28",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\laprxy.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_29",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmadmoe.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_30",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmspdmoe.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_31",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\qasf.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_32",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmnetmgr.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_33",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmvcore.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_34",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMDRMNet.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_35",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMDRMDev.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_36",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MSWMDM.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_37",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MsPMSP.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_38",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMDMPS.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_39",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WMDMLOG.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_40",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\cewmdm.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_41",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\MSSCP.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_42",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wpdconns.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_43",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wpdsp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_44",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WpdMtp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_45",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WpdMtpUS.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_46",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\PortableDeviceTypes.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_47",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\PortableDeviceClassExtension.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_48",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\PortableDeviceApi.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_49",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\PortableDeviceWMDRM.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_50",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\PortableDeviceWiaCompat.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_51",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wpdshext.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_52",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\WPDShServiceObj.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_53",0,"%11%\regsvr32.exe /s %11%\wpdconns.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_54",0,"%11%\regsvr32.exe /s %11%\wpdsp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_55",0,"%11%\regsvr32.exe /s %11%\WpdMtp.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_56",0,"%11%\regsvr32.exe /s %11%\WpdMtpUS.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_57",0,"%11%\regsvr32.exe /s %11%\PortableDeviceTypes.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_58",0,"%11%\regsvr32.exe /s %11%\PortableDeviceClassExtension.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_59",0,"%11%\regsvr32.exe /s %11%\PortableDeviceApi.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_60",0,"%11%\regsvr32.exe /s %11%\PortableDeviceWMDRM.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_61",0,"%11%\regsvr32.exe /s %11%\PortableDeviceWiaCompat.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_62",0,"%11%\regsvr32.exe /s %11%\wpdshext.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_63",0,"%11%\regsvr32.exe /s %11%\WPDShServiceObj.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_64",0,"%11%\regsvr32.exe /s %11%\MsPMSNSv.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_65",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\msdxm.ocx"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_66",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\l3codecp.acm"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_67",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpeffects.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_68",0,"%10%\SysWOW64\regsvr32 /s %10%\SysWOW64\wmpps.dll"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_69",0,"%10%\SysWoW64\regsvr32 /s ""%16426%\Windows Media Player\mpvis.dll"""
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_70",0,"%10%\SysWoW64\regsvr32 /s ""%16426%\Windows Media Player\wmpband.dll"""
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce","wmp11_71",0,"%11%\regsvr32.exe /s %11%\wmpshell.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_40,0x00004000,"%10%\INF\unregmp2.exe /MigrateLibrary"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_41,0x00004000,"%16425%\regsvr32 /s %16425%\wmp.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_28,0x00004000,"%16425%\regsvr32 /s %16425%\wmpshell.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_29,0x00004000,"%16425%\regsvr32 /s %16425%\wmpasf.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_20,0x00004000,"%16425%\regsvr32 /s %16425%\wmpdxm.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_21,0x00004000,"%16425%\regsvr32 /s %16425%\wmpencen.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_22,0x00004000,"%16425%\regsvr32 /s %16425%\wmpsrcwp.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_30,0x00004000,"%10%\INF\unregmp2.exe /Shortcuts /RegExts"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce",OE_WMPWMP7_Install_31,0x00004000,"""%16426%\Windows Media Player\wmpenc.exe"" /RegServer"
+;peruserstub
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}",,0x0,"Microsoft Windows Media Player 11"
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","ComponentID",0x0,"Microsoft Windows Media Player 11"
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","DontAsk",0x10001,02,00,00,00
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","Locale",0x0,"ENU"
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","StubPath",0x0,"%11%\rundll32.exe %11%\advpack.dll,LaunchINFSection %17%\wmp.inf,PerUserStub"
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","IsInstalled",0x10001,01,00,00,00
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{6BF52A52-394A-11d3-B153-00C04F79FAA6}","Version",0x0,"11,0,5721,5145"
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{22d6f312-b0f6-11d0-94ab-0080c74c7e95}",DontAsk,0x00010001,2
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{22d6f312-b0f6-11d0-94ab-0080c74c7e95}",Locale,,ENU
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{22d6f312-b0f6-11d0-94ab-0080c74c7e95}",StubPath
+HKLM,"SOFTWARE\Microsoft\Active Setup\Installed Components\{22d6f312-b0f6-11d0-94ab-0080c74c7e95}",IsInstalled,0x00010001,1
+;limited user
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","WMP11_AdminRunOnce",,"%11%\rundll32.exe %11%\advpack.dll,LaunchINFSection %17%\wmp.inf,wmp11"
+
+[WMP11.DelReg]
+
+[WMP11.Register]
+11,,wdfapi.dll,1
+11,,msdelta.dll,1
+10,SysWOW64,wmpmde.dll,1
+
+[Strings]
+NAME          ="Boooggy WMP11 x64 Addon"
+VERSION       ="Version 1.0"

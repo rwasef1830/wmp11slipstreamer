@@ -1,0 +1,69 @@
+[Version]
+Signature="$Windows NT$"
+ClassGUID={00000000-0000-0000-0000-000000000000}
+LayoutFile=layout.inf
+SetupClass=BASE
+DriverVer=10/01/2002,5.2.3790.3959
+
+[BaseWinOptions]
+InstallWPD
+
+[InstallWPD]
+CreateServices = CreateServiceSection
+DeleteServices = DeleteServiceSection
+AddReg = Reg.WPD, Reg.UMWDF
+
+;; install usermode driver frameworks service
+
+[Reg.UMWDF]
+HKLM,"Software\Microsoft\Windows NT\CurrentVersion\Wdf"
+
+[Reg.UMWDF.security]
+"D:P(A;OICI;GA;;;SY)(A;OICI;GA;;;BA)(A;OICI;GR;;;LS)"
+
+[Reg.WPD]
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Type",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Start",0x10001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","ErrorControl",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Tag",0x10001,11,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","ImagePath",0x20000,"system32\DRIVERS\WudfPf.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework Platform Driver"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Group",0,"base"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Description",0,"Provide communciation services for UMDF components."
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf\Security","Security",1,01,00,14,80,b8,00,00,00,c4,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,88,00,06,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,04,00,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,06,00,00,00,00,00,14,00,00,01,00,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Type",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Start",0x10001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","ErrorControl",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","ImagePath",0x20000,"system32\DRIVERS\wudfrd.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework Reflector"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Description",0,"Reflect device requests to user-mode driver drivers"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd\Security","Security",1,01,00,14,80,b8,00,00,00,c4,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,88,00,06,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,04,00,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,06,00,00,00,00,00,14,00,00,01,00,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Type",0x10001,20,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Start",0x10001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ErrorControl",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ImagePath",0x20000,"%%SystemRoot%%\system32\svchost.exe -k WudfServiceGroup"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Group",0,"PlugPlay"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DependOnService",0x10000,"PlugPlay"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DependOnGroup",0x10000
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ObjectName",0,"LocalSystem"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Description",0,"Manages user-mode driver host processes"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","FailureActions",1,84,03,00,00,00,00,00,00,00,00,00,00,03,00,00,00,53,00,65,00,01,00,00,00,c0,d4,01,00,01,00,00,00,e0,93,04,00,00,00,00,00,00,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ServiceSidType",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Parameters","ServiceDll",0x20000,"%%SystemRoot%%\System32\WUDFSvc.dll"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Parameters","ServiceDllUnloadOnStop",0x10001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Security","Security",1,01,00,14,80,b8,00,00,00,c4,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,88,00,06,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,04,00,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,06,00,00,00,00,00,14,00,00,01,00,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+
+
+;; Register WpdSP.dll: only 32bit version is supported, inclduing AMD64.
+;; WpdSP.dll is copied during system install (layout.inx), not during device install.
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWPD_Install_2",, "%10%\SysWow64\regsvr32.exe /s ""%10%\SysWow64\wpdsp.dll"""
+
+[CreateServiceSection]
+
+[DeleteServiceSection]
+
+[Strings]
+MSFT="Microsoft"
+UWDF_DISPLAYNAME="Windows User Mode Driver Framework"
+UWDF_DESCRIPTION="Enables Windows user mode drivers."

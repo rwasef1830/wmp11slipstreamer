@@ -1,0 +1,273 @@
+[Version]
+Signature="$Windows NT$"
+ClassGUID={00000000-0000-0000-0000-000000000000}
+LayoutFile=layout.inf
+SetupClass=BASE
+
+[BaseWinOptions]
+InstallWMFSDK
+
+[InstallWMFSDK] 
+DelReg=DelReg.Uninst
+AddReg=DelayReg.OCX,Reg.Codecs
+CreateServices     = CreateServiceSection
+DELETESERVICES     = DeleteServiceSection
+
+[InstallWMFSDK.Reg] 
+DelReg=DelReg.Uninst
+AddReg=DelayReg.OCX,Reg.Codecs
+CreateServices     = CreateServiceSection
+DELETESERVICES     = DeleteServiceSection
+
+[DeleteServiceSection]
+"UMWdf"
+
+[CreateServiceSection]
+
+[DelayReg.OCX]
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_1",, "%11%\regsvr32 /s ""%11%\mswmdm.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_2",, "%11%\regsvr32 /s ""%11%\msscp.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_3",, "%11%\regsvr32 /s ""%11%\mspmsp.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_4",, "%11%\regsvr32 /s ""%11%\wmdmps.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_5",, "%11%\regsvr32 /s ""%11%\wmdmlog.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_6",, "%11%\regsvr32 /s ""%11%\cewmdm.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_7",, "%11%\regsvr32 /s %11%\mspmsnsv.dll"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_10",, "%11%\regsvr32 /s ""%11%\audiodev.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMDM_Install_11",, "%11%\regsvr32 /s ""%11%\wmaspdtx.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_1",, "%11%\regsvr32 /s ""%11%\wmstream.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_2",, "%11%\regsvr32 /s ""%11%\wmnetmgr.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_3",, "%11%\regsvr32 /s ""%11%\wmidx.ocx"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_4",, "%11%\regsvr32 /s ""%11%\wmvdmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_5",, "%11%\regsvr32 /s ""%11%\wmvdmoe2.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_6",, "%11%\regsvr32 /s ""%11%\wmadmoe.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_7",, "%11%\regsvr32 /s ""%11%\wmadmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_8",, "%11%\regsvr32 /s ""%11%\wmspdmoe.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_9",, "%11%\regsvr32 /s ""%11%\wmsdmoe.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_10",, "%11%\regsvr32 /s ""%11%\wmsdmoe2.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_11",, "%11%\regsvr32 /s ""%11%\laprxy.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_12",, """%11%\logagent.exe"" /RegServer"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_13",, "%11%\regsvr32 /s ""%11%\wmvcore.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_14",, "%11%\regsvr32 /s ""%11%\wmsdmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_15",, "%11%\regsvr32 /s ""%11%\mpg4dmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_16",, "%11%\regsvr32 /s ""%11%\wmspdmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_17",, "%11%\regsvr32 /s ""%11%\wmspdmoe.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_18",, "%11%\regsvr32 /s ""%11%\qasf.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_19",, "%11%\regsvr32 /s ""%11%\wmvadvd.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_20",, "%11%\regsvr32 /s ""%11%\wmvadve.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_22",, "%11%\regsvr32 /s ""%11%\mp43dmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_23",, "%11%\regsvr32 /s ""%11%\mp4sdmod.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_24",, "%11%\regsvr32 /s ""%11%\wmdrmnet.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMFSDK_Install_25",, "%11%\regsvr32 /s ""%11%\wmdrmdev.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWPD_Install_1",, "%11%\regsvr32 /s ""%11%\wpdconns.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWPD_Install_2",, "%11%\regsvr32 /s ""%11%\wpdsp.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWPD_Install_3",, "%11%\regsvr32 /s ""%11%\wpdmtp.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWPD_Install_4",, "%11%\regsvr32 /s ""%11%\wpdmtpus.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMPCodec_ivf",2,"%11%\regsvr32 /s ""%11%\ivfsrc.ax"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMPCodec_wmvax",2, "%11%\regsvr32 /s ""%11%\wmvds32.ax"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMPCodec_msscrnax",2, "%11%\regsvr32 /s ""%11%\msscds32.ax"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMPCodec_wmv8ax",2, "%11%\regsvr32 /s ""%11%\wmv8ds32.ax"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","OE_WMPWMPCodec_wmv8dmo",2, "%11%\regsvr32 /s ""%11%\wmv8dmod.dll"""
+
+[DelReg.Uninst]
+HKCR, "Software\Microsoft\Multimedia\Components\Installed\playback_wmfsdk\Uninstall"
+HKCR,"windows media\WMSDK\AudioDecode\10" 
+HKCR,"Windows Media\WMSDK\AudioDecode\352"
+HKCR,"Windows Media\WMSDK\AudioDecode\353"
+HKCR,"windows media\WMSDK\AudioDecode\354" 
+HKCR,"windows media\WMSDK\AudioDecode\355" 
+HKCR,"Windows Media\WMSDK\VideoDecode\MSS1"
+HKCR,"windows media\WMSDK\VideoDecode\MSS2" 
+HKCR,"windows media\WMSDK\VideoDecode\WMV1" 
+HKCR,"windows media\WMSDK\VideoDecode\WMV2" 
+HKCR,"windows media\WMSDK\VideoDecode\WMV3" 
+HKCR,"windows media\WMSDK\VideoDecode\WMVP" 
+HKCR,"windows media\WMSDK\VideoDecode\MP4S" 
+HKCR,"windows media\WMSDK\VideoDecode\M4S2" 
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc", "wma9dmod.dll" 
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc", "wms9dmod.dll" 
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc", "wmspdmod.dll" 
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc", "wmv9dmod.dll" 
+HKLM, "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc", "mp4sdmod.dll" 
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\3334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\3334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\5334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\7334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\3334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\3334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\5334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\7334706d-0000-0010-8000-00aa00389b71
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","InitCmdLine"
+
+[Reg.Codecs]
+HKCR,"Windows Media\WMSDK\AudioDecode"
+HKCR,"Windows Media\WMSDK\AudioEncode","10",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","304",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","353",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","354",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","355",,""
+HKCR,"Windows Media\WMSDK\VideoDecode"
+HKCR,"Windows Media\WMSDK\VideoEncode","MSS2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV1",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV3",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMVP",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WVP2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WVC1",,""
+HKCR, "Windows Media\%REGKEY_WMSDK%\AudioDecode",,,
+HKCR, "Windows Media\%REGKEY_WMSDK%\VideoDecode",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%\General",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%\Local",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%\Remote",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%\AudioDecode",,,
+HKCU, "Software\Microsoft\Windows Media\%REGKEY_WMSDK%\VideoDecode",,,
+
+;wmfsdk
+HKCR,"Windows Media\WMSDK\AudioDecode"
+HKCR,"Windows Media\WMSDK\AudioEncode","10",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","304",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","353",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","354",,""
+HKCR,"Windows Media\WMSDK\AudioEncode","355",,""
+HKCR,"Windows Media\WMSDK\VideoDecode"
+HKCR,"Windows Media\WMSDK\VideoEncode","MSS2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV1",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMV3",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WMVP",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WVP2",,""
+HKCR,"Windows Media\WMSDK\VideoEncode","WVC1",,""
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\3334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\3334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\5334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO1%\73646976-0000-0010-8000-00aa00389b71\7334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\3334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\3334706d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\5334504d-0000-0010-8000-00aa00389b71
+HKCR,%KEY_DMO%\73646976-0000-0010-8000-00aa00389b71\Subtypes\7334706d-0000-0010-8000-00aa00389b71
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\Windows Media Format Runtime"
+HKCR, "Software\Microsoft\Multimedia\Components\Installed"
+
+;wmfsdk
+HKCR, "Windows Media\WMSDK\AudioDecode",,,
+HKCR, "Windows Media\WMSDK\VideoDecode",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK\General",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK\Local",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK\Remote",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK\AudioDecode",,,
+HKCU, "Software\Microsoft\Windows Media\WMSDK\VideoDecode",,,
+
+;wmdm
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","Action",,"%STR_TRANSFER%"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","Provider",,"@wmploc.dll,-6502"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","DefaultIcon",0x00020000,"%ProgramFiles%\Windows Media Player\wmplayer.exe,0"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","ProgID",,"Shell.HWEventHandlerShellExecute"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\MSWMDMHandler","CLSIDForCancel",,"{91778246-9BE4-4713-A651-E833B853CC30}"
+
+;; wpd
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF",,0x00000010
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF",,0
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogEnable",0x00010001,01,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogKd",0x00010001,00,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogFlags",0x00010001,ff,ff,ff,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogLevel",0x00010001,03,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","HostFailKdDebugBreak",0x00010001,00,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","DefaultHostProcessGUID",0,"{193a1820-d9ac-4997-8c55-be817523f6aa}"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","NumDeviceStacksMax",0x00010001,03,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogFlushPeriodSeconds",0x00010001,2c,01,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF","LogMinidumpType",0x00010001,20,01,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF\Services",,0x00000010
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF\Services",,0
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF\Services\{193a1820-d9ac-4997-8c55-be817523f6aa}",,0x00000010
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF\Services\{193a1820-d9ac-4997-8c55-be817523f6aa}","HostProcessImagePath",0,"%11%\wudfhost.exe"
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\WUDF\Services\{193a1820-d9ac-4997-8c55-be817523f6aa}","HostProcessDbgBreakOnStart",0x00010001,00,00,00,00
+HKLM,"SOFTWARE\Microsoft\Windows NT\CurrentVersion\SvcHost","WudfServiceGroup",0x00010000,"WUDFSvc"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Type",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Start",0x00010001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","ErrorControl",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Tag",0x00010001,11,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","ImagePath",0x00020000,"system32\DRIVERS\WudfPf.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework Platform Driver"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Group",0,"base"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf","Description",0,"Provide communciation services for UMDF components."
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf\Security",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfPf\Security","Security",1,01,00,14,80,90,00,00,00,9c,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,60,00,04,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Type",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Start",0x00010001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","ErrorControl",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","ImagePath",0x00020000,"system32\DRIVERS\wudfrd.sys"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework Reflector"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd","Description",0,"Reflect device requests to user-mode driver drivers"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd\Security",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfRd\Security","Security",1,01,00,14,80,90,00,00,00,9c,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,60,00,04,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Type",0x00010001,20,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Start",0x00010001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ErrorControl",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ImagePath",0x00020000,"%%SystemRoot%%\system32\svchost.exe -k WudfServiceGroup"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DisplayName",0,"Windows Driver Foundation - User-mode Driver Framework"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Group",0,"PlugPlay"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DependOnService",0x00010000,"PlugPlay"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","DependOnGroup",0x00010000
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ObjectName",0,"LocalSystem"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","Description",0,"Manages user-mode driver host processes"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","FailureActions",1,84,03,00,00,00,00,00,00,00,00,00,00,03,00,00,00,53,00,65,00,01,00,00,00,c0,d4,01,00,01,00,00,00,e0,93,04,00,00,00,00,00,00,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc","ServiceSidType",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Parameters",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Parameters","ServiceDll",0x00020000,"%%SystemRoot%%\System32\WUDFSvc.dll"
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Parameters","ServiceDllUnloadOnStop",0x00010001,01,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Security",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\WudfSvc\Security","Security",1,01,00,14,80,90,00,00,00,9c,00,00,00,14,00,00,00,30,00,00,00,02,00,1c,00,01,00,00,00,02,80,14,00,ff,01,0f,00,01,01,00,00,00,00,00,01,00,00,00,00,02,00,60,00,04,00,00,00,00,00,14,00,fd,01,02,00,01,01,00,00,00,00,00,05,12,00,00,00,00,00,18,00,ff,01,0f,00,01,02,00,00,00,00,00,05,20,00,00,00,20,02,00,00,00,00,14,00,8d,01,02,00,01,01,00,00,00,00,00,05,0b,00,00,00,00,00,18,00,fd,01,02,00,01,02,00,00,00,00,00,05,20,00,00,00,23,02,00,00,01,01,00,00,00,00,00,05,12,00,00,00,01,01,00,00,00,00,00,05,12,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\Wudf01000",,0x00000010
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\Wudf01000","EventMessageFile",0x00020000,"%%SystemRoot%%\System32\spmsg.dll"
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\Wudf01000","TypesSupported",0x00010001,07,00,00,00
+HKLM,SYSTEM\CurrentControlSet\Control\Class\{EEC5AD98-8080-425f-922A-DABF3DE3F69A},,,%WpdClassName%
+HKLM,SYSTEM\CurrentControlSet\Control\Class\{EEC5AD98-8080-425f-922A-DABF3DE3F69A},Icon,,100
+HKLM,SYSTEM\CurrentControlSet\Control\Class\{EEC5AD98-8080-425f-922A-DABF3DE3F69A},Installer32,,"wpd_ci.dll,WpdClassInstaller"
+HKLM,SYSTEM\CurrentControlSet\Control\Class\{EEC5AD98-8080-425f-922A-DABF3DE3F69A},Class,,"WPD"
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\WPDClassInstaller","CategoryCount",0x00010001,03,00,00,00
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\WPDClassInstaller","EventMessageFile",0x00020000,"%11%\wpd_ci.dll"
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\WPDClassInstaller","CategoryMessageFile",0x00020000,"%11%\wpd_ci.dll"
+HKLM,"SYSTEM\CurrentControlSet\Services\Eventlog\System\WPDClassInstaller","TypesSupported",0x00010001,07,00,00,00
+HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\MTPMediaPlayerArrival,"MSWMDMHandler",,""
+
+[DestinationDirs]
+WMPCopy.System=11
+WMPCopy.System.Downlevel=11
+WMCopy.WinDir = 25
+CopyINF=17
+Del.OldCodecs=11
+
+[RunPost]
+
+[CopyINF]
+%PACKAGE_NAME%.inf
+
+[WMCopy.WinDir]
+
+[WMPCopy.System.Downlevel]
+msdmo.dll,,,97
+
+[WMPCopy.System]
+wmasf.dll,,,97
+wmvcore.dll,,,97
+wmidx.dll,,,97
+wmnetmgr.dll,,,97
+logagent.exe,,,97
+laprxy.dll,,,97
+qasf.dll,,,97
+wmadmoe.dll,,,97
+wmsdmoe.dll,,,97
+wmsdmoe2.dll,,,97
+wmspdmoe.dll,,,97
+wmvdmoe2.dll,,,97
+wmadmod.dll,,,97
+wmsdmod.dll,,,97
+wmspdmod.dll,,,97
+wmvdmod.dll,,,97
+mpg4dmod.dll,,,97
+mp4sdmod.dll,,,97
+mp43dmod.dll,,,97
