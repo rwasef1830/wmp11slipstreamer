@@ -63,134 +63,134 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\n7Framework\Epsilon\ArgumentParser.cs">
-      <Link>Epsilon\ArgumentParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Collections\Generic\OrderedDictionary.cs">
-      <Link>Epsilon\Collections\Generic\OrderedDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\DebugServices\ConsoleWriter.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\DebugServices\ConsoleWriter.cs">
       <Link>Epsilon\DebugServices\ConsoleWriter.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\DebugServices\HelperConsole.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\DebugServices\HelperConsole.cs">
       <Link>Epsilon\DebugServices\HelperConsole.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Archival.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Archival.cs">
       <Link>Epsilon\IO\Compression\Archival.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\CabCompressor.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\CabCompressor.cs">
       <Link>Epsilon\IO\Compression\Cabinet\CabCompressor.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\CabDecompressor.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\CabDecompressor.cs">
       <Link>Epsilon\IO\Compression\Cabinet\CabDecompressor.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\FCI.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Interop\FCI.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Interop\FCI.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\FDI.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Interop\FDI.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Interop\FDI.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\IO\CabIO.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\IO\CabIO.cs">
       <Link>Epsilon\IO\Compression\Cabinet\IO\CabIO.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs">
       <Link>Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs">
       <Link>Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Delta\Delta.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Delta\Delta.cs">
       <Link>Epsilon\IO\Compression\Delta\Delta.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Delta\DeltaWin32.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\IO\Compression\Delta\DeltaWin32.cs">
       <Link>Epsilon\IO\Compression\Delta\DeltaWin32.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\FileSystem.cs">
-      <Link>Epsilon\IO\FileSystem.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Streams.cs">
-      <Link>Epsilon\IO\Streams.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\CSVParser.cs">
-      <Link>Epsilon\Parsers\CSVParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\DelimValueParser.cs">
-      <Link>Epsilon\Parsers\DelimValueParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\IniParser.cs">
-      <Link>Epsilon\Parsers\IniParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\KVParser.cs">
-      <Link>Epsilon\Parsers\KVParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\ParserBase.cs">
-      <Link>Epsilon\Parsers\ParserBase.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Security\Cryptography\CryptoHelp.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Security\Cryptography\CryptoHelp.cs">
       <Link>Epsilon\Security\Cryptography\CryptoHelp.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\DebugHelp.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\DebugHelp.cs">
       <Link>Epsilon\Win32\API\DebugHelp.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\DllFunctions.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\DllFunctions.cs">
       <Link>Epsilon\Win32\API\DllFunctions.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\IO.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\IO.cs">
       <Link>Epsilon\Win32\API\IO.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Memory.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\Memory.cs">
       <Link>Epsilon\Win32\API\Memory.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\MemoryManagement.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\MemoryManagement.cs">
       <Link>Epsilon\Win32\API\MemoryManagement.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\ResourceAPI.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\ResourceAPI.cs">
       <Link>Epsilon\Win32\API\ResourceAPI.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\SafeHandles.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\SafeHandles.cs">
       <Link>Epsilon\Win32\API\SafeHandles.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Security.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\Security.cs">
       <Link>Epsilon\Win32\API\Security.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\System.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\System.cs">
       <Link>Epsilon\Win32\API\System.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\WinConsole.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\WinConsole.cs">
       <Link>Epsilon\Win32\API\WinConsole.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Windows.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\API\Windows.cs">
       <Link>Epsilon\Win32\API\Windows.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\PeTools\PeEditor.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\PeTools\PeEditor.cs">
       <Link>Epsilon\Win32\PeTools\PeEditor.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\PeTools\PeStructs.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\PeTools\PeStructs.cs">
       <Link>Epsilon\Win32\PeTools\PeStructs.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\Resources\IconStructs.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\Resources\IconStructs.cs">
       <Link>Epsilon\Win32\Resources\IconStructs.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\Resources\ResourceEditor.cs">
+    <Compile Include="..\..\..\n7Framework\trunk\Epsilon\Win32\Resources\ResourceEditor.cs">
       <Link>Epsilon\Win32\Resources\ResourceEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\ArgumentParser.cs">
+      <Link>Epsilon\ArgumentParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Collections\Generic\OrderedDictionary.cs">
+      <Link>Epsilon\Collections\Generic\OrderedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\IO\FileSystem.cs">
+      <Link>Epsilon\IO\FileSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\IO\Streams.cs">
+      <Link>Epsilon\IO\Streams.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Parsers\CSVParser.cs">
+      <Link>Epsilon\Parsers\CSVParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Parsers\DelimValueParser.cs">
+      <Link>Epsilon\Parsers\DelimValueParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Parsers\IniParser.cs">
+      <Link>Epsilon\Parsers\IniParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Parsers\KVParser.cs">
+      <Link>Epsilon\Parsers\KVParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\Parsers\ParserBase.cs">
+      <Link>Epsilon\Parsers\ParserBase.cs</Link>
     </Compile>
     <Compile Include="Backend\Hacks.cs" />
     <Compile Include="Backend\HelperFunctions.cs" />
