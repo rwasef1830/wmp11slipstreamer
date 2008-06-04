@@ -1,0 +1,113 @@
+[Version]
+signature = "$Windows NT$"
+AdvancedINF=2.5, "You need a newer version of advpack.dll."
+ 
+[DefaultInstall]
+
+[DefaultUninstall]
+
+[Optional Components]
+WMPOCM
+
+[WMPOCM]
+OptionDesc = "%WMP_NAME%"
+Tip = "%WMP_TIP%"
+Modes        = 0,1,2,3
+IconIndex = *, ocgen.dll, 1003
+Uninstall = WMPOCM_Uninstall
+Run=ShowWMP
+
+[ShowWMP]
+Commandline="%17%\unregmp2.exe /ShowWMP /SetShowState"
+TickCount=500
+
+[WMPOCM_Uninstall]
+DelFiles=DelNone
+Run=HideWMP
+
+[HideWMP]
+Commandline="%17%\unregmp2.exe /HideWMP /SetShowState"
+TickCount=500
+
+[Entry.ShowWMP]
+RunPostSetupCommands=Run.ShowWMP
+AddReg=Reg.AutoPlay
+
+[Entry.HideWMP]
+RunPostSetupCommands=Run.HideWMP
+DelReg=Reg.AutoPlay
+
+[Run.ShowWMP]
+"%17%\unregmp2.exe /ShowWMP /SetShowState"
+
+[Run.HideWMP]
+"%17%\unregmp2.exe /HideWMP /SetShowState"
+
+[DestinationDirs]
+
+[SourceDisksNames]
+5655 = %SourceFileDesc%,,0
+
+[SourceDisksFiles]
+
+[WMPPUI.CleanUp]
+HKCU,Software\Microsoft\Keyboard\NativeMediaPlayers\WMP
+HKCU, "Software\Microsoft\MediaPlayer\Setup", "UDBLocalPath"
+
+[WMPAddReg.PUI]
+HKCU,Software\Microsoft\Keyboard\Native Media Players\WMP,AppName,,"%WMP_NAME%"
+HKCU,Software\Microsoft\Keyboard\Native Media Players\WMP,ExePath,,"%16422%\%MP2_FOLDER%\wmplayer.exe"
+HKCU,"Software\Microsoft\MediaPlayer\Preferences", "AcceptedPrivacyStatement",0x00010001,0
+HKCU,"Software\Microsoft\MediaPlayer\Preferences", "UpgradeCheckFrequency", 1, 01,00,00,00
+HKCU,"Software\Microsoft\MediaPlayer\Preferences", "StretchToFit",0x00010001,1
+
+[WMPAddReg.OSPUI]
+HKCU,"%KEY_ACTIVESETUP%\%WMP_GUID%","Locale",,"%LANGUAGE%"
+
+[Reg.AutoPlay]
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayCDAudioOnArrival", "MSPlayCDAudioOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayCDAudioOnArrival", "MSRipCDAudioOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayDVDMovieOnArrival", "MSPlayDVDMovieOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\HandleCDBurningOnArrival", "MSWMPBurnCDOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayMusicFilesOnArrival", "MSPlayMediaOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\PlayVideoFilesOnArrival", "MSPlayMediaOnArrival" 
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\MTPMediaPlayerArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\RioOneArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\Rio600Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\Rio800Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\NikepsaplayArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\CompaqPA1Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\DigisetteDuo64Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\CreativeNomadIIArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\CreativeNomadIIcArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\CreativeNomadIIMGArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\CreativeNomadJukeboxArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\IntelPocketConcertArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\Intel3000Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\IomegaHipZipArrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\Ravemp2300Arrival","MSWMDMHandler"
+HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\EventHandlers\DLinkDMP110Arrival","MSWMDMHandler"
+
+[PerUserStub]
+AddReg=WMPAddReg.PUI,WMPAddReg.OSPUI
+DelReg=WMPPUI.CleanUp
+RunPostSetupCommands=Run.PUI
+SmartReboot=N
+
+[Run.PUI]
+"%17%\unregmp2.exe /Shortcuts /RegBrowsers"
+
+[Strings]
+MP2_FOLDER="Windows Media Player"
+KEY_ACTIVESETUP    = "SOFTWARE\Microsoft\Active Setup\Installed Components"
+WMP_GUID= "{6BF52A52-394A-11d3-B153-00C04F79FAA6}"
+
+SourceFileDesc     = "Windows Media Files"
+
+;;;;;;;--------------------------------------------
+;-- Only localize strings below this line
+;;;;;;--------------------------------------------
+
+WMP_TIP = "Adds or removes access to Windows Media Player from the Start menu and Desktop"
+LANGUAGE="EN"
+WMP_NAME="Windows Media Player"

@@ -1,0 +1,301 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CE55098A-D00A-42E1-AB3C-173DD35AE700}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WMP11Slipstreamer</RootNamespace>
+    <AssemblyName>WMP11Slipstreamer</AssemblyName>
+    <ApplicationIcon>wmp.ico</ApplicationIcon>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>WMP11SlipstreamerKey.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>WMP11Slipstreamer.EntryPoint</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\n7Framework\Epsilon\ArgumentParser.cs">
+      <Link>Epsilon\ArgumentParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Collections\Generic\OrderedDictionary.cs">
+      <Link>Epsilon\Collections\Generic\OrderedDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\DebugServices\ConsoleWriter.cs">
+      <Link>Epsilon\DebugServices\ConsoleWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\DebugServices\HelperConsole.cs">
+      <Link>Epsilon\DebugServices\HelperConsole.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Archival.cs">
+      <Link>Epsilon\IO\Compression\Archival.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\CabCompressor.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\CabCompressor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\CabDecompressor.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\CabDecompressor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\FCI.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Interop\FCI.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\FDI.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Interop\FDI.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\IO\CabIO.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\IO\CabIO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs">
+      <Link>Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Delta\Delta.cs">
+      <Link>Epsilon\IO\Compression\Delta\Delta.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Compression\Delta\DeltaWin32.cs">
+      <Link>Epsilon\IO\Compression\Delta\DeltaWin32.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\FileSystem.cs">
+      <Link>Epsilon\IO\FileSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\IO\Streams.cs">
+      <Link>Epsilon\IO\Streams.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\CSVParser.cs">
+      <Link>Epsilon\Parsers\CSVParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\DelimValueParser.cs">
+      <Link>Epsilon\Parsers\DelimValueParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\IniParser.cs">
+      <Link>Epsilon\Parsers\IniParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\KVParser.cs">
+      <Link>Epsilon\Parsers\KVParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Parsers\ParserBase.cs">
+      <Link>Epsilon\Parsers\ParserBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Security\Cryptography\CryptoHelp.cs">
+      <Link>Epsilon\Security\Cryptography\CryptoHelp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\DebugHelp.cs">
+      <Link>Epsilon\Win32\API\DebugHelp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\DllFunctions.cs">
+      <Link>Epsilon\Win32\API\DllFunctions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\IO.cs">
+      <Link>Epsilon\Win32\API\IO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Memory.cs">
+      <Link>Epsilon\Win32\API\Memory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\MemoryManagement.cs">
+      <Link>Epsilon\Win32\API\MemoryManagement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\ResourceAPI.cs">
+      <Link>Epsilon\Win32\API\ResourceAPI.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\SafeHandles.cs">
+      <Link>Epsilon\Win32\API\SafeHandles.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Security.cs">
+      <Link>Epsilon\Win32\API\Security.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\System.cs">
+      <Link>Epsilon\Win32\API\System.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\WinConsole.cs">
+      <Link>Epsilon\Win32\API\WinConsole.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\API\Windows.cs">
+      <Link>Epsilon\Win32\API\Windows.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\PeTools\PeEditor.cs">
+      <Link>Epsilon\Win32\PeTools\PeEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\PeTools\PeStructs.cs">
+      <Link>Epsilon\Win32\PeTools\PeStructs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\Resources\IconStructs.cs">
+      <Link>Epsilon\Win32\Resources\IconStructs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\n7Framework\Epsilon\Win32\Resources\ResourceEditor.cs">
+      <Link>Epsilon\Win32\Resources\ResourceEditor.cs</Link>
+    </Compile>
+    <Compile Include="Backend\Hacks.cs" />
+    <Compile Include="Backend\HelperFunctions.cs" />
+    <Compile Include="UI\AboutForm\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AboutForm\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Backend\Events.cs" />
+    <Compile Include="Backend\BackendParams.cs" />
+    <Compile Include="Backend\Backend.cs" />
+    <Compile Include="Backend\Exceptions.cs" />
+    <Compile Include="Backend\SpecialHotfixes.cs" />
+    <Compile Include="CM.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="UI\ErrorForm\ErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ErrorForm\ErrorForm.Designer.cs">
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HotfixInfParser.cs" />
+    <Compile Include="UI\MainForm\BackendControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MainForm\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MainForm\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntryPoint.cs" />
+    <Compile Include="Backend\HotfixParserEvaluator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UI\AboutForm\AboutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ErrorForm\ErrorForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MainForm\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SourceErrorForm\SourceErrorForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SourceErrorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UI\MainForm\UIEventHandlers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SourceErrorForm\SourceErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SourceErrorForm\SourceErrorForm.Designer.cs">
+      <DependentUpon>SourceErrorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsSourceInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\embed\repository1" />
+    <None Include="Data\embed\repository3" />
+    <None Include="Data\embed\repository4" />
+    <None Include="Data\embed\repository5" />
+    <None Include="Data\embed\repository7" />
+    <None Include="Data\embed\UsageInformation.txt" />
+    <None Include="Data\embed\wmpicons\0.icx" />
+    <None Include="Data\embed\wmpicons\1.icx" />
+    <None Include="logo.bmp" />
+    <None Include="WMP11Slipstreamer.exe.manifest" />
+    <None Include="WMP11SlipstreamerKey.snk" />
+    <None Include="Data\embed\KB913800.cab" />
+    <Content Include="wmp.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>postbuild.cmd "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

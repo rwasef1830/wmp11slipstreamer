@@ -1,0 +1,11 @@
+WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\MyWindowsSource" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"pathToIcon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]
+
+/installer - Specifies the full path to the Microsoft WMP11 redistributable installer.
+/winsource - Specifies the Windows source to integrate WMP11 in.
+/hotfix - Specifies additional WMP11 hotfixes to integrate.
+/output - Specifies the output type of WMP11, allowed values: "Normal" or "Tweaked".
+/customicon - Specifies a custom icon to use for wmplayer.exe, allowed values: "Boooggy" or "Vista" or "Custom".
+/customiconpath - Specifies the location of the custom icon to use if /customicon value is "Custom".
+/nocats - Modifies WMP11 integration so that it no longer includes the security catalogs (only use when disabling WFP).
+/slipstream - Begins slipstream immediately if no arguments are invalid and all referenced files are present.
+/closeonsuccess - Exits the slipstreamer after unattended operation is complete (if successful).

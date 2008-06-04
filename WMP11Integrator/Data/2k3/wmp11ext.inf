@@ -1,0 +1,139 @@
+; Boooggy WMP11 2k3 integration
+
+[Version]
+Signature="$Windows NT$"
+
+[DefaultInstall]
+OptionDesc		="Windows Media Player 11 Files"
+Tip			="Windows Media Player 11 Additional Files"
+Modes			=0,1,2,3
+CopyFiles		=WMPlayer.Copy,NetShare.Copy,CopyWMC2
+AddReg			=WMP11.AddReg
+
+[Optional Components]
+WMP11Files
+
+[WMP11Files]
+OptionDesc		="Windows Media Player 11 Files"
+Tip			="Windows Media Player 11 Additional Files"
+Modes			=0,1,2,3
+CopyFiles		=WMPlayer.Copy,NetShare.Copy,CopyWMC2
+AddReg			=WMP11.AddReg
+
+[SourceDisksNames.x86]
+1="Windows Media Player Files","wmp11.cab",,"I386"
+
+[DestinationDirs]
+WMPlayer.Copy	=16422,%WMPFOLDER%
+NetShare.Copy	=16422,"%WMPFOLDER%\Network Sharing"
+CopyWMC2 	=16422,%WMC%
+
+[SourceDisksFiles]
+connectionmanager.xml=1
+contentdirectory.xml=1
+mediareceiverregistrar.xml=1
+wmdbexport.exe=1
+wmpnetwk.exe=1
+wmpnscfg.exe=1
+wmpnss_bw32.bmp=1
+wmpnss_bw32.jpg=1
+wmpnss_bw48.bmp=1
+wmpnss_bw48.jpg=1
+wmpnss_bw48.png=1
+wmpnss_bw120.jpg=1
+wmpnss_bw120.png=1
+wmpnss_color32.bmp=1
+wmpnss_color32.jpg=1
+wmpnss_color48.bmp=1
+wmpnss_color48.jpg=1
+wmpnss_color48.png=1
+wmpnss_color120.jpg=1
+wmpnss_color120.png=1
+wmpnssci.dll=1
+wmpshare.exe=1
+wmsetsdk.exe=1
+connecti.xml =1
+contentd.xml =1
+mediarec.xml =1
+wmc_bw32.bmp =1
+wmc_bw32.jpg =1
+wmc_bw48.bmp =1
+wmc_bw48.jpg =1
+wmc_bw48.png =1
+wmc_bw12.jpg =1
+wmc_bw12.png =1
+wmc_co32.bmp =1
+wmc_co32.jpg =1
+wmc_co48.bmp =1
+wmc_co48.jpg =1
+wmc_co48.png =1
+wmc_c120.jpg =1
+wmc_c120.png =1
+wmccds.exe   =1
+wmccfg.exe   =1
+wmccpl.dll   =1
+wmcsci.dll   =1
+eula.txt=1
+LegitLibM.dll=1
+
+[WMPlayer.Copy]
+wmdbexport.exe
+wmpnetwk.exe
+wmpnscfg.exe
+wmpnssci.dll
+wmpshare.exe
+wmsetsdk.exe
+eula.txt
+LegitLibM.dll
+
+[NetShare.Copy]
+connectionmanager.xml
+contentdirectory.xml
+mediareceiverregistrar.xml
+wmpnss_bw32.bmp
+wmpnss_bw32.jpg
+wmpnss_bw48.bmp
+wmpnss_bw48.jpg
+wmpnss_bw48.png
+wmpnss_bw120.jpg
+wmpnss_bw120.png
+wmpnss_color32.bmp
+wmpnss_color32.jpg
+wmpnss_color48.bmp
+wmpnss_color48.jpg
+wmpnss_color48.png
+wmpnss_color120.jpg
+wmpnss_color120.png
+
+[CopyWMC2]
+connectionmanager.xml,connecti.xml
+contentdirectory.xml,contentd.xml
+mediareceiverregistrar.xml,mediarec.xml
+wmc_bw32.bmp
+wmc_bw32.jpg
+wmc_bw48.bmp
+wmc_bw48.jpg
+wmc_bw48.png
+wmc_bw120.jpg,wmc_bw12.jpg
+wmc_bw120.png,wmc_bw12.png
+wmc_color32.bmp,wmc_co32.bmp
+wmc_color32.jpg,wmc_co32.jpg
+wmc_color48.bmp,wmc_co48.bmp
+wmc_color48.jpg,wmc_co48.jpg
+wmc_color48.png,wmc_co48.png
+wmc_color120.jpg,wmc_c120.jpg
+wmc_color120.png,wmc_c120.png
+wmccds.exe
+wmccfg.exe
+wmccpl.dll
+wmcsci.dll
+
+[WMP11.AddReg]
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","wmc2-1",,"regsvr32 /s ""%16422%\%WMC%\wmccpl.dll"""
+HKLM,"Software\Microsoft\Windows\CurrentVersion\RunOnce","wmc2-2",,"regsvr32 /s ""%16422%\%WMC%\wmcsci.dll"""
+
+[Strings]
+NAME="Boooggy WMP11 2k3 Addon"
+VERSION="Version 1.0"
+WMC="Windows Media Connect 2"
+WMPFOLDER="Windows Media Player"
