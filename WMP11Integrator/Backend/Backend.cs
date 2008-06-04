@@ -378,11 +378,20 @@ namespace WMP11Slipstreamer
                     this.CombinePathComponents(_archFilesDirectory, "DrvIndex.inf"), true
                 );
                 this.AnnounceOperation("Extracting drivers. Please wait...");
-                List<string> cabFilesData = 
-                    this._drvIndexEditor.ReadAllValues("Version", "CabFiles");
-                cabFilesData.Sort(StringComparer.OrdinalIgnoreCase);
-                string variableName = cabFilesData[cabFilesData.Count - 1];
-                _driverCabFile = _drvIndexEditor.ReadValue("Cabs", variableName);
+
+                if (this._sourceInfo.Arch == TargetArchitecture.x86)
+                {
+                    List<string> cabFilesData =
+                        this._drvIndexEditor.ReadAllValues("Version", "CabFiles");
+                    cabFilesData.Sort(StringComparer.OrdinalIgnoreCase);
+                    string variableName = cabFilesData[cabFilesData.Count - 1];
+                    _driverCabFile = _drvIndexEditor.ReadValue("Cabs", variableName);
+                }
+                else
+                {
+                    _driverCabFile = "driver.cab";
+                }
+
                 CancelOpportunity();
                 Directory.CreateDirectory(_drivercabExtractedDirectory);
 
