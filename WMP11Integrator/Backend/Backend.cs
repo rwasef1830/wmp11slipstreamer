@@ -18,6 +18,8 @@ using System.Text.RegularExpressions;
 using Epsilon.IO.Compression.Cabinet;
 #endregion
 
+// This is the main backend that performs the actual integration tasks
+
 namespace WMP11Slipstreamer
 {
     partial class Backend
