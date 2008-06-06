@@ -282,6 +282,12 @@ namespace WMP11Slipstreamer
                 extension.Substring(0, extension.Length - 1) + "_");
             return compressedFile;
         }
+
+        public static Version VerFromFileVer(FileVersionInfo fileVerInfo)
+        {
+            return new Version(fileVerInfo.FileMajorPart, fileVerInfo.FileMinorPart, fileVerInfo.FileBuildPart,
+                fileVerInfo.FilePrivatePart);
+        }
     }
 
     /// <summary>

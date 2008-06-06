@@ -1387,12 +1387,7 @@ namespace WMP11Slipstreamer
                         this.CombinePathComponents(tempCompareFolder, "uxtheme.dll");
                     FileVersionInfo sourceUxthemeFileVer 
                         = FileVersionInfo.GetVersionInfo(uxthemeComparePath);
-                    Version sourceUxthemeVer = new Version(
-                        sourceUxthemeFileVer.FileMajorPart,
-                        sourceUxthemeFileVer.FileMinorPart,
-                        sourceUxthemeFileVer.FileBuildPart,
-                        sourceUxthemeFileVer.FilePrivatePart
-                    );
+                    Version sourceUxthemeVer = CM.VerFromFileVer(sourceUxthemeFileVer);
 
                     if (minUxthemeVer.CompareTo(sourceUxthemeVer) > 0)
                     {
@@ -1412,12 +1407,7 @@ namespace WMP11Slipstreamer
                         tempCompareFolder, "msobmain.dll");
                     FileVersionInfo sourceMsobmainFileVer 
                         = FileVersionInfo.GetVersionInfo(msobmainComparePath);
-                    Version sourceMsobmainVer = new Version(
-                        sourceMsobmainFileVer.FileMajorPart,
-                        sourceMsobmainFileVer.FileMinorPart,
-                        sourceMsobmainFileVer.FileBuildPart,
-                        sourceMsobmainFileVer.FilePrivatePart
-                    );
+                    Version sourceMsobmainVer = CM.VerFromFileVer(sourceMsobmainFileVer);
 
                     if (minMsobmainVer.CompareTo(sourceMsobmainVer) > 0)
                     {
@@ -1440,7 +1430,6 @@ namespace WMP11Slipstreamer
         void StandardHotfixApply(string fixesFolder, 
             Dictionary<string, IEnumerable<string>> hotfixFileDictionary)
         {
-            #region Standard hotfix extract routine
             ProgressTracker hfixExtractProgress = new ProgressTracker(
                 _hotfixInstallerList.Count);
             this.ResetCurrentProgress();
@@ -1581,9 +1570,7 @@ namespace WMP11Slipstreamer
                     ex.Data.Add("Offending hotfix", Path.GetFileName(hotfix));
                     throw ex;
                 }
-            #endregion
             }
-
         }
 
         void SaveFiles()
