@@ -1390,8 +1390,8 @@ namespace WMP11Slipstreamer
                     Version sourceUxthemeVer = new Version(
                         sourceUxthemeFileVer.FileMajorPart,
                         sourceUxthemeFileVer.FileMinorPart,
-                        sourceUxthemeFileVer.FilePrivatePart,
-                        sourceUxthemeFileVer.FileBuildPart
+                        sourceUxthemeFileVer.FileBuildPart,
+                        sourceUxthemeFileVer.FilePrivatePart
                     );
 
                     if (minUxthemeVer.CompareTo(sourceUxthemeVer) > 0)
@@ -1415,8 +1415,8 @@ namespace WMP11Slipstreamer
                     Version sourceMsobmainVer = new Version(
                         sourceMsobmainFileVer.FileMajorPart,
                         sourceMsobmainFileVer.FileMinorPart,
-                        sourceMsobmainFileVer.FilePrivatePart,
-                        sourceMsobmainFileVer.FileBuildPart
+                        sourceMsobmainFileVer.FileBuildPart,
+                        sourceMsobmainFileVer.FilePrivatePart
                     );
 
                     if (minMsobmainVer.CompareTo(sourceMsobmainVer) > 0)
