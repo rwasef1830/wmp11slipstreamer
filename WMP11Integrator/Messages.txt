@@ -1,0 +1,78 @@
+; Windows Media Player 11 Slipstreamer localized messages resource file
+; Localizer version: 1.0
+
+; NOTE: You must save this file as Unicode (aka UTF-16LE and UCS2-LE) or UTF-8.
+
+; Localizer's name
+LocalizerName=n7Epsilon
+
+; Set the culture name correctly here (eg: en-US, fr-FR, en, fr, ch)
+LocalizerCulture=en-US
+
+; Do not change this key, this will allow the slipstreamer to block loading
+; outdated resources that won't work with a new release due to changed strings.
+LocalizerKey=3270d2f650dacfe8c48f2f66ce3179d7
+
+; Specifies the direction of the user interface.
+; Valid values are: "ltr" and "rtl" (left-to-right and right-to-left)
+uxDirection=ltr
+
+; Messages for UI elements follow
+uxGroupBoxBasicOpts=Basic Options
+uxLabelChooseType=Choose WMP11 output type:
+uxTypeVanilla=Vanilla (same as original installer with WGA)
+uxTypeTweaked=Tweaked (with registry tweaks and no WGA)
+uxLabelEnterWMPRedistPath=Enter the full path to the Media Player 11 installation file or use the "..." button to locate it:
+uxLinkLabelWMPRedist=If you don't have the installation file, you can download it now (Genuine Windows required).
+uxLinkLabelWMPRedistLinkArea=49,15
+uxLabelEnterSourcePath=Enter the path to the Windows source to integrate WMP11 in (must contain a "i386" folder):
+uxLabelEnterHotfixLine=Use the "..." button to select WMP11 hotfixes to integrate:
+uxGroupBoxAdvOpts=Advanced Options
+uxCheckboxCustomIcon=Use a custom icon for wmplayer.exe
+uxLabelPreview=Preview:
+uxCheckboxNoCats=Do not add security catalogs (for those who disable Windows File Protection)
+uxLabelDefaultStatus=No Operations
+uxStatusBarDefaultText=Ready
+uxButtonIntegrate=&Integrate
+uxButtonExit=E&xit
+uxButtonCancel=&Cancel
+
+; Messages announced during operation
+statInit=Initialising...
+statDetectingSource=Detecting source type...
+statExtractWmpRedist=Extracting Windows Media Player 11 installer...
+statPrepareEdit=Preparing to edit files...
+statFixingTxtsetupDirs=Fixing [txtsetup_dirs] section...
+statEditing=Editing \"{0}\"...
+statPreparingFixes=Preparing fixes...
+statExtractApplyHotfix=Extracting and applying hotfixes...
+statSavingInis=Saving edited files...
+statCompressFile=Compressing \"{0}\"...
+statApplyCustIcon=Applying custom icon...
+statGenFileList=Generating file list...
+statCreateCab=Creating \"{0}\"...
+statCompressAdded=Compressing added files...
+statDetOverwrite=Determining overwriting files...
+statCompressOverwrite=Compressing overwriting files...
+statCompressCats=Compressing security catalogs...
+statReplaceInDriverCab=Replacing files in driver cabinet...
+statCompressEdited=Compressing edited files...
+statMergeFolders=Merging folders...
+statCleanTemp=Cleaning up temporary folders...
+
+; Error messages at beginning of integration
+dlgTitle_WmpRedistNotFound=Unable to find WMP11 installer
+dlgText_WmpRedistNotFound=Windows Media Player 11 installer could not be found.\nPlease locate it and try again.
+dlgTitle_Wmp64FilesMissing=Cannot find old WMP files
+dlgText_Wmp64FilesMissing=Essential WMP9 and WMP6.4 files are missing from the specified source.\r\n\r\nWindows Media Player 11 cannot be integrated into a source from which these two components have been removed with nLite or similar source modification utilities.
+dlgTitle_InvalidHotfixLine=Invalid Hotfix Line
+dlgText_InvalidHotfixLine=Invalid hotfix line specified or some hotfixes in the list do not exist.\r\n\r\nPlease reselect hotfixes to integrate and try again.
+
+; Unhandled exception dialog box
+dlgError_Header=An unhandled exception has occurred in the worker thread.\r\nPlease copy the following diagnostic information and post a bug report.
+dlgError_Footer=Click on "Close" to return to the application.
+dlgError_ButtonCloseText=&Close
+
+; Standard integration error
+dlgIntegError_Header=An error occurred during integration:
+dlgIntegError_Title=Integration Error

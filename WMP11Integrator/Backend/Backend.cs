@@ -437,7 +437,7 @@ namespace WMP11Slipstreamer
 
         void PrepareDependencies()
         {
-            CryptoHelp crypto = new CryptoHelp(Globals.uniqueTag);
+            CryptoHelp crypto = new CryptoHelp(Globals.UniqueTag);
 
             // Nice message for progress
             this.AnnounceOperation("Reading parse files...");
@@ -448,7 +448,7 @@ namespace WMP11Slipstreamer
             // entries.ini: repository1
             string entriesContent = crypto.DecryptToString(
                 Properties.Resources.repository1,
-                Globals.repository1Key,
+                Globals.Repo1Key,
                 Encoding.Default
             );
 
@@ -490,7 +490,7 @@ namespace WMP11Slipstreamer
             // Decrypt repositories
             MemoryStream repositoryDecrypted = new MemoryStream();
             crypto.DecryptStream(new MemoryStream(repository),
-                Globals.otherReposKeys, repositoryDecrypted, false);
+                Globals.Repo2Key, repositoryDecrypted, false);
             repositoryDecrypted.Seek(0, SeekOrigin.Begin);
 
             // Temp Folder

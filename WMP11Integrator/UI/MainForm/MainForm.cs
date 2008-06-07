@@ -352,8 +352,7 @@ namespace WMP11Slipstreamer
                 {
 
                     string message = "Essential Windows Media Player 9 and 6.4 files are missing from the source.\r\n\r\nWindows Media Player 11 cannot be slipstreamed into a source from which these\r\ntwo components have been removed with nLite or similar source reduction utilities.\r\n\r\nThis dialog box will close after 10 seconds.";
-                    SourceError errorWindow = new SourceError(message);
-                    errorWindow.ShowDialog();
+                    // TODO: Put standard dialog here
                     if (_closeOnSuccess)
                     {
                         Application.Exit();
@@ -362,8 +361,7 @@ namespace WMP11Slipstreamer
                 else if (!hotfixesExist(textBoxHotfixList.Text))
                 {
                     string message = "Invalid hotfix line specified or some hotfixes in the list do not exist.\r\n\r\nPlease choose the hotfixes to integrate and try again.\r\n\r\nThis dialog will close automatically after 10 seconds.";
-                    SourceError errorWindow = new SourceError(message);
-                    errorWindow.ShowDialog();
+                    // TODO: Put standard dialog here
                     if (_closeOnSuccess)
                     {
                         Application.Exit();
