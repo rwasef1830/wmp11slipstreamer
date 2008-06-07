@@ -9,10 +9,11 @@ namespace WMP11Slipstreamer
     public class Globals
     {
         public static string Version = Application.ProductVersion;
-        public static StreamWriter Logger;
-        public const string repository1Key = "e2f2dad638ce726af2f03074eef307cb";
-        public const string otherReposKeys = "86fcb6bda64c0a7674179f7d1e09e5fe";
-        public const ulong uniqueTag = 0xFC010203040506CF;
+        public const string Repo1Key = "e2f2dad638ce726af2f03074eef307cb";
+        public const string Repo2Key = "86fcb6bda64c0a7674179f7d1e09e5fe";
+        public const string LocalizerKey = "3270d2f650dacfe8c48f2f66ce3179d7";
+        public const ulong UniqueTag = 0xFC010203040506CF;
+
         public const string cancelMessage
             = "Integration has been cancelled by the user. "
             + "The source has not been modified.";

@@ -29,11 +29,11 @@ namespace WMP11Slipstreamer
         void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.uxGroupBoxBasicOpts = new System.Windows.Forms.GroupBox();
             this.buttonHotfixBrowse = new System.Windows.Forms.Button();
             this.textBoxHotfixList = new System.Windows.Forms.TextBox();
             this.labelHotfixes = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.uxLabelChooseType = new System.Windows.Forms.Label();
             this.addonTypeComboBox = new System.Windows.Forms.ComboBox();
             this.btnWindowsSourceBrowse = new System.Windows.Forms.Button();
             this.textBoxWindowsSource = new System.Windows.Forms.TextBox();
@@ -56,32 +56,32 @@ namespace WMP11Slipstreamer
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabelSourceType = new System.Windows.Forms.ToolStripStatusLabel();
             this.aboutLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.groupBox1.SuspendLayout();
+            this.uxGroupBoxBasicOpts.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // uxGroupBoxBasicOpts
             // 
-            this.groupBox1.Controls.Add(this.buttonHotfixBrowse);
-            this.groupBox1.Controls.Add(this.textBoxHotfixList);
-            this.groupBox1.Controls.Add(this.labelHotfixes);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.addonTypeComboBox);
-            this.groupBox1.Controls.Add(this.btnWindowsSourceBrowse);
-            this.groupBox1.Controls.Add(this.textBoxWindowsSource);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.linkLabelWmp11SourceDownload);
-            this.groupBox1.Controls.Add(this.btnWmp11SourceBrowse);
-            this.groupBox1.Controls.Add(this.textBoxWmp11Source);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(11, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(466, 197);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Basic Options";
+            this.uxGroupBoxBasicOpts.Controls.Add(this.buttonHotfixBrowse);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.textBoxHotfixList);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.labelHotfixes);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.uxLabelChooseType);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.addonTypeComboBox);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.btnWindowsSourceBrowse);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.textBoxWindowsSource);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.label3);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.linkLabelWmp11SourceDownload);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.btnWmp11SourceBrowse);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.textBoxWmp11Source);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.label1);
+            this.uxGroupBoxBasicOpts.Location = new System.Drawing.Point(11, 12);
+            this.uxGroupBoxBasicOpts.Name = "uxGroupBoxBasicOpts";
+            this.uxGroupBoxBasicOpts.Size = new System.Drawing.Size(466, 197);
+            this.uxGroupBoxBasicOpts.TabIndex = 0;
+            this.uxGroupBoxBasicOpts.TabStop = false;
+            this.uxGroupBoxBasicOpts.Text = "Basic Options";
             // 
             // buttonHotfixBrowse
             // 
@@ -110,14 +110,14 @@ namespace WMP11Slipstreamer
             this.labelHotfixes.TabIndex = 9;
             this.labelHotfixes.Text = "Use the \"...\" button to select WMP11 hotfixes to integrate:";
             // 
-            // label5
+            // uxLabelChooseType
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(5, 21);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(146, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Choose WMP11 output type:";
+            this.uxLabelChooseType.AutoSize = true;
+            this.uxLabelChooseType.Location = new System.Drawing.Point(5, 21);
+            this.uxLabelChooseType.Name = "uxLabelChooseType";
+            this.uxLabelChooseType.Size = new System.Drawing.Size(146, 13);
+            this.uxLabelChooseType.TabIndex = 7;
+            this.uxLabelChooseType.Text = "Choose WMP11 output type:";
             // 
             // addonTypeComboBox
             // 
@@ -377,7 +377,7 @@ namespace WMP11Slipstreamer
             this.Controls.Add(this.buttonIntegrate);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.uxGroupBoxBasicOpts);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -386,8 +386,8 @@ namespace WMP11Slipstreamer
             this.Text = "Windows Media Player 11 Slipstreamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.uxGroupBoxBasicOpts.ResumeLayout(false);
+            this.uxGroupBoxBasicOpts.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPreview)).EndInit();
@@ -400,7 +400,7 @@ namespace WMP11Slipstreamer
 
         #endregion
 
-        System.Windows.Forms.GroupBox groupBox1;
+        System.Windows.Forms.GroupBox uxGroupBoxBasicOpts;
         System.Windows.Forms.Label label1;
         System.Windows.Forms.Button btnWmp11SourceBrowse;
         System.Windows.Forms.TextBox textBoxWmp11Source;
@@ -410,19 +410,19 @@ namespace WMP11Slipstreamer
         System.Windows.Forms.TextBox textBoxWindowsSource;
         System.Windows.Forms.Button buttonIntegrate;
         System.Windows.Forms.ComboBox addonTypeComboBox;
-        System.Windows.Forms.Label label5;
+        System.Windows.Forms.Label uxLabelChooseType;
         System.Windows.Forms.GroupBox groupBox2;
-        public System.Windows.Forms.ProgressBar progressBarTotalProgress;
-        public System.Windows.Forms.ProgressBar progressBarCurrentItem;
-        public System.Windows.Forms.Label statusLabel;
+        System.Windows.Forms.ProgressBar progressBarTotalProgress;
+        System.Windows.Forms.ProgressBar progressBarCurrentItem;
+        System.Windows.Forms.Label statusLabel;
         System.Windows.Forms.StatusStrip statusStrip;
-        public System.Windows.Forms.Button buttonCancel;
-        public System.Windows.Forms.CheckBox checkBoxRemoveCATs;
-        public System.Windows.Forms.CheckBox checkBoxUseCustIcon;
-        public System.Windows.Forms.ComboBox comboBoxIconSelect;
+        System.Windows.Forms.Button buttonCancel;
+        System.Windows.Forms.CheckBox checkBoxRemoveCATs;
+        System.Windows.Forms.CheckBox checkBoxUseCustIcon;
+        System.Windows.Forms.ComboBox comboBoxIconSelect;
         System.Windows.Forms.PictureBox pictureBoxPreview;
         System.Windows.Forms.Label labelPreview;
-        public System.Windows.Forms.ToolStripStatusLabel statusLabelSourceType;
+        System.Windows.Forms.ToolStripStatusLabel statusLabelSourceType;
         System.Windows.Forms.LinkLabel aboutLinkLabel;
         System.Windows.Forms.Button buttonHotfixBrowse;
         System.Windows.Forms.Label labelHotfixes;
