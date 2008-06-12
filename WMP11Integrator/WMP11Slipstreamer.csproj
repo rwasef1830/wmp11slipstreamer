@@ -194,6 +194,11 @@
     </Compile>
     <Compile Include="Backend\Hacks.cs" />
     <Compile Include="Backend\HelperFunctions.cs" />
+    <Compile Include="Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\AboutForm\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,10 +231,10 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Backend\HotfixParserEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Messages.resources" />
-    <EmbeddedResource Include="UI\AboutForm\AboutBox.resx">
+    <EmbeddedResource Include="Messages.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ErrorForm\ErrorForm.resx">
       <SubType>Designer</SubType>
@@ -276,7 +281,6 @@
     <None Include="WMP11Slipstreamer.exe.manifest" />
     <None Include="WMP11SlipstreamerKey.snk" />
     <None Include="Data\embed\KB913800.cab" />
-    <Content Include="Messages.txt" />
     <Content Include="wmp.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -289,6 +293,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>postbuild.cmd "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
-    <PreBuildEvent>resgen.exe $(ProjectDir)Messages.txt</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

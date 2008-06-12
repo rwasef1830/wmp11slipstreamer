@@ -14,12 +14,6 @@ namespace WMP11Slipstreamer
         public const string LocalizerKey = "3270d2f650dacfe8c48f2f66ce3179d7";
         public const ulong UniqueTag = 0xFC010203040506CF;
 
-        public const string cancelMessage
-            = "Integration has been cancelled by the user. "
-            + "The source has not been modified.";
-        public const string successMessage
-            = "Integration completed successfully.";
-
         // Website URL
         public const string website = "http://www.boooggy.org/slipstreamer/";
 

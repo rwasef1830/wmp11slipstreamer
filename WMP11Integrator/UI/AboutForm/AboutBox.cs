@@ -12,8 +12,8 @@ namespace WMP11Slipstreamer
         public AboutBox()
         {
             InitializeComponent();
-            this.labelVersion.Text = String.Format("Version {0}"
-                , Globals.Version);
+            this.labelVersion.Text = String.Format("Version {0}", Globals.Version);
+            this.labelTranslator.Text += " " + Messages.LocalizerName;
         }
 
         #region Assembly Attribute Accessors

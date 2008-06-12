@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LocalizerName" xml:space="preserve">
+    <value>n7Epsilon</value>
+  </data>
+  <data name="LocalizerCulture" xml:space="preserve">
+    <value>en-US</value>
+  </data>
+  <data name="LocalizerKey" xml:space="preserve">
+    <value>3270d2f650dacfe8c48f2f66ce3179d7</value>
+  </data>
+  <data name="uxRightToLeft" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="uxGroupBoxBasicOpts" xml:space="preserve">
+    <value>Basic Options</value>
+  </data>
+  <data name="uxLabelChooseType" xml:space="preserve">
+    <value>Choose WMP11 output type:</value>
+  </data>
+  <data name="uxTypeVanilla" xml:space="preserve">
+    <value>Vanilla (same as original installer with WGA)</value>
+  </data>
+  <data name="uxTypeTweaked" xml:space="preserve">
+    <value>Tweaked (with registry tweaks and no WGA)</value>
+  </data>
+  <data name="uxLabelEnterWMPRedistPath" xml:space="preserve">
+    <value>Enter the full path to the Media Player 11 installation file or use the "..." button to locate it:</value>
+  </data>
+  <data name="uxLinkWMPRedist" xml:space="preserve">
+    <value>If you don't have the installation file, click here to download it (Genuine Windows required)</value>
+  </data>
+  <data name="uxLabelEnterSrcPath" xml:space="preserve">
+    <value>Enter the path to the Windows source to integrate WMP11 in (must contain a "i386" folder):</value>
+  </data>
+  <data name="uxLabelEnterHotfixLine" xml:space="preserve">
+    <value>Use the "..." button to select WMP11 hotfixes to integrate:</value>
+  </data>
+  <data name="uxGroupBoxAdvOpts" xml:space="preserve">
+    <value>Advanced Options</value>
+  </data>
+  <data name="uxCheckboxCustomIcon" xml:space="preserve">
+    <value>Use a custom icon for wmplayer.exe</value>
+  </data>
+  <data name="uxLabelPreview" xml:space="preserve">
+    <value>Preview:</value>
+  </data>
+  <data name="uxCheckboxNoCats" xml:space="preserve">
+    <value>Do not add security catalogs (for those who disable Windows File Protection)</value>
+  </data>
+  <data name="uxLabelDefaultOp" xml:space="preserve">
+    <value>No Operations</value>
+  </data>
+  <data name="uxStatusBarDefaultText" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="uxButtonIntegrate" xml:space="preserve">
+    <value>&amp;Integrate</value>
+  </data>
+  <data name="uxButtonExit" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="uxButtonCancel" xml:space="preserve">
+    <value>&amp;Cancel</value>
+  </data>
+  <data name="statInit" xml:space="preserve">
+    <value>Initialising...</value>
+  </data>
+  <data name="statDetectingSource" xml:space="preserve">
+    <value>Detecting source type...</value>
+  </data>
+  <data name="statExtractWmpRedist" xml:space="preserve">
+    <value>Extracting Windows Media Player 11 installer...</value>
+  </data>
+  <data name="statPrepareEdit" xml:space="preserve">
+    <value>Preparing to edit files...</value>
+  </data>
+  <data name="statFixingTxtsetupDirs" xml:space="preserve">
+    <value>Fixing [txtsetup_dirs] section...</value>
+  </data>
+  <data name="statEditing" xml:space="preserve">
+    <value>Editing "{0}"...</value>
+  </data>
+  <data name="statPreparingFixes" xml:space="preserve">
+    <value>Preparing fixes...</value>
+  </data>
+  <data name="statExtractApplyHotfix" xml:space="preserve">
+    <value>Extracting and applying hotfixes...</value>
+  </data>
+  <data name="statSavingInis" xml:space="preserve">
+    <value>Saving edited files...</value>
+  </data>
+  <data name="statCompressFile" xml:space="preserve">
+    <value>Compressing "{0}"...</value>
+  </data>
+  <data name="statApplyCustIcon" xml:space="preserve">
+    <value>Applying custom icon...</value>
+  </data>
+  <data name="statGenFileList" xml:space="preserve">
+    <value>Generating file list...</value>
+  </data>
+  <data name="statCreateCab" xml:space="preserve">
+    <value>Creating "{0}"...</value>
+  </data>
+  <data name="statCompressAdded" xml:space="preserve">
+    <value>Compressing added files...</value>
+  </data>
+  <data name="statDetOverwrite" xml:space="preserve">
+    <value>Determining overwriting files...</value>
+  </data>
+  <data name="statCompressOverwrite" xml:space="preserve">
+    <value>Compressing overwriting files...</value>
+  </data>
+  <data name="statCompressCats" xml:space="preserve">
+    <value>Compressing security catalogs...</value>
+  </data>
+  <data name="statReplaceInDriverCab" xml:space="preserve">
+    <value>Replacing files in driver cabinet...</value>
+  </data>
+  <data name="statCompressEdited" xml:space="preserve">
+    <value>Compressing edited files...</value>
+  </data>
+  <data name="statMergeFolders" xml:space="preserve">
+    <value>Merging folders...</value>
+  </data>
+  <data name="statCleanTemp" xml:space="preserve">
+    <value>Cleaning up temporary folders...</value>
+  </data>
+  <data name="dlgTitle_WmpRedistNotFound" xml:space="preserve">
+    <value>Unable to find WMP11 installer</value>
+  </data>
+  <data name="dlgText_WmpRedistNotFound" xml:space="preserve">
+    <value>Windows Media Player 11 installer could not be found. Please locate it and try again.</value>
+  </data>
+  <data name="dlgTitle_Wmp64FilesMissing" xml:space="preserve">
+    <value>Cannot find old WMP components</value>
+  </data>
+  <data name="dlgText_Wmp64FilesMissing" xml:space="preserve">
+    <value>Essential WMP9 and WMP6.4 files are missing from the specified source.
+
+Windows Media Player 11 cannot be integrated into a source from which these two components have been removed with nLite or similar source modification utilities.</value>
+  </data>
+  <data name="dlgTitle_InvalidHotfixLine" xml:space="preserve">
+    <value>Invalid Hotfix Line</value>
+  </data>
+  <data name="dlgText_InvalidHotfixLine" xml:space="preserve">
+    <value>Invalid hotfix line specified or some hotfixes in the list do not exist.
+
+Please reselect hotfixes to integrate and try again.</value>
+  </data>
+  <data name="dlgError_Header" xml:space="preserve">
+    <value>An unhandled exception has occurred in the worker thread.
+Please copy the following diagnostic information and post a bug report.</value>
+  </data>
+  <data name="dlgError_Footer" xml:space="preserve">
+    <value>Click on "Close" to return to the application.</value>
+  </data>
+  <data name="dlgError_ButtonClose" xml:space="preserve">
+    <value>&amp;Close</value>
+  </data>
+  <data name="dlgIntegError_Header" xml:space="preserve">
+    <value>An error occurred during integration:</value>
+  </data>
+  <data name="dlgIntegError_Title" xml:space="preserve">
+    <value>Integration Error</value>
+  </data>
+  <data name="uxLinkAbout" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="dlgAbout_ButtonOK" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="dlgAbout_GotoSite" xml:space="preserve">
+    <value>Click here to go to the website</value>
+  </data>
+  <data name="dlgText_Cancelled" xml:space="preserve">
+    <value>Integration cancelled by user. Source remains unchanged.</value>
+  </data>
+  <data name="dlgText_Success" xml:space="preserve">
+    <value>Integration completed successfully.</value>
+  </data>
+  <data name="dlgTitle_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="dlgTitle_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="dlgAbout_uxLabelTranslated" xml:space="preserve">
+    <value>Current translation by:</value>
+  </data>
+  <data name="dlgAbout_InfoText" xml:space="preserve">
+    <value>This program will slipstream Windows Media Player 11 into your Windows installation source.
+
+Next time you install Windows, Windows Media Player 11 will already be installed, waiting for you to experience the best in digital entertainment.
+
+Note: This program is not developed, maintained, endorsed or supported by Microsoft Corporation in any way. 
+
+Do not complain to Microsoft about any problems arising from the use of this program. Use at your own risk.</value>
+  </data>
+  <data name="dlgPicker_AllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="dlgPicker_ExeFiles" xml:space="preserve">
+    <value>Executable files</value>
+  </data>
+  <data name="dlgPickHotfixes_Title" xml:space="preserve">
+    <value>Select hotfix(es) to integrate into WMP11:</value>
+  </data>
+  <data name="dlgSrcPicker_Header" xml:space="preserve">
+    <value>Choose the Microsoft® Windows™ source to modify (must contain an "i386" folder):</value>
+  </data>
+  <data name="dlgWMPRedistPicker_Header" xml:space="preserve">
+    <value>Locate WMP11 installer (eg: wmp11-windowsxp-x86-enu.exe):</value>
+  </data>
+  <data name="statWaitCancel" xml:space="preserve">
+    <value>Waiting for current operation to complete...</value>
+  </data>
+  <data name="dlgIconPicker_Title" xml:space="preserve">
+    <value>Locate custom icon</value>
+  </data>
+  <data name="dlgPicker_IconFiles" xml:space="preserve">
+    <value>Icon files</value>
+  </data>
+  <data name="dlgIconError_Text" xml:space="preserve">
+    <value>The specified file does not seem to be a valid icon.</value>
+  </data>
+  <data name="dlgIconError_Title" xml:space="preserve">
+    <value>Error loading icon</value>
+  </data>
+</root>

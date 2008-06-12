@@ -12,6 +12,8 @@ namespace WMP11Slipstreamer
 {
     static class EntryPoint
     {
+        static int errorlevel = 0;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -55,59 +57,53 @@ namespace WMP11Slipstreamer
                 argParser.Parse(
                     0,
                     9,
+                    0,
+                    0,
                     new string[] { "nocats", "slipstream", "closeonsuccess" },
                     new string[] { "installer", "winsource", "customicon", "output", 
                         "hotfix", "customiconpath" },
-                    0,
                     false
                 );
 
-                string installer;
-                argParser.ParamsTable.TryGetValue("installer", out installer);
-                string winsource;
-                argParser.ParamsTable.TryGetValue("winsource", out winsource);
-                string output;
-                argParser.ParamsTable.TryGetValue("output", out output);
-                string hotfixes;
-                argParser.ParamsTable.TryGetValue("hotfix", out hotfixes);
-                string customicon;
-                argParser.ParamsTable.TryGetValue("customicon", out customicon);
-                bool nocats = argParser.ParamsTable.ContainsKey("nocats");
-                bool slipstream = argParser.ParamsTable.ContainsKey("slipstream");
-                bool closeonsuccess =
-                    argParser.ParamsTable.ContainsKey("closeonsuccess") && slipstream;
-                string customiconpath;
-                argParser.ParamsTable.TryGetValue("customiconpath", out customiconpath);
+                string installer = argParser.GetValue("installer");
+                string winsource = argParser.GetValue("winsource");
+                string output = argParser.GetValue("output");
+                string hotfixes = argParser.GetValue("hotfix");
+                string customicon = argParser.GetValue("customicon");
+                bool nocats = argParser.IsSpecified("nocats");
+                bool slipstream = argParser.IsSpecified("slipstream");
+                bool closeonsuccess = argParser.IsSpecified("closeonsuccess") && slipstream;
+                string customiconpath = argParser.GetValue("customiconpath");
 
                 Application.Run(new MainForm(installer, winsource, hotfixes,
                     output, customicon, nocats, slipstream, closeonsuccess, 
                     customiconpath));
                 return errorlevel;
             }
-            catch (ArgumentException Ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(Ex.Message
+                MessageBox.Show(ex.Message
                     + Environment.NewLine + Environment.NewLine
                     + "Click \"OK\" to view usage information."
                     , "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 string text = Properties.Resources.UsageInformation;
-                MessageBox.Show(text, "Usage Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(text, "Usage Information", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return errorlevel;
             }
             catch (ShowUsageException)
             {
                 string text = Properties.Resources.UsageInformation;
-                MessageBox.Show(text, "Usage Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(text, "Usage Information", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return errorlevel;
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(Ex.ToString(), "Unhandled Exception in UI Thread");
+                MessageBox.Show(ex.ToString(), "Unhandled Exception in UI Thread");
                 errorlevel = 1;
                 return errorlevel;
             }
         }
-
-        internal static int errorlevel = 0;
     }
 }
