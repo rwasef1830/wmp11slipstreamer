@@ -121,10 +121,10 @@ namespace WMP11Slipstreamer
             finally
             {
                 // Return to first state
-                this.CrossThreadControlVisibility(this.progressBarCurrentItem, false);
-                this.CrossThreadProgressUpdate(this.progressBarTotalProgress, 0, 1);
-                this.CrossThreadControlEnabled(this.buttonCancel, true);
-                this.CrossThreadControlText(this.statusLabel, String.Empty);
+                this.CrossThreadControlVisibility(this.uxProgressBarCurrent, false);
+                this.CrossThreadProgressUpdate(this.uxProgressBarOverall, 0, 1);
+                this.CrossThreadControlEnabled(this.uxButtonCancel, true);
+                this.CrossThreadControlText(this.uxLabelOperation, String.Empty);
             }
         }
 
@@ -136,7 +136,7 @@ namespace WMP11Slipstreamer
                     this._workerInCriticalOperation,
                     this._backend.WorkingDirectory,
                     this._backend.OsVersion,
-                    this.textBoxHotfixList.Text));
+                    this.uxTextBoxHotfixLine.Text));
             }
             finally
             {
@@ -147,25 +147,25 @@ namespace WMP11Slipstreamer
         #region Backend event handlers
         void _backend_OnAnnounceOperation(string announceString)
         {
-            this.CrossThreadControlText(this.statusLabel, announceString);
+            this.CrossThreadControlText(this.uxLabelOperation, announceString);
         }
 
         void _backend_OnSourceDetected(string obj)
         {
             this.Invoke(new Action<string>(delegate(string message)
             {
-                this.statusLabelSourceType.Text = "Source Type: " + message;
+                this.uxStatusLabelSourceType.Text = "Source Type: " + message;
             }), obj);
         }
 
         void _backend_OnCurrentProgressUpdate(int val, int max)
         {
-            this.CrossThreadProgressBarHandler(this.progressBarCurrentItem, val, max);
+            this.CrossThreadProgressBarHandler(this.uxProgressBarCurrent, val, max);
         }
 
         void _backend_OnGlobalProgressUpdate(int val, int max)
         {
-            this.CrossThreadProgressBarHandler(this.progressBarTotalProgress, val, max);
+            this.CrossThreadProgressBarHandler(this.uxProgressBarOverall, val, max);
         }
 
         void CrossThreadProgressBarHandler(ProgressBar progressBar, int val, int max)

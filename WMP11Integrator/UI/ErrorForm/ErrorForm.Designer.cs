@@ -42,8 +42,7 @@ namespace WMP11Slipstreamer
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(441, 34);
             this.label1.TabIndex = 0;
-            this.label1.Text = "An unhandled exception has occurred in the worker thread.\r\nPlease copy the follow" +
-                "ing diagnostic information and post a bug report.";
+            this.label1.Text = Messages.dlgError_Header;
             // 
             // errorLogBox
             // 
@@ -63,7 +62,7 @@ namespace WMP11Slipstreamer
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 29);
             this.buttonClose.TabIndex = 1;
-            this.buttonClose.Text = "&Close";
+            this.buttonClose.Text = Messages.dlgError_ButtonClose;
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
@@ -74,7 +73,7 @@ namespace WMP11Slipstreamer
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(275, 17);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Click on \"Close\" to return to the application.";
+            this.label2.Text = Messages.dlgError_Footer;
             // 
             // ErrorForm
             // 
