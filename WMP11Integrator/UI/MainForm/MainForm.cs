@@ -27,18 +27,14 @@ namespace WMP11Slipstreamer
             string output, string customicon, bool nocats, bool slipstream, 
             bool close, string customIconPath)
         {
-            InitializeComponent();
-            GetControlMessages();
-
-            // Initialise the buffer
+        	// Initialise the buffer
             _pathBuffer = new StringBuilder(FileSystem.MaximumPath);
+        	
+            InitializeComponent();
 
-            SuspendLayout();
-            uxComboBoxCustomIcon.SelectedIndex = 0;
-            uxComboType.SelectedIndex = 0;
-            Text += " v" + Globals.Version;
+            SuspendLayout();            
             int readiness = ProcessParameters(installer, winsource, hotfixes, 
-                output, customicon, nocats, slipstream, customIconPath);
+				output, customicon, nocats, slipstream, customIconPath);
             ResumeLayout();
 
             if (slipstream)
@@ -46,10 +42,35 @@ namespace WMP11Slipstreamer
                 if (readiness == 4)
                 {
                     _immediateLauch = true;
-                    if (close)
-                        _closeOnSuccess = close;
+                    _closeOnSuccess = close;
                 }
             }
+        }
+        
+        public void GetControlMessages()
+        {
+            this.RightToLeft = (Messages.uxRightToLeft == bool.TrueString) ?
+                System.Windows.Forms.RightToLeft.Yes : System.Windows.Forms.RightToLeft.No;
+            this.RightToLeftLayout = Messages.uxRightToLeft == bool.TrueString;
+            this.uxGroupBoxBasicOpts.Text = Messages.uxGroupBoxBasicOpts;
+            this.uxGroupBoxAdvOpts.Text = Messages.uxGroupBoxAdvOpts;
+            this.uxLabelChooseType.Text = Messages.uxLabelChooseType;
+            this.uxLinkAbout.Text = Messages.uxLinkAbout;
+            this.uxLabelEnterWmpRedist.Text = Messages.uxLabelEnterWMPRedistPath;
+            this.uxLinkDownloadWmpRedist.Text = Messages.uxLinkWMPRedist;
+            this.uxLabelEnterWinSrc.Text = Messages.uxLabelEnterSrcPath;
+            this.uxLabelEnterHotfixLine.Text = Messages.uxLabelEnterHotfixLine;
+            this.uxCheckBoxCustomIcon.Text = Messages.uxCheckboxCustomIcon;
+            this.uxLabelPreview.Text = Messages.uxLabelPreview;
+            this.uxCheckBoxNoCats.Text = Messages.uxCheckboxNoCats;
+            this.uxLabelOperation.Text = Messages.uxLabelDefaultOp;
+            this.uxStatusLabelSourceType.Text = Messages.uxStatusBarDefaultText;
+            this.uxButtonIntegrate.Text = Messages.uxButtonIntegrate;
+            this.uxButtonCancel.Text = Messages.uxButtonCancel;
+            
+            this.uxComboType.Items.AddRange(new object[] {
+                Messages.uxTypeVanilla, Messages.uxTypeTweaked
+            });
         }
 
         int ProcessParameters(string installer, string winsource, 
@@ -280,7 +301,7 @@ namespace WMP11Slipstreamer
             uxButtonIntegrate.Enabled = _wmp11PathIsReady && _winSrcPathIsReady;
         }
 
-        bool CheckEssentialFiles(string sFolder)
+        bool CheckEssentialFiles(string sourceFolder)
         {
             // Check for essential files
             string[] essentialFiles = new string[] 
@@ -288,15 +309,15 @@ namespace WMP11Slipstreamer
 
             foreach (string filepath in essentialFiles)
             {
-                if (!File.Exists(this.CreatePathString(sFolder, "i386", filepath))
-                    && !File.Exists(this.CreatePathString(sFolder, "i386", 
+                if (!File.Exists(this.CreatePathString(sourceFolder, "i386", filepath))
+                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
                     CM.GetCompressedFileName(filepath)))
-                    && !File.Exists(this.CreatePathString(sFolder, "amd64", filepath))
-                    && !File.Exists(this.CreatePathString(sFolder, "amd64",
+                    && !File.Exists(this.CreatePathString(sourceFolder, "amd64", filepath))
+                    && !File.Exists(this.CreatePathString(sourceFolder, "amd64",
                     CM.GetCompressedFileName(filepath)))
-                    && !File.Exists(this.CreatePathString(sFolder, "i386", 
+                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
                     "w" + filepath))
-                    && !File.Exists(this.CreatePathString(sFolder, "i386", 
+                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
                     "w" + CM.GetCompressedFileName(filepath))))
                 {
                     return false;

@@ -47,7 +47,11 @@ namespace WMP11Slipstreamer
 
         void MainForm_Load(object sender, EventArgs e)
         {
-
+        	GetControlMessages();
+        	
+			this.uxComboBoxCustomIcon.SelectedIndex = 0;
+            this.uxComboType.SelectedIndex = 0;
+            this.Text += " v" + Globals.Version;
         }
 
         void MainForm_Shown(object sender, EventArgs e)
