@@ -1,3 +1,4 @@
+#region Using statements
 using System;
 using System.Drawing;
 using System.Text;
@@ -9,6 +10,7 @@ using Epsilon.IO;
 using Epsilon.Win32.Resources;
 using Epsilon.Win32;
 using Epsilon.DebugServices;
+#endregion
 
 namespace WMP11Slipstreamer
 {
@@ -290,35 +292,33 @@ namespace WMP11Slipstreamer
             return readiness;
         }
 
-        bool SourceMinimumValid(string winsource)
+        bool SourceMinimumValid(string sourceFolder)
         {
-            return File.Exists(this.CreatePathString(winsource, "i386", "LAYOUT.INF"))
-                || File.Exists(this.CreatePathString(winsource, "amd64", "LAYOUT.INF"));
+            return this.CheckEssentialFiles(sourceFolder, "LAYOUT.INF", 
+				"TXTSETUP.SIF", "DOSNET.INF", "SYSOC.INF");
         }
 
         void SyncUI()
         {
             uxButtonIntegrate.Enabled = _wmp11PathIsReady && _winSrcPathIsReady;
         }
-
-        bool CheckEssentialFiles(string sourceFolder)
+        
+        bool CheckEssentialWMPFiles(string sourceFolder)
         {
-            // Check for essential files
-            string[] essentialFiles = new string[] 
-                { "wmp.inf", "wmplayer.exe", "mplayer2.exe" };
+        	// Check for essential files
+            return this.CheckEssentialFiles(sourceFolder, "wmp.inf", "wmplayer.exe", "mplayer2.exe");
+        }
 
-            foreach (string filepath in essentialFiles)
+        bool CheckEssentialFiles(string sourceFolder, params string[] essentialFiles)
+        {
+        	string amd64Path = this.CreatePathString(sourceFolder, "amd64");
+        	string i386Path = this.CreatePathString(sourceFolder, "i386");
+
+            foreach (string file in essentialFiles)
             {
-                if (!File.Exists(this.CreatePathString(sourceFolder, "i386", filepath))
-                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
-                    CM.GetCompressedFileName(filepath)))
-                    && !File.Exists(this.CreatePathString(sourceFolder, "amd64", filepath))
-                    && !File.Exists(this.CreatePathString(sourceFolder, "amd64",
-                    CM.GetCompressedFileName(filepath)))
-                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
-                    "w" + filepath))
-                    && !File.Exists(this.CreatePathString(sourceFolder, "i386", 
-                    "w" + CM.GetCompressedFileName(filepath))))
+            	if (!Backend.FileExistsInSourceFolder(this._pathBuffer, file, i386Path, true) 
+            	    && !Backend.FileExistsInSourceFolder(this._pathBuffer, "w" + file, i386Path, true)
+            	    && !Backend.FileExistsInSourceFolder(this._pathBuffer, file, amd64Path, true))
                 {
                     return false;
                 }
@@ -340,7 +340,7 @@ namespace WMP11Slipstreamer
             }
             else
             {
-                if (!CheckEssentialFiles(uxTextBoxWinSrc.Text))
+                if (!CheckEssentialWMPFiles(uxTextBoxWinSrc.Text))
                 {
                     MessageBox.Show(Messages.dlgText_Wmp64FilesMissing,
                         Messages.dlgTitle_Wmp64FilesMissing, MessageBoxButtons.OK,

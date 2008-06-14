@@ -38,8 +38,8 @@ namespace WMP11Slipstreamer
             string[] kbFiles = new string[] {
                 "acadproc.dll", "apph_sp.sdb", "apphelp.sdb", "sysmain.sdb"
             };
-            bool allFourExist = this.FilesExistInI386(kbFiles, 0);
-            bool onlyThreeExist = this.FilesExistInI386(kbFiles, 1);
+            bool allFourExist = this.FilesExistInArch(kbFiles, 0);
+            bool onlyThreeExist = this.FilesExistInArch(kbFiles, 1);
 
             KeyValuePair<string, string> acadprocTxtPair =
                 new KeyValuePair<string, string>("acadproc.dll", "100,,,,,,,60,0,0");

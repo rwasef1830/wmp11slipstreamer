@@ -64,6 +64,10 @@ namespace WMP11Slipstreamer
             overrides = new IniParser.SectionOverrides(0, IniParser.QuotePolicy.On);
             parser.SetSectionOutputOverrides("Keyboard Layout", overrides);
 
+            // Fix for bug on Hungarian XP: http://boooggy.org/forum/viewtopic.php?p=67#p67
+            overrides = new IniParser.SectionOverrides(3);
+            parser.SetSectionOutputOverrides("Mouse", overrides);
+
             parser.EnableLastValueQuotes = true;
         }
     }
