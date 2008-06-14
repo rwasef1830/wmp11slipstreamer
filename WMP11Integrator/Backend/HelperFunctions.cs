@@ -25,7 +25,7 @@ namespace WMP11Slipstreamer
         }
 
         /// <summary>
-        /// Copy or expand file from i386Directory to the destination else
+        /// Copy or expand file from the arch directory to the destination else
         /// throw FileNotFoundException if file and compressed cab both not exist.
         /// </summary>
         /// <param name="filename">filename to copy or expand if compressed 
@@ -68,24 +68,45 @@ namespace WMP11Slipstreamer
                         this._archFilesDirectory, destinationFolder), filename);
             }
         }
-
-        bool FileExistsInI386(string file)
+        
+        bool FileExistsInArch(string file)
         {
-            return this.FilesExistInI386(new string[] { file }, 0);
+        	return this.FileExistsInArch(file, true);
         }
 
-        bool FilesExistInI386(string[] kbFiles, int startAt)
+        bool FileExistsInArch(string file, bool checkCompressed)
         {
-            bool allExist = true;
-            for (int i = startAt; i < kbFiles.Length && allExist; i++)
+            return this.FilesExistInArch(new string[] { file }, 0, checkCompressed);
+        }
+        
+        bool FilesExistInArch(string[] kbFiles, int startAt)
+        {
+        	return this.FilesExistInArch(kbFiles, startAt, true);
+        }
+
+        bool FilesExistInArch(string[] kbFiles, int startAt, bool checkCompressed)
+        {
+            for (int i = startAt; i < kbFiles.Length; i++)
             {
-                string i386name = this.CombinePathComponents(
-                    this._archFilesDirectory, kbFiles[i]);
-                string i386compname = CM.GetCompressedFileName(i386name);
-                allExist =
-                    (File.Exists(i386name) || File.Exists(i386compname)) && allExist;
+            	if (!FileExistsInSourceFolder(this._pathBuilder, kbFiles[i], 
+            	                              this._archFilesDirectory, checkCompressed)) 
+            	{
+            		return false;
+            	}
             }
-            return allExist;
+            return true;
+        }
+        
+        public static bool FileExistsInSourceFolder(StringBuilder buffer, 
+			string fileName, string sourceFolder, bool checkCompressed)
+        {
+        	string archPath = FileSystem.CreatePathString(buffer, sourceFolder, fileName);
+        	string archPathCompressed = CM.GetCompressedFileName(archPath);
+        	
+        	bool found = File.Exists(archPath);
+        	if (checkCompressed) found |= File.Exists(archPathCompressed);
+        	
+        	return found;
         }
 
         // Path construction StringBuilder (not thread-safe !)

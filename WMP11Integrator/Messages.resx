@@ -195,7 +195,7 @@
   <data name="statFixingTxtsetupDirs" xml:space="preserve">
     <value>Fixing [txtsetup_dirs] section...</value>
   </data>
-  <data name="statEditing" xml:space="preserve">
+  <data name="statEditFile" xml:space="preserve">
     <value>Editing "{0}"...</value>
   </data>
   <data name="statPreparingFixes" xml:space="preserve">
@@ -343,5 +343,48 @@ Do not complain to Microsoft about any problems arising from the use of this pro
   </data>
   <data name="dlgIconError_Title" xml:space="preserve">
     <value>Error loading icon</value>
+  </data>
+  <data name="statExtractFile" xml:space="preserve">
+    <value>Extracting "{0}"...</value>
+  </data>
+  <data name="statReadFiles" xml:space="preserve">
+    <value>Reading setup files...</value>
+  </data>
+  <data name="statReadCoreInfs" xml:space="preserve">
+    <value>Reading core information files...</value>
+  </data>
+  <data name="errSrcTypeDetectFail" xml:space="preserve">
+    <value>Failed to detect the source info for this installation source. Unable to select correct fileset.</value>
+  </data>
+  <data name="errWmpRedistArchMismatch" xml:space="preserve">
+    <value>This version of the Windows Media Player 11 installer is not compatible with your OS installation source.
+Make sure that both are 32-bit or x64 versions.</value>
+  </data>
+  <data name="errWmpRedistNoControlXml" xml:space="preserve">
+    <value>Invalid WMP11 installer selected. Unable to locate control.xml to verify destination source type.</value>
+  </data>
+  <data name="errWmpRedistWrongVer" xml:space="preserve">
+    <value>This version of the WMP11 installer is not designed for this installation source.
+
+Current WMP11 installer is designed for: Windows v{0} {1}
+Current source: Windows v{2} {3}</value>
+  </data>
+  <data name="errControlXmlInvalid" xml:space="preserve">
+    <value>"{0}" does not have the expected elements. Unable to verify compatibility.</value>
+  </data>
+  <data name="errNoI386RefInX64Src" xml:space="preserve">
+    <value>Cannot find the index of the 32-bit "i386" folder. This x64 source is corrupt.</value>
+  </data>
+  <data name="errInvalidSource" xml:space="preserve">
+    <value>"{0}" does not seem to contain a valid Windows™ source.</value>
+  </data>
+  <data name="errInvalidX32Src" xml:space="preserve">
+    <value>"{0}" does not seem to contain a valid 32-bit Windows™ source.</value>
+  </data>
+  <data name="errInvalidX64Src" xml:space="preserve">
+    <value>"{0}" does not seem to contain a valid x64 Windows™ source.</value>
+  </data>
+  <data name="errMissingSetupFileFromArch" xml:space="preserve">
+    <value>The essential setup file "{0}" is missing from this source. This source is corrupt.</value>
   </data>
 </root>

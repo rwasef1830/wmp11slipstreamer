@@ -324,6 +324,100 @@ namespace WMP11Slipstreamer {
 		}
 		
 		/// <summary>
+		///   Looks up a localized string similar to &quot;{0}&quot; does not have the expected elements. Unable to verify compatibility..
+		/// </summary>
+		internal static string errControlXmlInvalid {
+			get {
+				return ResourceManager.GetString("errControlXmlInvalid", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid Windows™ source..
+		/// </summary>
+		internal static string errInvalidSource {
+			get {
+				return ResourceManager.GetString("errInvalidSource", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid 32-bit Windows™ source..
+		/// </summary>
+		internal static string errInvalidX32Src {
+			get {
+				return ResourceManager.GetString("errInvalidX32Src", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid x64 Windows™ source..
+		/// </summary>
+		internal static string errInvalidX64Src {
+			get {
+				return ResourceManager.GetString("errInvalidX64Src", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to The essential setup file &quot;{0}&quot; is missing from this source. This source is corrupt..
+		/// </summary>
+		internal static string errMissingSetupFileFromArch {
+			get {
+				return ResourceManager.GetString("errMissingSetupFileFromArch", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Cannot find the index of the 32-bit &quot;i386&quot; folder. This x64 source is corrupt..
+		/// </summary>
+		internal static string errNoI386RefInX64Src {
+			get {
+				return ResourceManager.GetString("errNoI386RefInX64Src", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Failed to detect the source info for this installation source. Unable to select correct fileset..
+		/// </summary>
+		internal static string errSrcTypeDetectFail {
+			get {
+				return ResourceManager.GetString("errSrcTypeDetectFail", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to This version of the Windows Media Player 11 installer is not compatible with your OS installation source.
+		///Make sure that both are 32-bit or x64 versions..
+		/// </summary>
+		internal static string errWmpRedistArchMismatch {
+			get {
+				return ResourceManager.GetString("errWmpRedistArchMismatch", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Invalid WMP11 installer selected. Unable to locate control.xml to verify destination source type..
+		/// </summary>
+		internal static string errWmpRedistNoControlXml {
+			get {
+				return ResourceManager.GetString("errWmpRedistNoControlXml", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to This version of the WMP11 installer is not designed for this installation source.
+		///
+		///Current WMP11 installer is designed for: Windows v{0} {1}
+		///Current source: Windows v{2} {3}.
+		/// </summary>
+		internal static string errWmpRedistWrongVer {
+			get {
+				return ResourceManager.GetString("errWmpRedistWrongVer", resourceCulture);
+			}
+		}
+		
+		/// <summary>
 		///   Looks up a localized string similar to en-US.
 		/// </summary>
 		internal static string LocalizerCulture {
@@ -443,9 +537,9 @@ namespace WMP11Slipstreamer {
 		/// <summary>
 		///   Looks up a localized string similar to Editing &quot;{0}&quot;....
 		/// </summary>
-		internal static string statEditing {
+		internal static string statEditFile {
 			get {
-				return ResourceManager.GetString("statEditing", resourceCulture);
+				return ResourceManager.GetString("statEditFile", resourceCulture);
 			}
 		}
 		
@@ -455,6 +549,15 @@ namespace WMP11Slipstreamer {
 		internal static string statExtractApplyHotfix {
 			get {
 				return ResourceManager.GetString("statExtractApplyHotfix", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Extracting &quot;{0}&quot;....
+		/// </summary>
+		internal static string statExtractFile {
+			get {
+				return ResourceManager.GetString("statExtractFile", resourceCulture);
 			}
 		}
 		
@@ -518,6 +621,24 @@ namespace WMP11Slipstreamer {
 		internal static string statPreparingFixes {
 			get {
 				return ResourceManager.GetString("statPreparingFixes", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Reading core information files....
+		/// </summary>
+		internal static string statReadCoreInfs {
+			get {
+				return ResourceManager.GetString("statReadCoreInfs", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized string similar to Reading setup files....
+		/// </summary>
+		internal static string statReadFiles {
+			get {
+				return ResourceManager.GetString("statReadFiles", resourceCulture);
 			}
 		}
 		

@@ -27,7 +27,7 @@ namespace WMP11Slipstreamer
         internal Backend(BackendParams paramsObject)
         {
             // Initialise fields
-            this.AnnounceOperation("Initialising...");
+            this.AnnounceOperation(Messages.statInit);
 
             this._addonTypeIndex = paramsObject.AddonType;
             this._sourceDirectory = Path.GetFullPath(paramsObject.WinSource);
@@ -97,16 +97,14 @@ namespace WMP11Slipstreamer
 
         void DetectSourceType()
         {
-            this.AnnounceOperation("Detecting source type...");
+            this.AnnounceOperation(Messages.statDetectingSource);
             this._sourceInfo = new WindowsSourceInfo();
 
             string archFolder32 = this.CombinePathComponents(this._sourceDirectory, 
                 "i386");
             string archFolder64 = this.CombinePathComponents(this._sourceDirectory, 
                 "amd64");
-
-            string commonExceptionError
-                = "\"{0}\" does not seem to contain a valid {1}Windows™ source.";
+            
             if (File.Exists(this.CombinePathComponents(archFolder32, "LAYOUT.INF")))
             {
                 PeEditor editor = new PeEditor(this.CombinePathComponents(archFolder32,
@@ -115,8 +113,8 @@ namespace WMP11Slipstreamer
                 {
                     throw new Exceptions.IntegrationException(
                         String.Format(
-                        commonExceptionError,
-                        this._sourceDirectory, "32-bit ")
+                        Messages.errInvalidX32Src,
+                        this._sourceDirectory)
                     );
                 }
                 this._sourceInfo.Arch = TargetArchitecture.x86;
@@ -130,8 +128,8 @@ namespace WMP11Slipstreamer
                 {
                     throw new Exceptions.IntegrationException(
                         String.Format(
-                        commonExceptionError,
-                        this._sourceDirectory, "x64 ")
+                        Messages.errInvalidX64Src,
+                        this._sourceDirectory)
                     );
                 }
                 this._sourceInfo.Arch = TargetArchitecture.x64;
@@ -141,8 +139,8 @@ namespace WMP11Slipstreamer
             {
                 throw new InvalidOperationException(
                     String.Format(
-                    commonExceptionError,
-                    this._sourceDirectory, String.Empty)
+                    Messages.errInvalidSource,
+                    this._sourceDirectory)
                     );
             }
 
@@ -335,7 +333,7 @@ namespace WMP11Slipstreamer
         /// </summary>
         void PrepareForParse()
         {
-            this.AnnounceOperation("Copying setup files to edit...");
+            this.AnnounceOperation(Messages.statReadFiles);
             string[] uncompressedTempFiles = new string[]
             {
                 "TXTSETUP.SIF",
@@ -356,7 +354,7 @@ namespace WMP11Slipstreamer
                     throw new
                         Exceptions.IntegrationException(
                         String.Format(
-                        "The file \"{0}\" is not present in the i386 folder.",
+                        Messages.errMissingSetupFileFromArch,
                         file
                         )
                     );
@@ -375,11 +373,10 @@ namespace WMP11Slipstreamer
                 _sourceInfo.Arch == TargetArchitecture.x64)
             {
                 // Determine which CAB to extract to repack drivers
-                this.AnnounceOperation("Determining driver cabinet filename...");
+                this.AnnounceOperation(Messages.statReplaceInDriverCab);
                 _drvIndexEditor = new IniParser(
                     this.CombinePathComponents(_archFilesDirectory, "DrvIndex.inf"), true
                 );
-                this.AnnounceOperation("Extracting drivers. Please wait...");
 
                 if (this._sourceInfo.Arch == TargetArchitecture.x86)
                 {
@@ -393,8 +390,10 @@ namespace WMP11Slipstreamer
                 {
                     _driverCabFile = "driver.cab";
                 }
-
+                
                 CancelOpportunity();
+                
+                this.AnnounceOperation(String.Format(Messages.statExtractFile, _driverCabFile));
                 Directory.CreateDirectory(_drivercabExtractedDirectory);
 
                 this.ResetCurrentProgress();
@@ -415,7 +414,7 @@ namespace WMP11Slipstreamer
                 this.HideCurrentProgress();
             }
 
-            this.AnnounceOperation("Reading setup files...");
+            this.AnnounceOperation(Messages.statReadFiles);
             _txtsetupSifEditor = new IniParser(
                 this.CombinePathComponents(_workingDirectory, "Txtsetup.Sif"), true
             );
@@ -440,7 +439,7 @@ namespace WMP11Slipstreamer
             CryptoHelp crypto = new CryptoHelp(Globals.UniqueTag);
 
             // Nice message for progress
-            this.AnnounceOperation("Reading parse files...");
+            this.AnnounceOperation(Messages.statReadCoreInfs);
 
             // Create extracted folder
             Directory.CreateDirectory(_extractedDirectory);
@@ -453,8 +452,7 @@ namespace WMP11Slipstreamer
             );
 
             this._entriesCombinedEditor =
-                new IniParser(new StringReader(entriesContent), 
-                true, "entries_wmp11.ini");
+                new IniParser(entriesContent, true, "entries_wmp11.ini");
 
             byte[] repository = null;
             // repository1: entries_combined_wmp11.ini
@@ -467,8 +465,7 @@ namespace WMP11Slipstreamer
             switch (_sourceInfo.SourceVersion)
             {
                 case WindowsType._Unknown:
-                    throw new Exceptions.IntegrationException("Unable to detect"
-                        + " source type. Unable to continue slipstream.");
+                    throw new Exceptions.IntegrationException(Messages.errSrcTypeDetectFail);
 
                 case WindowsType._XP:
                     if (_sourceInfo.Arch == TargetArchitecture.x64)
@@ -553,7 +550,7 @@ namespace WMP11Slipstreamer
         void ExtractWMP11Installer()
         {
             CancelOpportunity();
-            this.AnnounceOperation("Extracting Windows Media Player 11 Installer...");
+            this.AnnounceOperation(Messages.statExtractWmpRedist);
 
             string[] filesToExtract = null;
 
@@ -587,7 +584,7 @@ namespace WMP11Slipstreamer
             this.IncrementCurrentProgress(currProgress);
 
             // Read control.xml and determine if we're on correct installer or not
-            ParseXmlAndVerifyDestinationOs(
+            ParseXmlVerifyOS(
                 this.CombinePathComponents(_extractedDirectory, "control.xml"));
 
             foreach (string file in filesToExtract)
@@ -600,8 +597,7 @@ namespace WMP11Slipstreamer
                     _extractedDirectory);
                 if (!HotfixMatchesArch(_extractedDirectory))
                 {
-                    throw new Exceptions.IntegrationException(
-                        "This version of Windows Media Player 11 installer is not compatible with your OS installation source.\nMake sure that both are 32-bit or x64 versions.");
+                    throw new Exceptions.IntegrationException(Messages.errWmpRedistArchMismatch);
                 }
                 this.IncrementCurrentProgress(currProgress);
             }
@@ -636,13 +632,12 @@ namespace WMP11Slipstreamer
 #endif
         }
 
-        void ParseXmlAndVerifyDestinationOs(string xmlPath)
+        void ParseXmlVerifyOS(string xmlPath)
         {
-            HelperConsole.InfoWriteLine("ParseXmlAndVerifyDestinationOs");
+            HelperConsole.InfoWriteLine("ParseXmlVerifyOS");
             if (!File.Exists(xmlPath))
             {
-                throw new Exceptions.IntegrationException(
-                    "Invalid WMP11 installer selected. Unable to locate control.xml to verify destination source type.");
+                throw new Exceptions.IntegrationException(Messages.errWmpRedistNoControlXml);
             }
             string fileContents = File.ReadAllText(xmlPath);
             XmlDocument document = new XmlDocument();
@@ -684,14 +679,15 @@ namespace WMP11Slipstreamer
                     || !CM.SEqO(arch, osArch, true))
                 {
                     throw new Exceptions.IntegrationException(
-                        String.Format("The specified WMP11 installer is not compatible with the specified destination source.\r\n\r\nCurrent WMP11 installer is designed for: Windows v{0} {1}\r\nCurrent source: Windows v{2} {3}",
-                        osLowerBound + ((osUpperBound == null)? String.Empty : "-" + osUpperBound), arch, osVer, osArch));
+                        String.Format(Messages.errWmpRedistWrongVer,
+                        osLowerBound + ((osUpperBound == null)? String.Empty : "-" + osUpperBound), 
+                        arch, osVer, osArch));
                 }
             }
             else
             {
                 throw new Exceptions.IntegrationException(
-                    String.Format("Unable to read \"{0}\" in the installer to validate target source type.", 
+                    String.Format(Messages.errControlXmlInvalid, 
                     Path.GetFileName(xmlPath)));
             }
         }
@@ -711,7 +707,7 @@ namespace WMP11Slipstreamer
 
         void ParseAndEditFiles()
         {
-            this.AnnounceOperation("Preparing to edit files...");
+            this.AnnounceOperation(Messages.statPrepareEdit);
             string dosnetFilesSection = null;
             string txtsetupFilesSection = null;
             string txtsetupDirSection = null;
@@ -765,7 +761,7 @@ namespace WMP11Slipstreamer
 
             OrderedDictionary<string, List<string>> txtsetupFilesRef
                 = this._entriesCombinedEditor.GetRef(txtsetupFilesSection);
-            this.AnnounceOperation("Editing Txtsetup.sif...");
+            this.AnnounceOperation(String.Format(Messages.statEditFile, "Txtsetup.sif"));
             CancelOpportunity();
 
             // Initialise the file copy dictionaries
@@ -796,9 +792,7 @@ namespace WMP11Slipstreamer
                 }
                 if (this._sdnEntryI386Folder == 0)
                 {
-                    throw new Exceptions.IntegrationException(
-                        "Cannot find index of 32-bit i386 folder. This x64 source"
-                        + " is corrupt.");
+                    throw new Exceptions.IntegrationException(Messages.errNoI386RefInX64Src);
                 }
             }
             
@@ -817,7 +811,7 @@ namespace WMP11Slipstreamer
                 );
             }
 
-            this.AnnounceOperation("Building file list...");
+            this.AnnounceOperation(Messages.statGenFileList);
             foreach (KeyValuePair<string, List<string>> txtPair in txtsetupFilesRef)
             {
                 string shortName = txtPair.Key;
@@ -872,7 +866,7 @@ namespace WMP11Slipstreamer
                 }
             }
 
-            this.AnnounceOperation("Editing Dosnet.inf...");
+            this.AnnounceOperation(String.Format(Messages.statEditFile, "Dosnet.inf"));
             OrderedDictionary<string, List<string>> dosnetRef 
                 = this._entriesCombinedEditor.GetRef(dosnetFilesSection);
             this._dosnetInfEditor.Add(
@@ -881,7 +875,7 @@ namespace WMP11Slipstreamer
                 IniParser.KeyExistsPolicy.Ignore
             );
 
-            this.AnnounceOperation("Editing SysOc.inf...");
+            this.AnnounceOperation(String.Format(Messages.statEditFile, "SysOc.inf"));
             OrderedDictionary<string, List<string>> sysOcRef = 
                 this._entriesCombinedEditor.GetRef("common_sysoc");
 
@@ -909,7 +903,7 @@ namespace WMP11Slipstreamer
 
             if (!this._ignoreCats)
             {
-                this.AnnounceOperation("Editing Svcpack.inf...");
+            	this.AnnounceOperation(String.Format(Messages.statEditFile, "Svcpack.inf"));
 
                 List<string[]> svcpackData = new List<string[]>();
                 if (this._sourceInfo.Arch == TargetArchitecture.x86)
@@ -996,7 +990,7 @@ namespace WMP11Slipstreamer
 
             CancelOpportunity();
 
-            this.AnnounceOperation("Generating file list...");
+            this.AnnounceOperation(Messages.statGenFileList);
             try
             {
                 string wmp11ExtSect
@@ -1195,7 +1189,7 @@ namespace WMP11Slipstreamer
 
             if (txtsetupDirSection != null)
             {
-                this.AnnounceOperation("Fixing [txtsetup_dirs] section...");
+                this.AnnounceOperation(Messages.statFixingTxtsetupDirs);
                 OrderedDictionary<string, List<string>> txtsetupDirsRef 
                     = this._entriesCombinedEditor.GetRef(txtsetupDirSection);
                 renameDestDirDictionary = new Dictionary<int, int>(5);
@@ -1324,14 +1318,14 @@ namespace WMP11Slipstreamer
         void ApplyFixes()
         {
             // Check for DLL versions (msobmain.dll, uxtheme.dll)
-            this.AnnounceOperation("Preparing fixes...");
+            this.AnnounceOperation(Messages.statPreparingFixes);
             string fixesFolder = this.CombinePathComponents(_workingDirectory, "Fixes");
             string tempCompareFolder = this.CombinePathComponents(_workingDirectory, 
                 "FixesCompare");
             string fixesCab = this.CombinePathComponents(fixesFolder, "fixes.cab");
 
             // Apply hotfixes
-            this.AnnounceOperation("Extracting and applying hotfixes...");
+            this.AnnounceOperation(Messages.statExtractApplyHotfix);
 
             // Make the 2 folders
             Directory.CreateDirectory(fixesFolder);
@@ -1575,7 +1569,7 @@ namespace WMP11Slipstreamer
 
         void SaveFiles()
         {
-            this.AnnounceOperation("Saving edited files...");
+            this.AnnounceOperation(Messages.statSavingInis);
             FileSystem.UnsetReadonly(this._wmp11ExtInfEditor.IniFileInfo);
             FileSystem.UnsetReadonly(this._wmp11InfEditor.IniFileInfo);
             FileSystem.UnsetReadonly(this._txtsetupSifEditor.IniFileInfo);
@@ -1595,7 +1589,7 @@ namespace WMP11Slipstreamer
         void CompressFiles()
         {
             // Compress External INF
-            this.AnnounceOperation(String.Format("Compressing \"{0}\"...", 
+            this.AnnounceOperation(String.Format(Messages.statCompressFile, 
                 this._externalInfFilename));
             Archival.NativeCabinetMakeCab(
                 this.CombinePathComponents(
@@ -1607,7 +1601,7 @@ namespace WMP11Slipstreamer
             // Insert the custom icon
             if (this._customIcon != null)
             {
-                this.AnnounceOperation("Applying custom icon...");
+                this.AnnounceOperation(Messages.statApplyCustIcon);
                 ResourceEditor resEdit = new ResourceEditor(
                     this.CombinePathComponents(this._extractedDirectory, "wmplayer.exe"));
                 resEdit.ReplaceMainIcon(this._customIcon);
@@ -1618,7 +1612,7 @@ namespace WMP11Slipstreamer
             }
 
             // Create external CAB
-            this.AnnounceOperation(String.Format("Creating \"{0}\"...", 
+            this.AnnounceOperation(String.Format(Messages.statCreateCab, 
                 this._externalCabFilename));
             string wmp11cabdirectory = this.CombinePathComponents(
                 this._workingDirectory, "wmp11cab");
@@ -1668,7 +1662,7 @@ namespace WMP11Slipstreamer
             this.IncrementGlobalProgress();
 
             // Compress all i386 files
-            this.AnnounceOperation("Compressing added files...");
+            this.AnnounceOperation(Messages.statCompressAdded);
 
             // Hack for wpdshextres.dll.409
             File.Move(this.CombinePathComponents(
@@ -1719,7 +1713,7 @@ namespace WMP11Slipstreamer
             this.IncrementGlobalProgress();
 
             // Locate files that directly overwrite
-            this.AnnounceOperation("Determining overwriting files...");
+            this.AnnounceOperation(Messages.statDetOverwrite);
 
             // HACK Prevent Windows EULA from being overwritten
             FileSystem.Delete(this.CombinePathComponents(
@@ -1784,7 +1778,7 @@ namespace WMP11Slipstreamer
             }
 
             // Compress directly overwriting files
-            this.AnnounceOperation("Compressing overwriting files...");
+            this.AnnounceOperation(Messages.statCompressOverwrite);
             this.ResetCurrentProgress();
             compProgress = new ProgressTracker(filesThatOverwrite.Count);
             foreach (KeyValuePair<int, OverwriteFileBehaviour> 
@@ -1844,7 +1838,7 @@ namespace WMP11Slipstreamer
             // Svcpack stuff
             if (!this._ignoreCats)
             {
-                this.AnnounceOperation("Compressing security catalogs...");
+                this.AnnounceOperation(Messages.statCompressCats);
                 this.ResetCurrentProgress();
                 compProgress = new ProgressTracker(_filesToCompressInSvcpack.Count);
                 string svcpackTempFolder = this.CombinePathComponents(
@@ -1897,7 +1891,7 @@ namespace WMP11Slipstreamer
                 || _sourceInfo.Arch == TargetArchitecture.x64)
             {
                 Debug.Assert(Directory.Exists(_drivercabExtractedDirectory));
-                this.AnnounceOperation("Replacing files in driver cabinet...");
+                this.AnnounceOperation(Messages.statReplaceInDriverCab);
                 List<string[]> filesToCopy = null;
                 if (_sourceInfo.SourceVersion == WindowsType._Server2003
                     && _sourceInfo.Arch == TargetArchitecture.x86)
@@ -1943,9 +1937,7 @@ namespace WMP11Slipstreamer
                         File.Delete(Path.GetTempPath() + fileComponents);
                     }
                 }
-                this.AnnounceOperation(
-                    String.Format(
-                    "Repacking \"{0}\" cabinet. Please wait...",
+                this.AnnounceOperation(String.Format(Messages.statCreateCab,
                     Path.GetFileName(_driverCabFile)));
                 int numberOfFiles
                     = Directory.GetFiles(_drivercabExtractedDirectory).Length;
@@ -1963,7 +1955,7 @@ namespace WMP11Slipstreamer
             }
             this.IncrementGlobalProgress();
 
-            this.AnnounceOperation("Compressing edited files...");
+            this.AnnounceOperation(Messages.statCompressEdited);
             foreach (string file in _possCompArchFile)
             {
                 string compressedFile = CM.GetCompressedFileName(file);
@@ -2190,7 +2182,7 @@ namespace WMP11Slipstreamer
 
         void MergeFolders()
         {
-            this.AnnounceOperation("Merging folders...");
+            this.AnnounceOperation(Messages.statMergeFolders);
             this.BeginCriticalOperation();
             FileSystem.MoveFiles(this._workingDirectory, this._archFilesDirectory, 
                 false);
@@ -2228,7 +2220,7 @@ namespace WMP11Slipstreamer
 
         void CleanUpFolders()
         {
-            this.AnnounceOperation("Cleaning up temporary folders...");
+            this.AnnounceOperation(Messages.statCleanTemp);
             FileSystem.Delete(this._workingDirectory);
             this.EndCriticalOperation();
         }
@@ -2262,10 +2254,10 @@ namespace WMP11Slipstreamer
                     string patchFile = this.CombinePathComponents(
                         tempFolder, entry.Value[0]);
 
-                    // Don't assume that the basis file must always be in the 
-                    // same folder as the patches, will search in that and in 
+                    // Don't assume that the basis file will always be in the 
+                    // same folder as the patches, Search in that and in 
                     // destination as some hotfixes are using files from the 
-                    // destination as a basis for some of the patch (_sfx_*) files.
+                    // destination as a basis for some of their own patches (_sfx_*)
                     string basisFileTemp = this.CombinePathComponents(
                         tempFolder, entry.Value[1]);
                     string basisFileDest = this.CombinePathComponents(
