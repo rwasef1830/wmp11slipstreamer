@@ -22,7 +22,7 @@ namespace WMP11Slipstreamer
         void linkLabelWmp11SourceDownload_LinkClicked(object sender, 
             LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.microsoft.com/windows/windowsmedia/player/download/download.aspx");
+            Process.Start(Globals.wmpUrl);
         }
 
         void buttonHotfixBrowse_Click(object sender, EventArgs e)

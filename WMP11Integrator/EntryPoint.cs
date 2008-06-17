@@ -12,8 +12,6 @@ namespace WMP11Slipstreamer
 {
     static class EntryPoint
     {
-        static int errorlevel = 0;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -78,32 +76,33 @@ namespace WMP11Slipstreamer
                 Application.Run(new MainForm(installer, winsource, hotfixes,
                     output, customicon, nocats, slipstream, closeonsuccess, 
                     customiconpath));
-                return errorlevel;
+                return 0;
             }
-            catch (ArgumentException ex)
+            catch (ArgumentParserException ex)
             {
                 MessageBox.Show(ex.Message
                     + Environment.NewLine + Environment.NewLine
                     + "Click \"OK\" to view usage information."
                     , "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                string text = Properties.Resources.UsageInformation;
-                MessageBox.Show(text, "Usage Information", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return errorlevel;
+                ShowUsageInformation();
+                return 1;
             }
             catch (ShowUsageException)
             {
-                string text = Properties.Resources.UsageInformation;
-                MessageBox.Show(text, "Usage Information", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return errorlevel;
+                ShowUsageInformation();
+                return 1;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Unhandled Exception in UI Thread");
-                errorlevel = 1;
-                return errorlevel;
+                return 2;
             }
+        }
+
+        private static void ShowUsageInformation()
+        {
+            MessageBox.Show(Messages.dlgUsageInfo_Text, Messages.dlgUsageInfo_Title,
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
