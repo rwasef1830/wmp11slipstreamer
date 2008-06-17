@@ -84,7 +84,7 @@ namespace WMP11Slipstreamer
                 Globals.wmp11SlipstreamerKey);
 
             int readiness = 0;
-            if (installer != null)
+            if (!String.IsNullOrEmpty(installer))
             {
                 if (File.Exists(installer))
                 {
@@ -92,23 +92,21 @@ namespace WMP11Slipstreamer
                     readiness++;
                 }
             }
-            else
+            else if (wmp11Key != null && !slipstream)
             {
-                if (wmp11Key != null && !slipstream)
+                string installerFromReg
+                    = wmp11Key.GetValue(Globals.wmp11InstallerValue,
+                    String.Empty).ToString();
+                if (!String.IsNullOrEmpty(installerFromReg))
                 {
-                    string installerFromReg
-                        = wmp11Key.GetValue(Globals.wmp11InstallerValue,
-                        String.Empty).ToString();
-                    if (!String.IsNullOrEmpty(installerFromReg))
+                    if (File.Exists(installerFromReg))
                     {
-                        if (File.Exists(installerFromReg))
-                        {
-                            uxTextBoxWmpRedist.Text = installerFromReg;
-                        }
+                        uxTextBoxWmpRedist.Text = installerFromReg;
                     }
                 }
             }
-            if (winsource != null)
+            
+            if (!String.IsNullOrEmpty(winsource))
             {
                 if (SourceMinimumValid(winsource))
                 {
@@ -116,23 +114,21 @@ namespace WMP11Slipstreamer
                     readiness++;
                 }
             }
-            else
+            else if (wmp11Key != null && !slipstream)
             {
-                if (wmp11Key != null && !slipstream)
+                string sourceFromReg
+                        = wmp11Key.GetValue(Globals.winSourceValue,
+                        String.Empty).ToString();
+                if (!String.IsNullOrEmpty(sourceFromReg))
                 {
-                    string sourceFromReg
-                            = wmp11Key.GetValue(Globals.winSourceValue,
-                            String.Empty).ToString();
-                    if (!String.IsNullOrEmpty(sourceFromReg))
+                    if (SourceMinimumValid(sourceFromReg))
                     {
-                        if (SourceMinimumValid(sourceFromReg))
-                        {
-                            uxTextBoxWinSrc.Text = sourceFromReg;
-                        }
+                        uxTextBoxWinSrc.Text = sourceFromReg;
                     }
                 }
             }
-            if (output != null)
+        
+            if (!String.IsNullOrEmpty(output))
             {
                 if (CM.SEqO(output, "Normal", true))
                     uxComboType.SelectedIndex = 0;
@@ -152,7 +148,8 @@ namespace WMP11Slipstreamer
                     }
                 }
             }
-            if (customicon != null)
+
+            if (!String.IsNullOrEmpty(customicon))
             {
                 if (CM.SEqO(customicon, "Boooggy", true)) 
                 {
@@ -194,73 +191,66 @@ namespace WMP11Slipstreamer
                 else if (readiness > 0)
                     readiness--;
             }
-            else
+            else if (wmp11Key != null && !slipstream)
             {
-                if (wmp11Key != null && !slipstream)
+                int iconIndexFromReg = 0;
+                if (int.TryParse(wmp11Key.GetValue(Globals.whichCustomIconValue, 0).ToString(),
+                    out iconIndexFromReg) && iconIndexFromReg < uxComboBoxCustomIcon.Items.Count
+                    && iconIndexFromReg == 2)
                 {
-                    int iconIndexFromReg;
-                    if (int.TryParse(wmp11Key.GetValue(Globals.whichCustomIconValue,
-                            0).ToString(), out iconIndexFromReg))
+                    try
                     {
-                        if (iconIndexFromReg < uxComboBoxCustomIcon.Items.Count)
+                        byte[] data =
+                            (byte[])wmp11Key.GetValue(
+                            Globals.customIconData, new byte[1]);
+                        if (data.Length > 0)
                         {
-                            if (iconIndexFromReg == 2)
+                            MemoryStream icoStream
+                                = new MemoryStream(data);
+                            if (ResourceEditor.IsValidIcon(icoStream))
                             {
-                                try
-                                {
-                                    byte[] data =
-                                        (byte[])wmp11Key.GetValue(
-                                        Globals.customIconData, new byte[1]);
-                                    if (data.Length > 0)
-                                    {
-                                        MemoryStream icoStream
-                                            = new MemoryStream(data);
-                                        if (ResourceEditor.IsValidIcon(icoStream))
-                                        {
-                                            _customIconRaw 
-                                                = new byte[icoStream.Length];
-                                            icoStream.Read(_customIconRaw, 0,
-                                                _customIconRaw.Length);
-                                            icoStream.Seek(0, SeekOrigin.Begin);
-                                            uxPictureBoxCustomIconPreview.Image
-                                                = new Icon(icoStream).ToBitmap();
-                                            icoStream.Close();
-                                            _noShowCustomIcoDialog = true;
-                                        }
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.Message);
-                                    uxComboBoxCustomIcon.SelectedIndex = 0;
-                                }
+                                _customIconRaw
+                                    = new byte[icoStream.Length];
+                                icoStream.Read(_customIconRaw, 0,
+                                    _customIconRaw.Length);
+                                icoStream.Seek(0, SeekOrigin.Begin);
+                                uxPictureBoxCustomIconPreview.Image
+                                    = new Icon(icoStream).ToBitmap();
+                                icoStream.Close();
+                                _noShowCustomIcoDialog = true;
                             }
-                            uxComboBoxCustomIcon.SelectedIndex
-                                = iconIndexFromReg;
                         }
                     }
-
-                    int useCustomIconFromReg;
-                    if (int.TryParse(wmp11Key.GetValue(Globals.useCustomIconValue,
-                           0).ToString(), out useCustomIconFromReg))
+                    catch (Exception ex)
                     {
-                        switch (useCustomIconFromReg)
-                        {
-                            case 0:
-                                uxCheckBoxCustomIcon.Checked = false;
-                                break;
+                        MessageBox.Show(ex.Message);
+                        uxComboBoxCustomIcon.SelectedIndex = 0;
+                    }
+                }
+                uxComboBoxCustomIcon.SelectedIndex = iconIndexFromReg;
+                
 
-                            case 1:
-                                uxCheckBoxCustomIcon.Checked = true;
-                                break;
+                int useCustomIconFromReg;
+                if (int.TryParse(wmp11Key.GetValue(Globals.useCustomIconValue, 0).ToString(), 
+                    out useCustomIconFromReg))
+                {
+                    switch (useCustomIconFromReg)
+                    {
+                        case 0:
+                            uxCheckBoxCustomIcon.Checked = false;
+                            break;
 
-                            default:
-                                goto case 0;
-                        }
+                        case 1:
+                            uxCheckBoxCustomIcon.Checked = true;
+                            break;
+
+                        default:
+                            goto case 0;
                     }
                 }
             }
-            if (hotfixes != null)
+            
+            if (!String.IsNullOrEmpty(hotfixes))
             {
                 if (HotfixesExist(hotfixes))
                 {
@@ -271,22 +261,20 @@ namespace WMP11Slipstreamer
                     readiness--;
                 }
             }
-            else
+            else if (wmp11Key != null && !slipstream)
             {
-                if (wmp11Key != null && !slipstream)
+                string hotfixLineFromReg
+                        = wmp11Key.GetValue(Globals.hotfixLineValue,
+                        String.Empty).ToString();
+                if (!String.IsNullOrEmpty(hotfixLineFromReg))
                 {
-                    string hotfixLineFromReg
-                            = wmp11Key.GetValue(Globals.hotfixLineValue,
-                            String.Empty).ToString();
-                    if (!String.IsNullOrEmpty(hotfixLineFromReg))
+                    if (HotfixesExist(hotfixLineFromReg))
                     {
-                        if (HotfixesExist(hotfixLineFromReg))
-                        {
-                            uxTextBoxHotfixLine.Text = hotfixLineFromReg;
-                        }
+                        uxTextBoxHotfixLine.Text = hotfixLineFromReg;
                     }
                 }
             }
+            
             if (nocats) uxCheckBoxNoCats.Checked = true;
             readiness++;
             return readiness;
