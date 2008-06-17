@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Resources;
+using System.Reflection;
+
+[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
+[assembly: SatelliteContractVersion("1.0.0.0")]
 
 namespace WMP11Slipstreamer
-{
+{    
     public class Globals
     {
         public static string Version = Application.ProductVersion;
@@ -16,6 +21,10 @@ namespace WMP11Slipstreamer
 
         // Website URL
         public const string website = "http://www.boooggy.org/slipstreamer/";
+
+        // WMP Download URL
+        public const string wmpUrl 
+            = "http://www.microsoft.com/windows/windowsmedia/player/download/download.aspx";
 
         // Registry values
         public const string wmp11SlipstreamerKey = "Software\\WMP11Slipstreamer";

@@ -68,7 +68,7 @@ namespace WMP11Slipstreamer
             this.uxLabelOperation.Text = Messages.uxLabelDefaultOp;
             this.uxStatusLabelSourceType.Text = Messages.uxStatusBarDefaultText;
             this.uxButtonIntegrate.Text = Messages.uxButtonIntegrate;
-            this.uxButtonCancel.Text = Messages.uxButtonCancel;
+            this.uxButtonCancel.Text = Messages.uxButtonExit;
             
             this.uxComboType.Items.AddRange(new object[] {
                 Messages.uxTypeVanilla, Messages.uxTypeTweaked

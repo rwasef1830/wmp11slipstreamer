@@ -20,7 +20,7 @@ namespace WMP11Slipstreamer
                 public IntegrationException(string message,
                     Exception innerException) : base(message, innerException) { }
 
-                public override string Message
+                public string FullMessage
                 {
                     get
                     {
@@ -50,7 +50,7 @@ namespace WMP11Slipstreamer
             public class SourceNotSupportedException : IntegrationException
             {
                 public SourceNotSupportedException(WindowsSourceInfo sourceInfo)
-                    : base("Cannot integrate WMP11 on a windows source of this type.")
+                    : base(Messages.errSourceNotSupported)
                 {
                     base.Data.Add("Version", sourceInfo.SourceVersion);
                     base.Data.Add("Edition", sourceInfo.Edition);

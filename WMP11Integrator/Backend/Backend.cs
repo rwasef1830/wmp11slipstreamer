@@ -1167,7 +1167,7 @@ namespace WMP11Slipstreamer
                     {
                         throw new Exceptions.IntegrationException(
                             string.Format(
-                            "DirId: \"{0}\" is defined more than once in \"{1}\"",
+                            Messages.errDirIdDuplicated,
                             number, this._txtsetupSifEditor.IniFileInfo.Name)
                             );
                     }
@@ -1176,7 +1176,7 @@ namespace WMP11Slipstreamer
                 {
                     throw new Exceptions.IntegrationException(
                         String.Format(
-                        "Invalid key in [WinntDirectories] section in \"{0}\": \"{1}\"",
+                        Messages.errInvalidKeyInWinntDirs,
                         winntDirPair.Key, this._txtsetupSifEditor.IniFileInfo.Name));
                 }
             }
@@ -1386,10 +1386,8 @@ namespace WMP11Slipstreamer
                     if (minUxthemeVer.CompareTo(sourceUxthemeVer) > 0)
                     {
                         this.ShowMessage(
-                            "Please integrate KB908536 after this process is finished,"
-                            + " otherwise the \"Themes\" service will not start after"
-                            + " installing Windows from this source.",
-                            "\"Themes\" service warning", MessageEventType.Warning);
+                            Messages.dlgWarnUxtheme_Text,
+                            Messages.dlgWarnUxtheme_Title, MessageEventType.Warning);
                     }
 
                     FileSystem.Delete(uxthemeComparePath);
@@ -1406,11 +1404,8 @@ namespace WMP11Slipstreamer
                     if (minMsobmainVer.CompareTo(sourceMsobmainVer) > 0)
                     {
                         this.ShowMessage(
-                            "Please integrate KB894871 after this process is finished,"
-                            + " otherwise the OOBE (out-of-box-experience) wizard will"
-                            + " not launch on first boot after installing Windows from"
-                            + " this source.",
-                            "\"Themes\" service warning", MessageEventType.Warning);
+                            Messages.dlgWarnOobe_Text,
+                            Messages.dlgWarnOobe_Title, MessageEventType.Warning);
                     }
 
                     FileSystem.Delete(msobmainComparePath);
@@ -1436,9 +1431,7 @@ namespace WMP11Slipstreamer
                     if (!HotfixMatchesArch(fixesFolder))
                     {
                         throw new Exceptions.IntegrationException(
-                            String.Format("The hotfix you are trying to slipstream ({0}) "
-                            + "is not designed for your target source's CPU architecture.\n"
-                            + "Make sure both are 32-bit or x64 versions.",
+                            String.Format(Messages.errHotfixArchMismatch,
                             Path.GetFileName(hotfix)));
                     }
                     CancelOpportunity();
@@ -1461,7 +1454,7 @@ namespace WMP11Slipstreamer
                     else
                     {
                         throw new FileNotFoundException(String.Format(
-                            "Unable to find a suitable information file in \"{0}\".",
+                            Messages.errNoInfInHotfix,
                             Path.GetFileName(hotfix)));
                     }
 
@@ -1550,9 +1543,8 @@ namespace WMP11Slipstreamer
                             {
                                 throw new InvalidOperationException(
                                     String.Format(
-                                    "Attempt to integrate a non-WMP11 hotfix. Offending file: \"{0}\", belongs to hotfix {1}{2}{2}You may need an updated version of this program to properly integrate this hotfix.",
-                                    relativeFilePath, hotfixParser.HotfixName,
-                                    Environment.NewLine)
+                                    Messages.errUnsupportedFixAttempt,
+                                    relativeFilePath, hotfixParser.HotfixName)
                                 );
                             }
                         }
@@ -1561,7 +1553,7 @@ namespace WMP11Slipstreamer
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add("Offending hotfix", Path.GetFileName(hotfix));
+                    ex.Data.Add(Messages.errOffendingFix, Path.GetFileName(hotfix));
                     throw ex;
                 }
             }
@@ -2294,7 +2286,7 @@ namespace WMP11Slipstreamer
                     if (!result)
                     {
                         throw new Exception(String.Format(
-                            "Delta API failed to apply patch \"{0}\" to the file \"{1}\".",
+                            Messages.errDeltaAPIFailed,
                             Path.GetFileName(patchFile), Path.GetFileName(basisFile)),
                             new System.ComponentModel.Win32Exception());
                     }

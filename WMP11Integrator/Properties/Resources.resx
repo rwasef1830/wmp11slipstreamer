@@ -145,7 +145,4 @@
   <data name="repository7" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\data\embed\repository7;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="UsageInformation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\data\embed\usageinformation.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;windows-1256</value>
-  </data>
 </root>

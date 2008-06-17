@@ -333,7 +333,7 @@ Do not complain to Microsoft about any problems arising from the use of this pro
     <value>Waiting for current operation to complete...</value>
   </data>
   <data name="dlgIconPicker_Title" xml:space="preserve">
-    <value>Locate custom icon</value>
+    <value>Locate custom icon:</value>
   </data>
   <data name="dlgPicker_IconFiles" xml:space="preserve">
     <value>Icon files</value>
@@ -386,5 +386,60 @@ Current source: Windows v{2} {3}</value>
   </data>
   <data name="errMissingSetupFileFromArch" xml:space="preserve">
     <value>The essential setup file "{0}" is missing from this source. This source is corrupt.</value>
+  </data>
+  <data name="errDirIdDuplicated" xml:space="preserve">
+    <value>DirId: "{0}" is defined more than once in "{1}"</value>
+  </data>
+  <data name="errInvalidKeyInWinntDirs" xml:space="preserve">
+    <value>Invalid key in [WinntDirectories] section in "{0}": "{1}"</value>
+  </data>
+  <data name="dlgWarnUxtheme_Text" xml:space="preserve">
+    <value>Please integrate KB908536 after this process is finished, otherwise the "Themes" service will not start after installing Windows from this source.</value>
+  </data>
+  <data name="dlgWarnUxtheme_Title" xml:space="preserve">
+    <value>"Themes" service warning</value>
+  </data>
+  <data name="dlgWarnOobe_Text" xml:space="preserve">
+    <value>Please integrate KB894871 after this process is finished, otherwise the OOBE (out-of-box-experience) wizard will not launch on first boot after installing Windows from this source.</value>
+  </data>
+  <data name="dlgWarnOobe_Title" xml:space="preserve">
+    <value>"Out-of-box experience" warning</value>
+  </data>
+  <data name="errHotfixArchMismatch" xml:space="preserve">
+    <value>The hotfix you are trying to slipstream ({0}) is not designed for your target source's CPU architecture.
+Make sure both are 32-bit or x64 versions.</value>
+  </data>
+  <data name="errNoInfInHotfix" xml:space="preserve">
+    <value>Unable to find a suitable information file in "{0}".</value>
+  </data>
+  <data name="errUnsupportedFixAttempt" xml:space="preserve">
+    <value>Attempt to integrate a non-WMP11 hotfix. Offending file: "{0}", belongs to hotfix {1}
+
+You may need an updated version of this program to properly integrate this hotfix.</value>
+  </data>
+  <data name="errOffendingFix" xml:space="preserve">
+    <value>Offending hotfix</value>
+  </data>
+  <data name="errDeltaAPIFailed" xml:space="preserve">
+    <value>Delta API failed to apply patch "{0}" to the file "{1}".</value>
+  </data>
+  <data name="errSourceNotSupported" xml:space="preserve">
+    <value>Cannot integrate WMP11 on a windows source of this type.</value>
+  </data>
+  <data name="dlgUsageInfo_Text" xml:space="preserve">
+    <value>WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\MyWindowsSource" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"pathToIcon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]
+
+/installer - Specifies the full path to the Microsoft WMP11 redistributable installer.
+/winsource - Specifies the Windows source to integrate WMP11 in.
+/hotfix - Specifies additional WMP11 hotfixes to integrate.
+/output - Specifies the output type of WMP11, allowed values: "Normal" or "Tweaked".
+/customicon - Specifies a custom icon to use for wmplayer.exe, allowed values: "Boooggy" or "Vista" or "Custom".
+/customiconpath - Specifies the location of the custom icon to use if /customicon value is "Custom".
+/nocats - Modifies WMP11 integration so that it no longer includes the security catalogs (only use when disabling WFP).
+/slipstream - Begins slipstream immediately if no arguments are invalid and all referenced files are present.
+/closeonsuccess - Exits the slipstreamer after unattended operation is complete (if successful).</value>
+  </data>
+  <data name="dlgUsageInfo_Title" xml:space="preserve">
+    <value>Usage information</value>
   </data>
 </root>

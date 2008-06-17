@@ -103,7 +103,7 @@ namespace WMP11Slipstreamer
                         this.CrossThreadMessageBox("An error occurred during integration:"
                             + Environment.NewLine
                             + Environment.NewLine
-                            + ex.Message,
+                            + ex.FullMessage,
                             "Integration Error", MessageBoxIcon.Error
                         );
 
