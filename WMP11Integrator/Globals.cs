@@ -5,7 +5,6 @@ using System.IO;
 using System.Resources;
 using System.Reflection;
 
-[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 [assembly: SatelliteContractVersion("1.0.0.0")]
 
 namespace WMP11Slipstreamer
