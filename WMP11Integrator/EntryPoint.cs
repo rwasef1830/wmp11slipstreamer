@@ -4,9 +4,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using Epsilon;
-#if DEBUG
-using Epsilon.DebugServices;
-#endif
 
 namespace WMP11Slipstreamer
 {
@@ -31,7 +28,7 @@ namespace WMP11Slipstreamer
                     ConsoleColor.White, false);
                 string title = "** Windows Media Player 11 Slipstreamer v" 
                     + Globals.Version.ToString();
-                HelperConsole.InfoWriteLine(title);
+                Epsilon.DebugServices.HelperConsole.InfoWriteLine(title);
                 if (!String.IsNullOrEmpty(filename))
                 {
                     Epsilon.IO.FileSystem.Delete(filename);
@@ -44,10 +41,10 @@ namespace WMP11Slipstreamer
                 }
                 else
                 {
-                    HelperConsole.WarnWriteLine("** Messages here will be discarded after program terminates.");
+                    Epsilon.DebugServices.HelperConsole.WarnWriteLine("** Messages here will be discarded after program terminates.");
                 }
                 Debug.WriteLine(null);
-                HelperConsole.WarnWriteLine("** Closing this window will terminate the application.");
+                Epsilon.DebugServices.HelperConsole.WarnWriteLine("** Closing this window will terminate the application.");
                 Debug.WriteLine(null);
 #endif
 

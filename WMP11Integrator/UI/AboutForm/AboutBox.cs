@@ -106,7 +106,7 @@ namespace WMP11Slipstreamer
 
         void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(Globals.website);
+            System.Diagnostics.Process.Start(Globals.WebsiteUrl);
         }
     }
 }
