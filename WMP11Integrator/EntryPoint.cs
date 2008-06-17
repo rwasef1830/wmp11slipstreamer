@@ -110,7 +110,7 @@ namespace WMP11Slipstreamer
                 StringComparison.Ordinal))
             {
                 MessageBox.Show(
-                    "Wrong localizer key in satellite assembly. Switching back to default culture.",
+                    "Localizer key mismatch. Switching back to default culture.",
                     "Satellite assembly error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error
                 );
@@ -120,7 +120,7 @@ namespace WMP11Slipstreamer
                 Thread.CurrentThread.CurrentUICulture.Name, StringComparison.Ordinal))
             {
                 MessageBox.Show(
-                    "Wrong localizer culture in satellite assembly. Switching back to default culture.",
+                    "Localizer culture mismatch. Switching back to default culture.",
                     "Satellite assembly error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error
                 );
