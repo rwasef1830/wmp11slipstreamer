@@ -116,16 +116,6 @@ namespace WMP11Slipstreamer
                 );
                 ResetCultureToDefault();
             }
-            else if (!String.Equals(Messages.LocalizerCulture,
-                Thread.CurrentThread.CurrentUICulture.Name, StringComparison.Ordinal))
-            {
-                MessageBox.Show(
-                    "Localizer culture mismatch. Switching back to default culture.",
-                    "Satellite assembly error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error
-                );
-                ResetCultureToDefault();
-            }
         }
 
         static void ResetCultureToDefault()
