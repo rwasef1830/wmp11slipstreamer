@@ -4,6 +4,10 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using Epsilon;
+using System.Threading;
+using System.Reflection;
+using System.Resources;
+using System.Globalization;
 
 namespace WMP11Slipstreamer
 {
@@ -17,11 +21,15 @@ namespace WMP11Slipstreamer
         {
             try
             {
+                ValidateResource();
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+
 #if DEBUG
                 string filename = CM.SaveFileDialogStandard(
-                    "Choose location to save debug log...", "Log files (*.log)|*.log|All files (*.*)|*.*");
+                    "Choose location to save debug log...", 
+                    "Log files (*.log)|*.log|All files (*.*)|*.*");
                 Epsilon.DebugServices.HelperConsole.Initialize(
                     "WMP11Slipstreamer Debug Console");
                 Epsilon.DebugServices.HelperConsole.RedirectDebugOutput(false, 
@@ -96,7 +104,39 @@ namespace WMP11Slipstreamer
             }
         }
 
-        private static void ShowUsageInformation()
+        static void ValidateResource()
+        {
+            if (!String.Equals(Messages.LocalizerKey, Globals.LocalizerKey,
+                StringComparison.Ordinal))
+            {
+                MessageBox.Show(
+                    "Wrong localizer key in satellite assembly. Switching back to default culture.",
+                    "Satellite assembly error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
+                ResetCultureToDefault();
+            }
+            else if (!String.Equals(Messages.LocalizerCulture,
+                Thread.CurrentThread.CurrentUICulture.Name, StringComparison.Ordinal))
+            {
+                MessageBox.Show(
+                    "Wrong localizer culture in satellite assembly. Switching back to default culture.",
+                    "Satellite assembly error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
+                ResetCultureToDefault();
+            }
+        }
+
+        static void ResetCultureToDefault()
+        {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(
+                ((NeutralResourcesLanguageAttribute)(
+                Assembly.GetExecutingAssembly().GetCustomAttributes(
+                typeof(NeutralResourcesLanguageAttribute), false)[0])).CultureName);
+        }
+
+        static void ShowUsageInformation()
         {
             MessageBox.Show(Messages.dlgUsageInfo_Text, Messages.dlgUsageInfo_Title,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
