@@ -122,19 +122,5 @@ namespace WMP11Slipstreamer.Properties {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WMP11Slipstreamer.exe /installer:&quot;wmp11-windowsxp-x86-enu.exe&quot; /winsource:&quot;D:\MyWindowsSource&quot; /hotfix:&quot;D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe&quot; /customicon:&quot;[Boooggy|Vista|Custom]&quot; [/customiconpath:&quot;pathToIcon&quot;] /output:&quot;[Normal|Tweaked]&quot; /slipstream /closeonsuccess
-        ///
-        ////installer - Specifies the full path to the WMP11 redistributable installer.
-        ////winsource - Specifies the Windows source to integrate WMP11 in.
-        ////hotfix    - Specified additional WMP11 hotfixes to integrate.
-        ////output - Specifies the output  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string UsageInformation {
-            get {
-                return ResourceManager.GetString("UsageInformation", resourceCulture);
-            }
-        }
     }
 }
