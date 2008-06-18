@@ -11,7 +11,11 @@ namespace WMP11Slipstreamer
 {    
     public class Globals
     {
-        public static Version Version = Assembly.GetExecutingAssembly().GetName().Version;
+        public static Version Version
+        {
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+        }
+
         public const string Repo1Key = "e2f2dad638ce726af2f03074eef307cb";
         public const string Repo2Key = "86fcb6bda64c0a7674179f7d1e09e5fe";
         public const string LocalizerKey = "3270d2f650dacfe8c48f2f66ce3179d7";

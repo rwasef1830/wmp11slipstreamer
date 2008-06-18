@@ -64,7 +64,7 @@ namespace WMP11Slipstreamer
                     0,
                     new string[] { "nocats", "slipstream", "closeonsuccess" },
                     new string[] { "installer", "winsource", "customicon", "output", 
-                        "hotfix", "customiconpath" },
+                        "hotfix", "customiconpath", "culture" },
                     false
                 );
 
@@ -78,6 +78,28 @@ namespace WMP11Slipstreamer
                 bool closeonsuccess = argParser.IsSpecified("closeonsuccess") && slipstream;
                 string customiconpath = argParser.GetValue("customiconpath");
 
+                string culture = argParser.GetValue("culture");
+                if (!String.IsNullOrEmpty(culture))
+                {
+                    try
+                    {
+                        CultureInfo overrideCulture = CultureInfo.GetCultureInfo(culture);
+                        Assembly.GetExecutingAssembly().GetSatelliteAssembly(overrideCulture,
+                            new Version(
+                            ((SatelliteContractVersionAttribute)(
+                            Assembly.GetExecutingAssembly().GetCustomAttributes(
+                            typeof(SatelliteContractVersionAttribute), false)[0])).Version));
+                        Thread.CurrentThread.CurrentUICulture = overrideCulture;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            "An error occurred while overriding the culture of the application. Maybe the culture string is invalid."
+                            + Environment.NewLine + Environment.NewLine + ex.Message,
+                            "Culture override failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
                 Application.Run(new MainForm(installer, winsource, hotfixes,
                     output, customicon, nocats, slipstream, closeonsuccess, 
                     customiconpath));
@@ -87,8 +109,8 @@ namespace WMP11Slipstreamer
             {
                 MessageBox.Show(ex.Message
                     + Environment.NewLine + Environment.NewLine
-                    + "Click \"OK\" to view usage information."
-                    , "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    + "Click \"OK\" to view usage information.", 
+                    "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ShowUsageInformation();
                 return 1;
             }

@@ -119,15 +119,19 @@
   </resheader>
   <data name="LocalizerName" xml:space="preserve">
     <value>n7Epsilon</value>
+    <comment>Will be shown in About dialog</comment>
   </data>
   <data name="LocalizerCulture" xml:space="preserve">
     <value>en-US</value>
+    <comment>Culture name string (eg: it-IT, fr-FR, en-US, fr)</comment>
   </data>
   <data name="LocalizerKey" xml:space="preserve">
     <value>3270d2f650dacfe8c48f2f66ce3179d7</value>
+    <comment>Do not change unless a new key is announced.</comment>
   </data>
   <data name="uxRightToLeft" xml:space="preserve">
     <value>False</value>
+    <comment>(Do not localize) True = Right-To-Left Layout</comment>
   </data>
   <data name="uxGroupBoxBasicOpts" xml:space="preserve">
     <value>Basic Options</value>
