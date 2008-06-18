@@ -34,18 +34,16 @@ namespace WMP11Slipstreamer
         	
             InitializeComponent();
 
-            SuspendLayout();            
+            this.uxComboBoxCustomIcon.SelectedIndex = 0;
+            this.uxComboType.SelectedIndex = 0;
+
             int readiness = ProcessParameters(installer, winsource, hotfixes, 
 				output, customicon, nocats, slipstream, customIconPath);
-            ResumeLayout();
 
-            if (slipstream)
+            if (slipstream && readiness == 4)
             {
-                if (readiness == 4)
-                {
-                    _immediateLauch = true;
-                    _closeOnSuccess = close;
-                }
+                _immediateLauch = true;
+                _closeOnSuccess = close;
             }
         }
         
@@ -70,9 +68,8 @@ namespace WMP11Slipstreamer
             this.uxButtonIntegrate.Text = Messages.uxButtonIntegrate;
             this.uxButtonCancel.Text = Messages.uxButtonExit;
             
-            this.uxComboType.Items.AddRange(new object[] {
-                Messages.uxTypeVanilla, Messages.uxTypeTweaked
-            });
+            this.uxComboType.Items[0] = Messages.uxTypeVanilla;
+            this.uxComboType.Items[1] = Messages.uxTypeTweaked;
         }
 
         int ProcessParameters(string installer, string winsource, 
