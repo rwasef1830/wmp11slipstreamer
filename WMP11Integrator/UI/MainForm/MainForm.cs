@@ -360,7 +360,9 @@ namespace WMP11Slipstreamer
                             settings.CustomIcon = _customIconRaw;
                         }
                         _workerThread = new Thread(WorkerMethod);
+                        _workerThread.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
                         _workerThread.Start(settings);
+
                         while (_workerThread.IsAlive)
                         {
                             Thread.Sleep(10);

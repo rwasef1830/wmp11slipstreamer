@@ -1,8 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>BETA</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -30,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;BETA</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -176,11 +175,7 @@
     </Compile>
     <Compile Include="Backend\Hacks.cs" />
     <Compile Include="Backend\HelperFunctions.cs" />
-    <Compile Include="Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Messages.Accessor.cs" />
     <Compile Include="UI\AboutForm\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -265,7 +260,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>postbuild.cmd "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)postbuild.cmd "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>

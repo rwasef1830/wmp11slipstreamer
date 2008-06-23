@@ -14,6 +14,10 @@ namespace WMP11Slipstreamer
             InitializeComponent();
             this.labelVersion.Text = String.Format("Version {0}", Globals.Version);
             this.labelTranslator.Text += " " + Messages.LocalizerName;
+
+#if BETA
+            this.labelVersion.Text += " BETA";
+#endif
         }
 
         #region Assembly Attribute Accessors
