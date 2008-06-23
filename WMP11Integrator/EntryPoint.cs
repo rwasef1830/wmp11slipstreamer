@@ -8,6 +8,7 @@ using System.Threading;
 using System.Reflection;
 using System.Resources;
 using System.Globalization;
+using Epsilon.DebugServices;
 
 namespace WMP11Slipstreamer
 {
@@ -21,50 +22,24 @@ namespace WMP11Slipstreamer
         {
             try
             {
-                ValidateResource();
-
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
 #if DEBUG
-                string filename = CM.SaveFileDialogStandard(
-                    "Choose location to save debug log...", 
+                string filename = CM.SaveFileDialogStandard("Choose location to save debug log...",
                     "Log files (*.log)|*.log|All files (*.*)|*.*");
-                Epsilon.DebugServices.HelperConsole.Initialize(
-                    "WMP11Slipstreamer Debug Console");
-                Epsilon.DebugServices.HelperConsole.RedirectDebugOutput(false, 
-                    ConsoleColor.White, false);
-                string title = "** Windows Media Player 11 Slipstreamer v" 
-                    + Globals.Version.ToString();
-                Epsilon.DebugServices.HelperConsole.InfoWriteLine(title);
-                if (!String.IsNullOrEmpty(filename))
-                {
-                    Epsilon.IO.FileSystem.Delete(filename);
-                    ((DefaultTraceListener)Debug.Listeners["Default"]).LogFileName = filename;
-                    Debug.Listeners["Default"].WriteLine(title);
-                    Debug.WriteLine(String.Format("** Log: \"{0}\"", filename));
-                    Debug.WriteLine("** Log created on: "
-                        + DateTime.Now.ToUniversalTime().ToString(
-                        "dddd dd/MM/yyyy - HH:MM:ss tt \\G\\M\\T"));
-                }
-                else
-                {
-                    Epsilon.DebugServices.HelperConsole.WarnWriteLine("** Messages here will be discarded after program terminates.");
-                }
-                Debug.WriteLine(null);
-                Epsilon.DebugServices.HelperConsole.WarnWriteLine("** Closing this window will terminate the application.");
-                Debug.WriteLine(null);
+                HelperConsole.InitializeDefaultConsole(filename);
 #endif
 
                 ArgumentParser argParser = new ArgumentParser(args);
                 argParser.Parse(
                     0,
-                    9,
+                    10,
                     0,
                     0,
                     new string[] { "nocats", "slipstream", "closeonsuccess" },
                     new string[] { "installer", "winsource", "customicon", "output", 
-                        "hotfix", "customiconpath", "culture" },
+                        "hotfix", "customiconpath", "resfile" /*, "culture"*/ },
                     false
                 );
 
@@ -79,7 +54,15 @@ namespace WMP11Slipstreamer
                 string customiconpath = argParser.GetValue("customiconpath");
 
                 string culture = argParser.GetValue("culture");
-                if (!String.IsNullOrEmpty(culture))
+                string resFile = argParser.GetValue("resfile");
+
+                if (!String.IsNullOrEmpty(resFile))
+                {
+                    Messages.ResourceManager = ResourceManager.CreateFileBasedResourceManager(
+                        Path.GetFileNameWithoutExtension(resFile),
+                        Path.GetDirectoryName(resFile), null);
+                }
+                else if (!String.IsNullOrEmpty(culture))
                 {
                     try
                     {
@@ -100,9 +83,12 @@ namespace WMP11Slipstreamer
                     }
                 }
 
+                ValidateResource();
+
                 Application.Run(new MainForm(installer, winsource, hotfixes,
-                    output, customicon, nocats, slipstream, closeonsuccess, 
+                    output, customicon, nocats, slipstream, closeonsuccess,
                     customiconpath));
+
                 return 0;
             }
             catch (ArgumentParserException ex)

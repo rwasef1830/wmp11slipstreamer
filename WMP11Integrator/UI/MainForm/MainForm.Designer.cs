@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.uxGroupBoxBasicOpts = new System.Windows.Forms.GroupBox();
+            this.uxLinkAbout = new System.Windows.Forms.LinkLabel();
             this.uxButtonHotfixPicker = new System.Windows.Forms.Button();
             this.uxTextBoxHotfixLine = new System.Windows.Forms.TextBox();
             this.uxLabelEnterHotfixLine = new System.Windows.Forms.Label();
@@ -55,7 +56,6 @@
             this.uxLabelOperation = new System.Windows.Forms.Label();
             this.uxStatusStrip = new System.Windows.Forms.StatusStrip();
             this.uxStatusLabelSourceType = new System.Windows.Forms.ToolStripStatusLabel();
-            this.uxLinkAbout = new System.Windows.Forms.LinkLabel();
             this.uxGroupBoxBasicOpts.SuspendLayout();
             this.uxGroupBoxAdvOpts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxPictureBoxCustomIconPreview)).BeginInit();
@@ -85,6 +85,20 @@
             this.uxGroupBoxBasicOpts.TabIndex = 0;
             this.uxGroupBoxBasicOpts.TabStop = false;
             this.uxGroupBoxBasicOpts.Text = "Placeholder";
+            // 
+            // uxLinkAbout
+            // 
+            this.uxLinkAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxLinkAbout.AutoSize = true;
+            this.uxLinkAbout.Location = new System.Drawing.Point(568, -3);
+            this.uxLinkAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.uxLinkAbout.Name = "uxLinkAbout";
+            this.uxLinkAbout.Size = new System.Drawing.Size(77, 17);
+            this.uxLinkAbout.TabIndex = 8;
+            this.uxLinkAbout.TabStop = true;
+            this.uxLinkAbout.Text = "Placeholder";
+            this.uxLinkAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.uxLinkAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.aboutStatusLabel_Click);
             // 
             // uxButtonHotfixPicker
             // 
@@ -368,20 +382,6 @@
             this.uxStatusLabelSourceType.Size = new System.Drawing.Size(86, 17);
             this.uxStatusLabelSourceType.Text = "Placeholder";
             this.uxStatusLabelSourceType.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // uxLinkAbout
-            // 
-            this.uxLinkAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxLinkAbout.AutoSize = true;
-            this.uxLinkAbout.Location = new System.Drawing.Point(568, -3);
-            this.uxLinkAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.uxLinkAbout.Name = "uxLinkAbout";
-            this.uxLinkAbout.Size = new System.Drawing.Size(77, 17);
-            this.uxLinkAbout.TabIndex = 8;
-            this.uxLinkAbout.TabStop = true;
-            this.uxLinkAbout.Text = "Placeholder";
-            this.uxLinkAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.uxLinkAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.aboutStatusLabel_Click);
             // 
             // MainForm
             // 

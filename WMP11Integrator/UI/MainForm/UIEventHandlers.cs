@@ -49,6 +49,10 @@ namespace WMP11Slipstreamer
         {
         	GetControlMessages();        
             this.Text += " v" + Globals.Version;
+
+#if BETA
+            this.Text += " BETA";
+#endif
         }
 
         void MainForm_Shown(object sender, EventArgs e)
