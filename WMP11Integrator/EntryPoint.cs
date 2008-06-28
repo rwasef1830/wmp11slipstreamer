@@ -39,7 +39,7 @@ namespace WMP11Slipstreamer
                     0,
                     new string[] { "nocats", "slipstream", "closeonsuccess" },
                     new string[] { "installer", "winsource", "customicon", "output", 
-                        "hotfix", "customiconpath", "resfile" /*, "culture"*/ },
+                        "hotfix", "customiconpath", "resfile" , "culture" },
                     false
                 );
 
