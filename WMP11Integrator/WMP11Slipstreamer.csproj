@@ -260,7 +260,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)postbuild.cmd "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)postbuild.cmd" "$(ProjectDir)" "$(OutDir)" "$(TargetName)$(TargetExt)" "WMP11SlipstreamerKey.snk"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
