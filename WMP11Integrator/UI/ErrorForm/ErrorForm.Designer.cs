@@ -1,4 +1,4 @@
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class ErrorForm
     {

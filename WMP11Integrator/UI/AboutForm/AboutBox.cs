@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class AboutBox : Form
     {

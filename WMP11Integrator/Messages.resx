@@ -184,9 +184,6 @@
   <data name="uxButtonCancel" xml:space="preserve">
     <value>&amp;Cancel</value>
   </data>
-  <data name="statInit" xml:space="preserve">
-    <value>Initialising...</value>
-  </data>
   <data name="statDetectingSource" xml:space="preserve">
     <value>Detecting source type...</value>
   </data>

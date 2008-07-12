@@ -7,7 +7,7 @@ using System.Reflection;
 
 [assembly: SatelliteContractVersion("1.0.0.0")]
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {    
     public class Globals
     {

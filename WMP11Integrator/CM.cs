@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using Epsilon.IO;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     /// <summary>
     /// Subroutines commonly used by this program

@@ -10,9 +10,11 @@ using Epsilon.IO;
 using Epsilon.Win32.Resources;
 using Epsilon.Win32;
 using Epsilon.DebugServices;
+using Epsilon.Slipstreamers;
+using Epsilon.WindowsModTools;
 #endregion
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class MainForm : Form
     {
@@ -301,9 +303,12 @@ namespace WMP11Slipstreamer
 
             foreach (string file in essentialFiles)
             {
-            	if (!Backend.FileExistsInSourceFolder(this._pathBuffer, file, i386Path, true) 
-            	    && !Backend.FileExistsInSourceFolder(this._pathBuffer, "w" + file, i386Path, true)
-            	    && !Backend.FileExistsInSourceFolder(this._pathBuffer, file, amd64Path, true))
+            	if (!SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
+                    file, i386Path, true) 
+            	    && !SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
+                    "w" + file, i386Path, true)
+            	    && !SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
+                    file, amd64Path, true))
                 {
                     return false;
                 }
@@ -349,16 +354,28 @@ namespace WMP11Slipstreamer
                         // Reset critical condition flag in case we crashed before 
                         _workerInCriticalOperation = false;
 
-                        BackendParams settings = new BackendParams();
-                        settings.WinSource = uxTextBoxWinSrc.Text;
-                        settings.WmpInstallerSource = uxTextBoxWmpRedist.Text;
-                        settings.AddonType = uxComboType.SelectedIndex;
-                        settings.HotfixLine = uxTextBoxHotfixLine.Text;
-                        settings.IgnoreCats = uxCheckBoxNoCats.Checked;
-                        if (uxCheckBoxCustomIcon.Checked)
+                        // Detect source type
+                        this.uxLabelOperation.Text = Messages.statDetectingSource;
+                        WindowsSourceInfo winSrcInfo = new WindowsSourceInfo();
+                        Thread sourceDetector = new Thread(delegate()
                         {
-                            settings.CustomIcon = _customIconRaw;
+                           winSrcInfo = SourceDetector.Detect(this.uxTextBoxWinSrc.Text, 
+                               this._pathBuffer);
+                        });
+                        sourceDetector.Start();
+                        while (sourceDetector.IsAlive)
+                        {
+                            Application.DoEvents();
+                            Thread.Sleep(50);
                         }
+                        this.uxStatusLabelSourceType.Text = "Source Type: " + winSrcInfo.ToString();
+
+                        BackendParams settings = new BackendParams(
+                            uxTextBoxWinSrc.Text, winSrcInfo, uxTextBoxWmpRedist.Text, 
+                            uxTextBoxHotfixLine.Text, (PackageType)uxComboType.SelectedIndex, 
+                            (uxCheckBoxCustomIcon.Checked) ? _customIconRaw : null,
+                            uxCheckBoxNoCats.Checked);
+
                         _workerThread = new Thread(WorkerMethod);
                         _workerThread.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
                         _workerThread.Start(settings);
@@ -471,6 +488,14 @@ namespace WMP11Slipstreamer
         string CreatePathString(params string[] components)
         {
             return FileSystem.CreatePathString(this._pathBuffer, components);
+        }
+
+        void DisplaySourceType(string sourceType)
+        {
+            this.Invoke(new Action<string>(delegate(string message)
+            {
+                this.uxStatusLabelSourceType.Text = "Source Type: " + message;
+            }), sourceType);
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Resources;
 using System.Globalization;
 using Epsilon.DebugServices;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     static class EntryPoint
     {
@@ -58,9 +58,18 @@ namespace WMP11Slipstreamer
 
                 if (!String.IsNullOrEmpty(resFile))
                 {
-                    Messages.ResourceManager = ResourceManager.CreateFileBasedResourceManager(
+                    if (!File.Exists(resFile))
+                    {
+                        throw new FileNotFoundException("The resources file was not found.",
+                            resFile);
+                    }
+
+                    ResourceManager resMan = ResourceManager.CreateFileBasedResourceManager(
                         Path.GetFileNameWithoutExtension(resFile),
                         Path.GetDirectoryName(resFile), null);
+                    FieldInfo resManInfo = typeof(Messages).GetField("resourceMan",
+                        BindingFlags.Static | BindingFlags.NonPublic);
+                    resManInfo.SetValue(typeof(Messages), resMan); 
                 }
                 else if (!String.IsNullOrEmpty(culture))
                 {
@@ -91,17 +100,17 @@ namespace WMP11Slipstreamer
 
                 return 0;
             }
+            catch (ShowUsageException)
+            {
+                ShowUsageInformation();
+                return 1;
+            }
             catch (ArgumentParserException ex)
             {
                 MessageBox.Show(ex.Message
                     + Environment.NewLine + Environment.NewLine
                     + "Click \"OK\" to view usage information.", 
                     "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ShowUsageInformation();
-                return 1;
-            }
-            catch (ShowUsageException)
-            {
                 ShowUsageInformation();
                 return 1;
             }

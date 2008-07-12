@@ -6,7 +6,7 @@ using Epsilon.WindowsModTools;
 using Epsilon.IO;
 using System.IO;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class Backend
     {
@@ -20,10 +20,10 @@ namespace WMP11Slipstreamer
             const string wbemInf = "wbemoc.inf";
             string[] sectionsToFix = new string[] { "WBEM.CopyMOFs" };
 
-            if (this.CopyOrExpandFromArch(wbemInf, this._extractedDirectory, true))
+            if (this.CopyOrExpandFromArch(wbemInf, this._extractDir, true))
             {
                 IniParser wbemOcEditor = new IniParser(
-                    this.CombinePathComponents(this._extractedDirectory, wbemInf), 
+                    this.CreatePathString(this._extractDir, wbemInf), 
                     true);
                 Dictionary<string, string> fixDict
                     = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
