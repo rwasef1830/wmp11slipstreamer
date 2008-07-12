@@ -8,7 +8,7 @@ using Epsilon.Win32.Resources;
 using System.Diagnostics;
 using Microsoft.Win32;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class MainForm
     {
@@ -47,7 +47,7 @@ namespace WMP11Slipstreamer
 
         void MainForm_Load(object sender, EventArgs e)
         {
-        	GetControlMessages();        
+        	GetControlMessages();
             this.Text += " v" + Globals.Version;
 
 #if BETA
@@ -57,6 +57,8 @@ namespace WMP11Slipstreamer
 
         void MainForm_Shown(object sender, EventArgs e)
         {
+            this.uxComboType.Focus();
+
             if (this._immediateLauch)
             {
                 this.StartIntegration();

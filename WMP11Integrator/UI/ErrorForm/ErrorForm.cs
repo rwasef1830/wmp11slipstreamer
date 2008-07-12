@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Collections;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     public partial class ErrorForm : Form
     {

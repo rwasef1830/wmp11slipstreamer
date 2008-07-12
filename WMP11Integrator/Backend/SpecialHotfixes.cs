@@ -5,7 +5,7 @@ using Epsilon.IO;
 using Epsilon.Parsers;
 using System.IO;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class Backend
     {
@@ -21,13 +21,13 @@ namespace WMP11Slipstreamer
             foreach (string file in kbFiles)
             {
                 FileSystem.MoveFileOverwrite(
-                    this.CombinePathComponents(fixesFolder, file),
-                    this.CombinePathComponents(this._extractedDirectory, file)
+                    this.CreatePathString(fixesFolder, file),
+                    this.CreatePathString(this._extractDir, file)
                 );
             }
-            if (!this._ignoreCats)
+            if (!this._params.IgnoreCats)
             {
-                this.AddSvcpackCatalog(this.CombinePathComponents(
+                this.AddSvcpackCatalog(this.CreatePathString(
                     "Update", kbName + ".cat"), fixesFolder);
             }
         }
@@ -49,9 +49,9 @@ namespace WMP11Slipstreamer
 
             foreach (string file in kbFiles)
             {
-                string extractedName = this.CombinePathComponents(
-                    this._extractedDirectory, file);
-                string tempCompareName = this.CombinePathComponents(
+                string extractedName = this.CreatePathString(
+                    this._extractDir, file);
+                string tempCompareName = this.CreatePathString(
                     tempCompareFolder, file);
                 bool isAcadProc = String.Equals(file, "acadproc.dll",
                             StringComparison.OrdinalIgnoreCase);
@@ -97,11 +97,11 @@ namespace WMP11Slipstreamer
                     FileSystem.Delete(extractedName);
                 }
             }
-            if (counter > 0 && !this._ignoreCats)
+            if (counter > 0 && !this._params.IgnoreCats)
             {
-                this.AddSvcpackCatalog(this.CombinePathComponents(
+                this.AddSvcpackCatalog(this.CreatePathString(
                     "Update", kbName + ".cat"), 
-                    this._extractedDirectory);
+                    this._extractDir);
             }
         }
     }

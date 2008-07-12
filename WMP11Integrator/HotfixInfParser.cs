@@ -5,7 +5,7 @@ using Epsilon.WindowsModTools;
 using System.Text.RegularExpressions;
 using Epsilon.Collections.Generic;
 
-namespace WMP11Slipstreamer
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     class HotfixInfParser
     {
