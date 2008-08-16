@@ -1,49 +1,55 @@
 @Echo Off
-set satelliteVer=1.0.0.0
-set company=boooggy and n7Epsilon
-
-If /I "%~1"=="" goto usage
-If /I "%~2"=="" goto usage
-If /I "%~3"=="" goto usage
-If /I "%~4"=="" goto usage
-goto work
+If "%1"=="" goto usage
+If "%2"=="" goto usage
+If "%3"=="" goto usage
+goto execute
 
 :usage
+Echo %~nx0 [strongNameKey] [baseName] [assemblyName]
+goto end
+
+:execute
+set companyName=boooggy and n7Epsilon
+set assemblyVersion=1.0.0.0
 Echo.
-Echo %~nx0 [resFile] [strongNameKeyFile] [culture] [MainAssemblyNameOnly]
+Echo ** 3psil0N Resource Dll Compiler
+Echo ** Compiling resource dlls from "Source" subfolder
+Echo.
+Echo * Company: "%companyName%"
+Echo * Satellite assembly version: "%assemblyVersion%"
+Echo.
+PAUSE
+Echo.
+If not exist "%~1" goto snkNotFound
+FOR /R "%~dp0\Source" %%i in (*.resx) DO call :compileResDll "%%i" "%~1" "%~2" "%~3"
+Echo.
+Echo ** All done!
 goto end
 
-:work
-If not exist "%~1" goto errResNotFound
-If not exist "%~2" goto errSnkNotFound
-goto confirm
-
-:errResNotFound
-Echo Resource file could not be found.
+:snkNotFound
+Echo Strong name key file not found.
 goto end
 
-:errSnkNotFound
-Echo Strong name key file could not be found.
-goto end
-
-:confirm
+:compileResDll
+set resXPath=%~1
+set cultureName=%~n1
+set outputDir=%~dp0\Output\%cultureName%
+set snkFile=%~2
+set baseName=%~3
 set assemblyName=%~4
-set culture=%~3
-set snk=%~2
-set res=%~1
-Echo.
-Echo Culture: %culture%
-Echo Strong Name Key File: "%snk%"
-Echo Resources File: "%res%"
-set output=%CD%\%culture%\%assemblyName%.resources.dll
-Echo Output File: "%output%"
-Echo.
-set /p Response=Do you want to continue ? [Yes, No] 
-If /I "%Response%"=="Y" goto buildAssembly
-goto end
 
-:buildAssembly
-Echo.
-"%WinDir%\Microsoft.NET\Framework\v2.0.50727\al.exe" /embed:"%res%" /culture:%culture% /keyfile:"%snk%" /version:"%satelliteVer%" /out:"%output%" /description:"%assemblyName% %culture% resources" /company:"%company%"
+Echo Compiling resource dll: %cultureName%
+If exist "%outputDir%" rd /s /q "%outputDir%"
+mkdir "%outputDir%"
+FOR /F "usebackq tokens=2" %%i IN (`type "%~dp0\..\EntryPoint.cs" ^| find "namespace"`) do set resourcesBaseName=%%i
+If not defined resourcesBaseName Echo Cannot find namespace && goto :EOF
+set outputResourcesPath=%outputDir%\%resourcesBaseName%.%baseName%.%cultureName%.resources
+"%ProgramFiles%\Microsoft Visual Studio 8\SDK\v2.0\Bin\ResGen.exe" "%resXPath%" "%outputResourcesPath%" 1>NUL
+If errorlevel = 1 PAUSE
+set description=%assemblyName% %cultureName% resources
+"%WinDir%\Microsoft.NET\Framework\v2.0.50727\al.exe" /nologo /embed:"%outputResourcesPath%" /company:"%companyName%" /culture:"%cultureName%" /keyfile:"%snkFile%" /target:library /title:"%description%" /version:"%assemblyVersion%" /out:"%outputDir%\%assemblyName%.resources.dll"
+If errorlevel = 1 PAUSE
+del "%outputResourcesPath%"
+goto :EOF
 
 :end

@@ -25,6 +25,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         {
             this.WmpInstallerSource = Path.GetFullPath(wmpInstallerSource);
             base.ParseHotfixLine(hotfixLine, out this.HotfixFolder, out this.HotfixFiles);
+            this.CustomIcon = customIcon;
 
             this.RequestedType = addonType;
             this.IgnoreCats = ignoreCats;

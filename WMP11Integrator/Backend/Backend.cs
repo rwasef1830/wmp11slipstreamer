@@ -882,6 +882,14 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         break;
 
                     default:
+                        // Defaulting to vanilla is better than throwing exception
+                        // Because someone could meddle in the registry and set the 
+                        // index to something invalid, which would cause us to crash on startup.
+
+                        //NotSupportedException exception = new NotSupportedException(
+                        //    "Unknown or unsupport package type requested.");
+                        //exception.Data.Add("PackageType", this._params.RequestedType);
+                        //throw exception;
                         goto case PackageType.Vanilla;
                 }
             }
@@ -1469,6 +1477,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             // Locate files that directly overwrite
             this.OnAnnounce(Messages.statDetOverwrite);
 
+            // HACK: Delete EULA.txt after it went into the external CAB
+            FileSystem.Delete(this.CreatePathString(this._extractDir, "EULA.TXT"));
+
             string[] filesInExtracted = Directory.GetFiles(
                 this._extractDir, "*", SearchOption.TopDirectoryOnly);
             Dictionary<int, OverwriteFileBehaviour> filesThatOverwrite
@@ -1936,8 +1947,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.OnBeginCriticalOperation();
             FileSystem.MoveFiles(this._workDir, this._archDir, 
                 false);
-            if (!String.IsNullOrEmpty(this._x64i386WorkDir)
-                && Directory.Exists(this._x64i386WorkDir))
+            if (this._osInfo.Arch == TargetArchitecture.x64)
             {
                 FileSystem.MoveFiles(this._x64i386WorkDir, this._x64i386ArchDir, false);
             }
@@ -2050,11 +2060,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             // can cause problems being detected as overwriting files later on and 
             // overwriting newer versions that are already present in the destination source
             string[] dangerousFiles = new string[] { 
-                "spmsg.dll", "spuninst.exe", "spupdsvc.exe", "eula.txt" };
+                "spmsg.dll", "spuninst.exe", "spupdsvc.exe" };
             foreach (string fileName in dangerousFiles)
             {
-                string dangerousPathName = this.CreatePathString(destinationPath, fileName);
-                if (File.Exists(dangerousPathName)) File.Delete(dangerousPathName);
+                FileSystem.Delete(this.CreatePathString(destinationPath, fileName));
             }
         }
 

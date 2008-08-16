@@ -372,7 +372,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                         BackendParams settings = new BackendParams(
                             uxTextBoxWinSrc.Text, winSrcInfo, uxTextBoxWmpRedist.Text, 
-                            uxTextBoxHotfixLine.Text, (PackageType)uxComboType.SelectedIndex, 
+                            uxTextBoxHotfixLine.Text, (PackageType)(uxComboType.SelectedIndex + 1),
                             (uxCheckBoxCustomIcon.Checked) ? _customIconRaw : null,
                             uxCheckBoxNoCats.Checked);
 
