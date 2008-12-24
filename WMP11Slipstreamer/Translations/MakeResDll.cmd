@@ -2,18 +2,20 @@
 If "%1"=="" goto usage
 If "%2"=="" goto usage
 If "%3"=="" goto usage
+If "%4"=="" goto usage
 goto execute
 
 :usage
-Echo %~nx0 [strongNameKey] [baseName] [assemblyName]
+Echo %~nx0 [strongNameKey] [baseName] [assemblyName] [assemblyVersion]
 goto end
 
 :execute
-set companyName=boooggy and n7Epsilon
-set assemblyVersion=1.0.0.0
+If not defined companyName SET companyName=Company
+set assemblyVersion=%~4
 Echo.
 Echo ** 3psil0N Resource Dll Compiler
 Echo ** Compiling resource dlls from "Source" subfolder
+Echo ** Original .resx file must be in Localization subfolder of parent.
 Echo.
 Echo * Company: "%companyName%"
 Echo * Satellite assembly version: "%assemblyVersion%"
@@ -43,8 +45,8 @@ If exist "%outputDir%" rd /s /q "%outputDir%"
 mkdir "%outputDir%"
 FOR /F "usebackq tokens=2" %%i IN (`type "%~dp0\..\EntryPoint.cs" ^| find "namespace"`) do set resourcesBaseName=%%i
 If not defined resourcesBaseName Echo Cannot find namespace && goto :EOF
-set outputResourcesPath=%outputDir%\%resourcesBaseName%.%baseName%.%cultureName%.resources
-"%ProgramFiles%\Microsoft Visual Studio 8\SDK\v2.0\Bin\ResGen.exe" "%resXPath%" "%outputResourcesPath%" 1>NUL
+set outputResourcesPath=%outputDir%\%resourcesBaseName%.Localization.%baseName%.%cultureName%.resources
+"%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\ResGen.exe" "%resXPath%" "%outputResourcesPath%" 1>NUL
 If errorlevel = 1 PAUSE
 set description=%assemblyName% %cultureName% resources
 "%WinDir%\Microsoft.NET\Framework\v2.0.50727\al.exe" /nologo /embed:"%outputResourcesPath%" /company:"%companyName%" /culture:"%cultureName%" /keyfile:"%snkFile%" /target:library /title:"%description%" /version:"%assemblyVersion%" /out:"%outputDir%\%assemblyName%.resources.dll"

@@ -14,8 +14,8 @@ using Epsilon.Parsers;
 using Epsilon.DebugServices;
 using Epsilon.Security.Cryptography;
 using Epsilon.Collections.Generic;
-using System.Text.RegularExpressions;
 using Epsilon.IO.Compression.Cabinet;
+using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
 #endregion
 
 // This is the main backend that performs the actual integration tasks

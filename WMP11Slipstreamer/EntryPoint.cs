@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Resources;
 using System.Globalization;
 using Epsilon.DebugServices;
+using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {

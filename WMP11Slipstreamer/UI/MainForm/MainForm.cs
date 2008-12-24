@@ -12,6 +12,7 @@ using Epsilon.Win32;
 using Epsilon.DebugServices;
 using Epsilon.Slipstreamers;
 using Epsilon.WindowsModTools;
+using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
 #endregion
 
 namespace Epsilon.Slipstreamers.WMP11Slipstreamer
