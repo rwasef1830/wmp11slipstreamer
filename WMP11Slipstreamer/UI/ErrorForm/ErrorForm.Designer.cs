@@ -1,3 +1,4 @@
+using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
 namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
     partial class ErrorForm

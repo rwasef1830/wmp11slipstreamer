@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="dlgAbout_InfoText" xml:space="preserve">
+    <value>Detta program kommer att integrera Windows Media Player 11 i din Windowsinstallation.
+
+Nästa gång du installerar Windows kommer Windows Media Player 11 redan vara installerat, i väntan på att du skall uppleva de bästa inom digital underhållning.
+
+Notering: Detta program är inte utvecklat, underhållet eller supporterat av Microsoft Corporation på något sätt.
+
+Klaga inte till Microsoft om något problem uppstår från använding av detta program. Använd på egen risk.</value>
+  </data>
+  <data name="dlgPicker_IconFiles" xml:space="preserve">
+    <value>Ikonfiler</value>
+  </data>
+  <data name="uxLinkWMPRedist" xml:space="preserve">
+    <value>Om du inte har installationsfilen, klicka här för att ladda ner den (Äkta windows krävs)</value>
+  </data>
+  <data name="uxCheckboxCustomIcon" xml:space="preserve">
+    <value>Använd en egen ikon för wmplayer.exe</value>
+  </data>
+  <data name="dlgError_ButtonClose" xml:space="preserve">
+    <value>&amp;Stäng</value>
+  </data>
+  <data name="uxLinkAbout" xml:space="preserve">
+    <value>Om...</value>
+  </data>
+  <data name="errOffendingFix" xml:space="preserve">
+    <value>Olämplig hotfix</value>
+  </data>
+  <data name="statFixingTxtsetupDirs" xml:space="preserve">
+    <value>Fixar [txtsetup_dirs]-sektionen...</value>
+  </data>
+  <data name="errInvalidSource" xml:space="preserve">
+    <value>"{0}" tycks inte innehålla en giltig Windows™-källa.</value>
+  </data>
+  <data name="dlgText_Success" xml:space="preserve">
+    <value>Integrationen slutfördes.</value>
+  </data>
+  <data name="dlgText_WmpRedistNotFound" xml:space="preserve">
+    <value>Windows Media Player 11 installationsfilen kunde inte hittas. Vänligen lokalisera den och försök igen.</value>
+  </data>
+  <data name="uxLabelEnterWMPRedistPath" xml:space="preserve">
+    <value>Fullständig sökväg till Media Player 11 installationsfilen eller använd "..."-knappen för att hitta den:</value>
+  </data>
+  <data name="errSrcTypeDetectFail" xml:space="preserve">
+    <value>Misslyckades att hitta information om den här källan. Kan inte välja rätt filuppsättning.</value>
+  </data>
+  <data name="dlgUsageInfo_Title" xml:space="preserve">
+    <value>Användningsinformation</value>
+  </data>
+  <data name="dlgPicker_ExeFiles" xml:space="preserve">
+    <value>Körbara filer</value>
+  </data>
+  <data name="statEditFile" xml:space="preserve">
+    <value>Redigerar "{0}"...</value>
+  </data>
+  <data name="uxLabelEnterSrcPath" xml:space="preserve">
+    <value>Fullständig sökväg till windows-källan där WMP11 skall integreras (måste innehålla en "i386"-mapp):</value>
+  </data>
+  <data name="errInvalidX32Src" xml:space="preserve">
+    <value>"{0}" tycks inte innehålla en giltig 32-bitars Windows™-källa.</value>
+  </data>
+  <data name="dlgAbout_GotoSite" xml:space="preserve">
+    <value>Klicka här för att gå till hemsidan</value>
+  </data>
+  <data name="errInvalidX64Src" xml:space="preserve">
+    <value>"{0}" tycks inte innehålla en giltig 64-bitars Windows™-källa.</value>
+  </data>
+  <data name="uxTypeVanilla" xml:space="preserve">
+    <value>Vanilla (samma som original installationen med WGA)</value>
+  </data>
+  <data name="dlgIntegError_Title" xml:space="preserve">
+    <value>Integrationsfel</value>
+  </data>
+  <data name="uxButtonExit" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="statReadCoreInfs" xml:space="preserve">
+    <value>Läser grundinstallationsfiler...</value>
+  </data>
+  <data name="statWaitCancel" xml:space="preserve">
+    <value>Väntar på att nuvarande jobb slutförs...</value>
+  </data>
+  <data name="statCreateCab" xml:space="preserve">
+    <value>Skapar "{0}"...</value>
+  </data>
+  <data name="dlgIconError_Title" xml:space="preserve">
+    <value>Fel vid ladding av ikon</value>
+  </data>
+  <data name="errNoI386RefInX64Src" xml:space="preserve">
+    <value>Kan inte hitta innehållet i 32-bitars "i386"-mappen. Den här x64-källan är korrupt.</value>
+  </data>
+  <data name="dlgAbout_ButtonOK" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="uxStatusBarDefaultText" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="statPreparingFixes" xml:space="preserve">
+    <value>Förbereder fixar...</value>
+  </data>
+  <data name="statExtractFile" xml:space="preserve">
+    <value>Packar upp "{0}"...</value>
+  </data>
+  <data name="statExtractWmpRedist" xml:space="preserve">
+    <value>Packar upp Windows Media Player 11 installationen...</value>
+  </data>
+  <data name="statSavingInis" xml:space="preserve">
+    <value>Sparar redigerade filer...</value>
+  </data>
+  <data name="statReadFiles" xml:space="preserve">
+    <value>Läser installationsfiler...</value>
+  </data>
+  <data name="statCompressEdited" xml:space="preserve">
+    <value>Komprimerar redigerade filer...</value>
+  </data>
+  <data name="statPrepareEdit" xml:space="preserve">
+    <value>Förbereder redigering av filer...</value>
+  </data>
+  <data name="uxGroupBoxBasicOpts" xml:space="preserve">
+    <value>Grundinställningar</value>
+  </data>
+  <data name="statInit" xml:space="preserve">
+    <value>Initierar...</value>
+  </data>
+  <data name="dlgTitle_Wmp64FilesMissing" xml:space="preserve">
+    <value>Hittar inte gamla WMP-komponenter</value>
+  </data>
+  <data name="errDirIdDuplicated" xml:space="preserve">
+    <value>DirId: "{0}" är definierad mer än en gång i "{1}"</value>
+  </data>
+  <data name="dlgIconError_Text" xml:space="preserve">
+    <value>Den specificerade filen tycks inte vara en giltig ikon.</value>
+  </data>
+  <data name="dlgPicker_AllFiles" xml:space="preserve">
+    <value>Alla filer</value>
+  </data>
+  <data name="statDetectingSource" xml:space="preserve">
+    <value>Kollar källtyp...</value>
+  </data>
+  <data name="dlgText_Wmp64FilesMissing" xml:space="preserve">
+    <value>Nödvändiga WMP9 och WMP6.4-filer saknas från den specificerade källan.
+
+Windows Media Player 11 kan inte integreras till en källa där dessa två komponenter har tagits bort med nLite eller liknande modifieringsverktyg.</value>
+  </data>
+  <data name="dlgUsageInfo_Text" xml:space="preserve">
+    <value>WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-sv-se.exe" /winsource:"D:\MinWindowsKälla" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"sökvägTillIkon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]
+
+/installer - Specificerar den fullständiga sökvägen till Microsoft WMP11-installationen.
+/winsource - Specificerar windowskällan att integrera WMP11 till.
+/hotfix - Specificerar extra WMP11 hotfixar att integrera.
+/output - Specificerar typ av WMP11 resultat, tillåtna värden: "Normal" eller "Tweaked".
+/customicon - Specificerar en egen ikon till wmplayer.exe, tillåtna värden: "Boooggy", "Vista" eller "Custom".
+/customiconpath - Specificerar platsen för den egna ikonen som används om /customicon är "Custom".
+/nocats - Modifierar WMP11-integrationen så att den inte inkluderar säkerhetskatalogerna (använda bara om WFP är av).
+/slipstream - Börja integrationen direkt om inga argument är ogiltiga och alla filer finns tillgängliga.
+/closeonsuccess - Stänger fönstret efter att jobbet är slutfört (om den lyckades).</value>
+  </data>
+  <data name="errInvalidKeyInWinntDirs" xml:space="preserve">
+    <value>Ogiltig nyckel i [WinntDirectories]-sektionen i "{0}": "{1}"</value>
+  </data>
+  <data name="uxGroupBoxAdvOpts" xml:space="preserve">
+    <value>Avancerade inställningar</value>
+  </data>
+  <data name="dlgWarnUxtheme_Text" xml:space="preserve">
+    <value>Vänligen integrera KB908536 efter den här processen är klar. Annars startar inte "Themes"-tjänsten efter installation från den här källan.</value>
+  </data>
+  <data name="LocalizerKey" xml:space="preserve">
+    <value>3270d2f650dacfe8c48f2f66ce3179d7</value>
+  </data>
+  <data name="uxButtonIntegrate" xml:space="preserve">
+    <value>&amp;Integrera</value>
+  </data>
+  <data name="dlgText_Cancelled" xml:space="preserve">
+    <value>Integrationen avbröts av användaren. Källan förblir oförändrad.</value>
+  </data>
+  <data name="statCompressAdded" xml:space="preserve">
+    <value>Komprimerar tillagda filer...</value>
+  </data>
+  <data name="uxLabelEnterHotfixLine" xml:space="preserve">
+    <value>Använd "..."-knappen för att välja WMP11 hotfixar att integrera:</value>
+  </data>
+  <data name="statApplyCustIcon" xml:space="preserve">
+    <value>Applicerar egen ikon...</value>
+  </data>
+  <data name="uxLabelChooseType" xml:space="preserve">
+    <value>Välj typ av WMP11 resultat:</value>
+  </data>
+  <data name="dlgWarnUxtheme_Title" xml:space="preserve">
+    <value>"Themes"-tjänst varning</value>
+  </data>
+  <data name="uxTypeTweaked" xml:space="preserve">
+    <value>Tweaked (med registertweaks och utan WGA)</value>
+  </data>
+  <data name="LocalizerName" xml:space="preserve">
+    <value>fric</value>
+  </data>
+  <data name="errHotfixArchMismatch" xml:space="preserve">
+    <value>Hotfixen du försöker integrera ({0}) är inte gjord för din installationskällas CPU arkitektur.
+Se till att båda är 32- eller 64-bitars versioner.</value>
+  </data>
+  <data name="errWmpRedistNoControlXml" xml:space="preserve">
+    <value>Ogiltig WMP11-installation vald. Kan inte hitta control.xml för att verifiera destinationstyp.</value>
+  </data>
+  <data name="dlgSrcPicker_Header" xml:space="preserve">
+    <value>Välj Microsoft® Windows™-källa att modifiera (måste innehålla en "i386"-mapp):</value>
+  </data>
+  <data name="statMergeFolders" xml:space="preserve">
+    <value>Lägger ihop mappar...</value>
+  </data>
+  <data name="statCompressCats" xml:space="preserve">
+    <value>Komprimerar säkerhetskatalogerna...</value>
+  </data>
+  <data name="statCompressFile" xml:space="preserve">
+    <value>Komprimerar "{0}"...</value>
+  </data>
+  <data name="dlgWarnOobe_Title" xml:space="preserve">
+    <value>"Out-of-box experience" varning</value>
+  </data>
+  <data name="statCleanTemp" xml:space="preserve">
+    <value>Rensar temporära mappar...</value>
+  </data>
+  <data name="errNoInfInHotfix" xml:space="preserve">
+    <value>Kunde inte hitta en lämplig informationsfil i "{0}".</value>
+  </data>
+  <data name="errControlXmlInvalid" xml:space="preserve">
+    <value>"{0}" har inte de förväntade faktorerna. Kan inte verifiera kompabilitet.</value>
+  </data>
+  <data name="dlgTitle_Success" xml:space="preserve">
+    <value>Lyckades</value>
+  </data>
+  <data name="uxCheckboxNoCats" xml:space="preserve">
+    <value>Lägg inte till säkerhetskatalogerna (för de som avaktiverar windows filskydd)</value>
+  </data>
+  <data name="uxLabelPreview" xml:space="preserve">
+    <value>Förhandsgranskning:</value>
+  </data>
+  <data name="dlgText_InvalidHotfixLine" xml:space="preserve">
+    <value>Ogiltig hotfixrad specifierad eller någon hotfix i listan existerar inte.
+
+Vänligen välj om hotfixar för integrering och försök igen.</value>
+  </data>
+  <data name="dlgPickHotfixes_Title" xml:space="preserve">
+    <value>Välj hotfix(ar) för integration i WMP11:</value>
+  </data>
+  <data name="errDeltaAPIFailed" xml:space="preserve">
+    <value>Delta API misslyckades med att applicera fix "{0}" till filen "{1}".</value>
+  </data>
+  <data name="errSourceNotSupported" xml:space="preserve">
+    <value>Kan inte integrera WMP11 till en windowskälla av den här typen.</value>
+  </data>
+  <data name="dlgTitle_Cancelled" xml:space="preserve">
+    <value>Avbruten</value>
+  </data>
+  <data name="errWmpRedistWrongVer" xml:space="preserve">
+    <value>Den här versionen av WMP11-installationen är inte gjord för den här installationskällan.
+
+Nuvarande WMP11-installation är gjord för: Windows v{0} {1}
+Nuvarande installationskälla: Windows v{2} {3}</value>
+  </data>
+  <data name="statExtractApplyHotfix" xml:space="preserve">
+    <value>Packar upp och applicerar hotfixar...</value>
+  </data>
+  <data name="errWmpRedistArchMismatch" xml:space="preserve">
+    <value>Den här versionen av Windows Media Player 11-installationen är inte kompatibel med OS installationen.
+Se till att båda är 32- eller 64-bitars versioner.</value>
+  </data>
+  <data name="uxRightToLeft" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="dlgIntegError_Header" xml:space="preserve">
+    <value>Ett fel inträffade under integrationen:</value>
+  </data>
+  <data name="LocalizerCulture" xml:space="preserve">
+    <value>sv-SE</value>
+  </data>
+  <data name="dlgIconPicker_Title" xml:space="preserve">
+    <value>Välj egen ikon:</value>
+  </data>
+  <data name="dlgTitle_InvalidHotfixLine" xml:space="preserve">
+    <value>Ogiltig hotfixrad</value>
+  </data>
+  <data name="dlgError_Header" xml:space="preserve">
+    <value>An unhandled exception has occurred in the worker thread.
+Please copy the following diagnostic information and post a bug report.</value>
+  </data>
+  <data name="uxButtonCancel" xml:space="preserve">
+    <value>&amp;Avbryt</value>
+  </data>
+  <data name="statReplaceInDriverCab" xml:space="preserve">
+    <value>Byter ut filer i drivrutinsarkivet...</value>
+  </data>
+  <data name="statDetOverwrite" xml:space="preserve">
+    <value>Avgör överskrivningsfiler...</value>
+  </data>
+  <data name="uxLabelDefaultOp" xml:space="preserve">
+    <value>Inga jobb</value>
+  </data>
+  <data name="dlgAbout_uxLabelTranslated" xml:space="preserve">
+    <value>Nuvarande översättning av:</value>
+  </data>
+  <data name="dlgWMPRedistPicker_Header" xml:space="preserve">
+    <value>Välj WMP11 installation (ex: wmp11-windowsxp-x86-sv-se.exe):</value>
+  </data>
+  <data name="statGenFileList" xml:space="preserve">
+    <value>Genererar fillista...</value>
+  </data>
+  <data name="dlgError_Footer" xml:space="preserve">
+    <value>Klicka på "Stäng" för att gå tillbaka till applikationen.</value>
+  </data>
+  <data name="errUnsupportedFixAttempt" xml:space="preserve">
+    <value>Försök att integrera en icke-WMP11 hotfix. Olämplig fil: "{0}", tillhör hotfix {1}
+
+Du kan behöva en uppdaterad version av det här programmet för att integrera den här hotfixen på rätt sätt.</value>
+  </data>
+  <data name="errMissingSetupFileFromArch" xml:space="preserve">
+    <value>Den nödvändiga installationsfilen "{0}" saknas från den här källan. Källan är korrupt.</value>
+  </data>
+  <data name="dlgTitle_WmpRedistNotFound" xml:space="preserve">
+    <value>Lyckades inte hitta WMP11 installationsfilen</value>
+  </data>
+  <data name="statCompressOverwrite" xml:space="preserve">
+    <value>Komprimerar överskrivningsfiler...</value>
+  </data>
+  <data name="dlgWarnOobe_Text" xml:space="preserve">
+    <value>Vänligen integrera KB894871 efter den här processen är klar. Annars startar inte OOBE (out-of-box experience) guiden vid första start efter installation från den här källan.</value>
+  </data>
+</root>

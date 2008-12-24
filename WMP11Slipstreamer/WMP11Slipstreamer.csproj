@@ -97,7 +97,7 @@
     <Compile Include="Epsilon\Win32\Resources\ResourceEditor.cs" />
     <Compile Include="Epsilon\WindowsModTools\SourceDetector.cs" />
     <Compile Include="Epsilon\WindowsModTools\WindowsSourceInfo.cs" />
-    <Compile Include="Messages.Designer.cs">
+    <Compile Include="Localization\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
@@ -132,7 +132,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Backend\HotfixParserEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Messages.resx">
+    <EmbeddedResource Include="Localization\Messages.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>

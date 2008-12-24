@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
+using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {

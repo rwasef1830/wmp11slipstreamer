@@ -78,7 +78,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(87, 27);
             this.okButton.TabIndex = 26;
-            this.okButton.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Messages.dlgAbout_ButtonOK;
+            this.okButton.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Localization.Messages.dlgAbout_ButtonOK;
             // 
             // logoPictureBox
             // 
@@ -117,7 +117,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.textBoxDescription.Size = new System.Drawing.Size(317, 198);
             this.textBoxDescription.TabIndex = 23;
             this.textBoxDescription.TabStop = false;
-            this.textBoxDescription.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Messages.dlgAbout_InfoText;
+            this.textBoxDescription.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Localization.Messages.dlgAbout_InfoText;
             // 
             // labelVersion
             // 
@@ -152,7 +152,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.linkLabel1.Size = new System.Drawing.Size(193, 17);
             this.linkLabel1.TabIndex = 25;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Messages.dlgAbout_GotoSite;
+            this.linkLabel1.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Localization.Messages.dlgAbout_GotoSite;
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // labelTranslator
@@ -162,7 +162,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.labelTranslator.Name = "labelTranslator";
             this.labelTranslator.Size = new System.Drawing.Size(151, 17);
             this.labelTranslator.TabIndex = 27;
-            this.labelTranslator.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Messages.dlgAbout_uxLabelTranslated;
+            this.labelTranslator.Text = global::Epsilon.Slipstreamers.WMP11Slipstreamer.Localization.Messages.dlgAbout_uxLabelTranslated;
             // 
             // AboutBox
             // 

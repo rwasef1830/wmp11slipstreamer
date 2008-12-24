@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer {
+namespace Epsilon.Slipstreamers.WMP11Slipstreamer.Localization {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Epsilon.Slipstreamers.WMP11Slipstreamer.Messages", typeof(Messages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Epsilon.Slipstreamers.WMP11Slipstreamer.Localization.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
