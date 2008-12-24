@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>
@@ -26,6 +26,11 @@
     <DelaySign>false</DelaySign>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <StartupObject>Epsilon.Slipstreamers.WMP11Slipstreamer.EntryPoint</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -183,7 +188,7 @@
     <Compile Include="..\..\..\n7Framework\trunk\n7Framework\Epsilon\WindowsModTools\WindowsSourceInfo.cs">
       <Link>Epsilon\WindowsModTools\WindowsSourceInfo.cs</Link>
     </Compile>
-    <Compile Include="Backend\Hacks.cs" />
+    <Compile Include="Backend\FixWbem.cs" />
     <Compile Include="Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

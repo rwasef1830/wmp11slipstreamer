@@ -2,34 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using Epsilon.WindowsModTools;
 using System.IO;
 using System.Collections.ObjectModel;
+using Epsilon.WindowsModTools;
 
 namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 {
-    public class BackendParams : SlipstreamerArguments
+    public class BackendParams : SlipstreamerArgumentsBase
     {
         public readonly string WmpInstallerSource;
         public readonly string HotfixFolder;
         public readonly ReadOnlyCollection<string> HotfixFiles;
         public readonly PackageType RequestedType;
         public readonly byte[] CustomIcon;
-        public readonly bool IgnoreCats;
 
         public BackendResult Result;
 
         public BackendParams(string winSrc, WindowsSourceInfo srcInfo, 
             string wmpInstallerSource, string hotfixLine, PackageType addonType, 
-            byte[] customIcon, bool ignoreCats) : base(winSrc, srcInfo)
+            byte[] customIcon, bool ignoreCats) : base(winSrc, srcInfo, ignoreCats)
         {
             this.WmpInstallerSource = Path.GetFullPath(wmpInstallerSource);
             base.ParseHotfixLine(hotfixLine, out this.HotfixFolder, out this.HotfixFiles);
             this.CustomIcon = customIcon;
-
             this.RequestedType = addonType;
-            this.IgnoreCats = ignoreCats;
-
             this.Result = BackendResult.NotStarted;
         }
     }

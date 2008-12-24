@@ -57,7 +57,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 // If it made it up to here with no exceptions, then it succeeded.
                 paramsBackend.Result = BackendResult.Success;
             }
-            catch (Backend.Exceptions.BackendAbortedException)
+            catch (Backend.Exceptions.SlipstreamerAbortedException)
             {
                 try
                 {

@@ -15,7 +15,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// Applies a fix to wbemoc.inf to fix missing file error
         /// during Windows setup.
         /// </summary>
-        void FixWBEM()
+        void FixWbem()
         {
             const string wbemInf = "wbemoc.inf";
             string[] sectionsToFix = new string[] { "WBEM.CopyMOFs" };
@@ -45,30 +45,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
                 wbemOcEditor.SaveIni();
             }
-        }
-
-        /// <summary>
-        /// Applies various IniParser overrides to fix txtsetup.sif output
-        /// to accomodate for the MS' broken INF parser
-        /// </summary>
-        /// <param name="parser">The editor for "txtsetup.sif"</param>
-        static void ApplyTxtsetupEditorHacks(IniParser parser)
-        {
-            const int csvSDN = 4;
-            IniParser.SectionOverrides overrides = new IniParser.SectionOverrides(csvSDN);
-            parser.SetSectionOutputOverrides("SourceDisksNames", overrides);
-            parser.SetSectionOutputOverrides("SourceDisksNames.x86", overrides);
-            parser.SetSectionOutputOverrides("SourceDisksNames.amd64", overrides);
-            parser.SetSectionOutputOverrides("SourceDisksNames.ia64", overrides);
-
-            overrides = new IniParser.SectionOverrides(0, IniParser.QuotePolicy.On);
-            parser.SetSectionOutputOverrides("Keyboard Layout", overrides);
-
-            // Fix for bug on Hungarian XP: http://boooggy.org/forum/viewtopic.php?p=67#p67
-            overrides = new IniParser.SectionOverrides(3);
-            parser.SetSectionOutputOverrides("Mouse", overrides);
-
-            parser.EnableLastValueQuotes = true;
         }
     }
 }

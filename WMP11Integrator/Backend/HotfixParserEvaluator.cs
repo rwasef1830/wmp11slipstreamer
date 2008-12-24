@@ -34,7 +34,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             HelperConsole.InfoWriteLine(op.ToString(), "Op");
             HelperConsole.RawWriteLine(String.Empty);
 
-            if (CM.OperationTypeContains(op,
+            if (HotfixInfParser.OperationTypeContains(op,
                 HotfixInfParser.OperationType.RegistryPresentOrComparison))
             {
                 bool finalResult = false;

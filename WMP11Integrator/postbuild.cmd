@@ -3,10 +3,11 @@ set ProjectDir=%~1
 set TargetName=%~3
 set TargetPath=%ProjectDir%%~2%TargetName%
 set KeyPath=%ProjectDir%%~4
+set MtPath=%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\mt.exe
 If "%4"=="" goto error
 Echo ** Performing post-build tasks...
 Echo ** Embedding Vista manifest...
-mt.exe -nologo -manifest "%ProjectDir%%TargetName%.manifest" -outputresource:"%TargetPath%;#1"
+"%MtPath%" -nologo -manifest "%ProjectDir%%TargetName%.manifest" -outputresource:"%TargetPath%;#1"
 If %errorlevel% gtr 0 set lasterror=%errorlevel%
 If defined lasterror goto exitonerror
 Echo ** Re-signing executable...

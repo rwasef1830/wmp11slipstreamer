@@ -25,12 +25,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
     public partial class Backend : SlipstreamerBase
     {
         public Backend(BackendParams paramsObject) 
-            : base(13, paramsObject, "wmp11temp")
-        {
-            // Initialise fields
-            this._params = paramsObject;
-            CancelCheckpoint();
-        }
+            : base(13, paramsObject, "wmp11temp") { }
 
         /// <summary>
         /// Runs the slipstream operation
@@ -49,7 +44,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             {
 #endif
                 this.MergeFolders();
-                this.CleanUpFolders();
+                this.Cleanup();
 #if DEBUG
             }
 #endif
@@ -60,22 +55,22 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// </summary>
         protected override bool SourceIsSupported()
         {
-            switch (this._osInfo.SourceVersion)
+            switch (this.Parameters.SourceInfo.SourceVersion)
             {
                 case WindowsType._Server2003:
-                    if (_osInfo.ServicePack < 1)
+                    if (this.Parameters.SourceInfo.ServicePack < 1)
                         return false;
                     break;
 
                 case WindowsType._XP:
-                    if (_osInfo.Arch == TargetArchitecture.x86)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                     {
-                        if (_osInfo.ServicePack < 2)
+                        if (this.Parameters.SourceInfo.ServicePack < 2)
                             return false;
                     }
                     else
                     {
-                        if (_osInfo.ServicePack < 1)
+                        if (this.Parameters.SourceInfo.ServicePack < 1)
                             return false;
                     }
                     break;
@@ -84,7 +79,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     return false;
             }
 
-            if (this._osInfo.ReducedMediaEdition)
+            if (this.Parameters.SourceInfo.ReducedMediaEdition)
                 return false;
 
             return true;
@@ -97,66 +92,36 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         void PrepareForParse()
         {
             this.OnAnnounce(Messages.statReadFiles);
-            string[] uncompressedTempFiles = new string[]
-            {
-                "TXTSETUP.SIF",
-                "DOSNET.INF",
-                "DRVINDEX.INF"
-            };
-            foreach (string file in uncompressedTempFiles)
-            {
-                string fileToCopy = this.CreatePathString(
-                    this._archDir, file);
-                if (File.Exists(fileToCopy))
-                {
-                    FileSystem.CopyFile(fileToCopy,
-                        this.CreatePathString(this._workDir, file));
-                }
-                else
-                {
-                    throw new
-                        Exceptions.IntegrationException(
-                        String.Format(
-                        Messages.errMissingSetupFileFromArch,
-                        file
-                        )
-                    );
-                }
-            }
+            base.ExtractAndParseArchFiles();
 
-            foreach (string file in _possCompArchFile)
-            {
-                CancelCheckpoint();
-                CopyOrExpandFromArch(file, this._workDir, false);
-            }
-
-            CancelCheckpoint();
-
-            if (_osInfo.SourceVersion == WindowsType._Server2003 || 
-                _osInfo.Arch == TargetArchitecture.x64)
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003 || 
+                this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
             {
                 // Determine which CAB to extract to repack drivers
                 this.OnAnnounce(Messages.statReplaceInDriverCab);
-                _drvIndexEditor = new IniParser(
+                this._drvindexInf = new IniParser(
                     this.CreatePathString(_archDir, "DrvIndex.inf"), true
                 );
-
-                if (this._osInfo.Arch == TargetArchitecture.x86)
+                
+                // XXX On x86, get the highest spn.cab filename, on x64 force it to be driver.cab
+                // because we have a bug where there is driver32.cab and driver.cab and we end
+                // up selecting the wrong cabinet.
+                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 {
                     List<string> cabFilesData =
-                        this._drvIndexEditor.ReadAllValues("Version", "CabFiles");
+                        this._drvindexInf.ReadAllValues("Version", "CabFiles");
                     cabFilesData.Sort(StringComparer.OrdinalIgnoreCase);
                     string variableName = cabFilesData[cabFilesData.Count - 1];
-                    _driverCabFile = _drvIndexEditor.ReadValue("Cabs", variableName);
+                    this._driverCabFile = this._drvindexInf.ReadValue("Cabs", variableName);
                 }
                 else
                 {
-                    _driverCabFile = "driver.cab";
+                    this._driverCabFile = "driver.cab";
                 }
                 
                 CancelCheckpoint();
                 
-                this.OnAnnounce(String.Format(Messages.statExtractFile, _driverCabFile));
+                this.OnAnnounce(String.Format(Messages.statExtractFile, this._driverCabFile));
 
                 this.OnResetCurrentProgress();
 #if DEBUG
@@ -176,23 +141,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this.OnHideCurrentProgress();
             }
 
-            this.OnAnnounce(Messages.statReadFiles);
-            _txtsetupSifEditor = new IniParser(
-                this.CreatePathString(_workDir, "Txtsetup.Sif"), true
-            );
-            _dosnetInfEditor = new IniParser(
-                this.CreatePathString(_workDir, "Dosnet.Inf"), true
-            );
-
-            ApplyTxtsetupEditorHacks(_txtsetupSifEditor);
-
-            _sysocInfEditor = new IniParser(
-                this.CreatePathString(_workDir, "SysOc.Inf"), true
-            );
-            _svcpackInfEditor = new IniParser(
-                this.CreatePathString(_workDir, "Svcpack.Inf"), true
-            );
-            CancelCheckpoint();
             this.OnIncrementGlobalProgress();
         }
 
@@ -221,22 +169,22 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             // repository5: Server 2003 x32
             // repository6: (reserved)
             // repository7: XP/2k3 x64
-            switch (_osInfo.SourceVersion)
+            switch (this.Parameters.SourceInfo.SourceVersion)
             {
                 case WindowsType._Unknown:
                     throw new Exceptions.IntegrationException(Messages.errSrcTypeDetectFail);
 
                 case WindowsType._XP:
-                    if (_osInfo.Arch == TargetArchitecture.x64)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                         repository = Properties.Resources.repository7;
-                    else if (_osInfo.Edition == WindowsEdition.MediaCenter)
+                    else if (this.Parameters.SourceInfo.Edition == WindowsEdition.MediaCenter)
                         repository = Properties.Resources.repository4;
                     else
                         repository = Properties.Resources.repository3;
                     break;
 
                 case WindowsType._Server2003:
-                    if (_osInfo.Arch == TargetArchitecture.x64)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                         goto case WindowsType._XP;
                     else
                         repository = Properties.Resources.repository5;
@@ -269,8 +217,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 {
                     FileSystem.MoveFileOverwrite(
                         this.CreatePathString(tempFolder, essentialOverwrite),
-                        this.CreatePathString(_extractDir, 
-                        essentialOverwrite)
+                        this.CreatePathString(_extractDir, essentialOverwrite)
                     );
                 }
             }
@@ -315,7 +262,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             string[] filesToExtract = null;
 
-            switch (this._osInfo.Arch)
+            switch (this.Parameters.SourceInfo.Arch)
             {
                 case TargetArchitecture.x86:
                     filesToExtract = new string[] {
@@ -339,8 +286,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             ProgressTracker currProgress 
                 = new ProgressTracker(filesToExtract.Length + 2);
 
-            HelperConsole.InfoWriteLine(_params.WmpInstallerSource, "NativeExtractHotfix");
-            NativeExtractHotfix(_params.WmpInstallerSource, _extractDir);
+            HelperConsole.InfoWriteLine(this.Parameters.WmpInstallerSource, "NativeExtractHotfix");
+            NativeExtractHotfix(this.Parameters.WmpInstallerSource, _extractDir);
             this.OnIncrementCurrentProgress(currProgress);
 
             // Read control.xml and determine if we're on correct installer or not
@@ -360,14 +307,17 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
                 this.OnIncrementCurrentProgress(currProgress);
             }
-            if (this._osInfo.SourceVersion != WindowsType._Server2003
-                && this._osInfo.Arch == TargetArchitecture.x86)
+
+            // Don't extract wmpappcompat for Server 2003 or any x64 architecture
+            if (this.Parameters.SourceInfo.SourceVersion != WindowsType._Server2003
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
                 NativeExtractHotfix(this.CreatePathString(_extractDir,
                     "wmpappcompat.exe"), _extractDir);
             }
             this.OnIncrementCurrentProgress(currProgress);
 
+            // Move anything in SP2QFE back in to extracted (flatten tree)
             if (Directory.Exists(this.CreatePathString(_extractDir, 
                 "SP2QFE")))
             {
@@ -376,8 +326,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     SearchOption.AllDirectories))
                 {
                     string filename = Path.GetFileName(filepath);
-                    File.Move(filepath, this.CreatePathString(_extractDir, 
-                        filename));
+                    File.Move(filepath, 
+                        this.CreatePathString(_extractDir, filename));
                 }
             }
 
@@ -419,19 +369,12 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 Version osVer = null;
                 string osArch = null;
 
-                if (this._osInfo.Arch == TargetArchitecture.x86)
+                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                     osArch = "x86";
-                else if (this._osInfo.Arch == TargetArchitecture.x64)
+                else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     osArch = "amd64";
 
-                if (this._osInfo.SourceVersion == WindowsType._2000)
-                    osVer = new Version(5, 0, 2195);
-                else if (this._osInfo.SourceVersion == WindowsType._Server2003
-                    || (this._osInfo.SourceVersion == WindowsType._XP 
-                    && this._osInfo.Arch == TargetArchitecture.x64))
-                    osVer = new Version(5, 2, 3790);
-                else if (this._osInfo.SourceVersion == WindowsType._XP)
-                    osVer = new Version(5, 1, 2600);
+                osVer = this.Parameters.SourceInfo.ToVersion();
 
                 if (osVer.CompareTo(osLowerBoundVer) < 0
                     || osVer.CompareTo(osUpperBoundVer) > 0
@@ -459,9 +402,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             PeEditor editor = new PeEditor(updateFilename);
             FileSystem.Delete(updateFilename);
             return (editor.TargetMachineType == Architecture.x86
-                && this._osInfo.Arch == TargetArchitecture.x86)
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 || (editor.TargetMachineType == Architecture.x64
-                && this._osInfo.Arch == TargetArchitecture.x64);
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x64);
         }
 
         void ParseAndEditFiles()
@@ -472,23 +415,23 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             string txtsetupDirSection = null;
             string svcPackSection = null;
 
-            // HACK SP3 Bug fix
-            if (this._osInfo.SourceVersion == WindowsType._XP
-                && this._osInfo.ServicePack == 3)
+            // HACK Fix bug introduced by Microsoft into SP3 in wbemoc.inf
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
+                && this.Parameters.SourceInfo.ServicePack == 3)
             {
-                this.FixWBEM();
+                this.FixWbem();
             }
 
-            switch (this._osInfo.SourceVersion)
+            switch (this.Parameters.SourceInfo.SourceVersion)
             {
                 case WindowsType._XP:
-                    if (this._osInfo.Arch == TargetArchitecture.x64)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     {
                         dosnetFilesSection = "xp_x64_dosnet_files";
                         txtsetupFilesSection = "xp_x64_txtsetup_files";
                         svcPackSection = "xp_x64_svcpack";
                     }
-                    else if (this._osInfo.Edition == WindowsEdition.MediaCenter)
+                    else if (this.Parameters.SourceInfo.Edition == WindowsEdition.MediaCenter)
                     {
                         dosnetFilesSection = "mce_dosnet_files";
                         txtsetupFilesSection = "mce_txtsetup_files";
@@ -503,7 +446,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     break;
 
                 case WindowsType._Server2003:
-                    if (this._osInfo.Arch == TargetArchitecture.x64)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     {
                         goto case WindowsType._XP;
                     }
@@ -515,7 +458,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     break;
             }
 
-            this.ResolveDestinationDirIdConflicts(txtsetupFilesSection, 
+            this.ResolveDestinationDirIdConflicts(
+                txtsetupFilesSection, 
                 txtsetupDirSection);
 
             OrderedDictionary<string, List<string>> txtsetupFilesRef
@@ -531,7 +475,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this._filesToCopyInArch = new Dictionary<string, string>(
                 StringComparer.OrdinalIgnoreCase
             );
-            if (this._osInfo.Arch == TargetArchitecture.x64)
+
+            if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
             {
                 this._filesToCompressInI386 = new Dictionary<string, string>(
                     StringComparer.OrdinalIgnoreCase
@@ -540,7 +485,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 // Figure out which SourceDisksNames entry for
                 // I386 folder on x64 platform
                 OrderedDictionary<string, List<string>> sourceDisksNames
-                    = this._txtsetupSifEditor.GetRef("SourceDisksNames.amd64");
+                    = this._txtsetupSif.GetRef("SourceDisksNames.amd64");
                 foreach (KeyValuePair<string, List<string>> pair in sourceDisksNames)
                 {
                     if (pair.Value.Count > 3 && CM.SEqO(pair.Value[3], @"\i386", true))
@@ -555,7 +500,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
             }
             
-            this._txtsetupSifEditor.Add(
+            this._txtsetupSif.Add(
                 "SourceDisksFiles",
                 txtsetupFilesRef,
                 IniParser.KeyExistsPolicy.Ignore
@@ -563,7 +508,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             if (txtsetupDirSection != null)
             {
-                this._txtsetupSifEditor.Add(
+                this._txtsetupSif.Add(
                     "WinntDirectories",
                     this._entriesCombinedEditor.GetRef(txtsetupDirSection),
                     IniParser.KeyExistsPolicy.Ignore
@@ -602,7 +547,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     StringComparison.OrdinalIgnoreCase);
 
                 // Check if this a 32-bit file on a x64 source
-                isX6432bitFile = this._osInfo.Arch == TargetArchitecture.x64
+                isX6432bitFile = this.Parameters.SourceInfo.Arch == TargetArchitecture.x64
                     && int.Parse(txtPair.Value[0]) == this._sdnEntryI386Folder;
 
                 // Add to the dictionary
@@ -628,7 +573,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.OnAnnounce(String.Format(Messages.statEditFile, "Dosnet.inf"));
             OrderedDictionary<string, List<string>> dosnetRef 
                 = this._entriesCombinedEditor.GetRef(dosnetFilesSection);
-            this._dosnetInfEditor.Add(
+            this._dosnetInf.Add(
                 "Files",
                 dosnetRef,
                 IniParser.KeyExistsPolicy.Ignore
@@ -653,19 +598,19 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 throw new Exceptions.IntegrationException(
                     "SysOc-referenced Inf not referenced in [dosnet_files].");
 
-            this._sysocInfEditor.Add(
+            this._sysocInf.Add(
                 "Components",
                 sysOcRef[0].Key,
                 sysOcRef[0].Value,
                 IniParser.KeyExistsPolicy.Ignore
             );
 
-            if (!this._params.IgnoreCats)
+            if (!this.Parameters.IgnoreCats)
             {
             	this.OnAnnounce(String.Format(Messages.statEditFile, "Svcpack.inf"));
 
                 List<string[]> svcpackData = new List<string[]>();
-                if (this._osInfo.Arch == TargetArchitecture.x86)
+                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 {
                     svcpackData.AddRange(this._entriesCombinedEditor.ReadCsvLines(
                         "common_svcpack", 2));
@@ -678,33 +623,33 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
 
                 // Fixing fresh svcpack.inf
-                this._svcpackInfEditor.RemoveLine(
+                this._svcpackInf.RemoveLine(
                     "SetupData",
                     "CatalogSubDir"
                 );
 
-                this._svcpackInfEditor.Add(
+                this._svcpackInf.Add(
                     "SetupData",
                     "CatalogSubDir",
-                    (this._osInfo.Arch == TargetArchitecture.x86) ?
+                    (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86) ?
                     @"""\i386\svcpack""" : @"""\amd64\svcpack""",
                     IniParser.KeyExistsPolicy.Discard
                 );
 
-                // Add data if not exists
+                // Write critical svcpack.inf keys
                 Dictionary<string, int> svcpackCriticalKeys 
                     = new Dictionary<string, int>(3);
 
-                if (this._osInfo.SourceVersion == WindowsType._Server2003
-                    || (this._osInfo.SourceVersion == WindowsType._XP
-                    && this._osInfo.Arch == TargetArchitecture.x64))
+                if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003
+                    || (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
+                    && this.Parameters.SourceInfo.Arch == TargetArchitecture.x64))
                 {
                     svcpackCriticalKeys.Add("MajorVersion", 5);
                     svcpackCriticalKeys.Add("MinorVersion", 2);
                     svcpackCriticalKeys.Add("BuildNumber", 3790);
                 }
-                else if ((_osInfo.SourceVersion == WindowsType._XP)
-                    && _osInfo.Arch == TargetArchitecture.x86)
+                else if ((this.Parameters.SourceInfo.SourceVersion == WindowsType._XP)
+                    && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 {
                     svcpackCriticalKeys.Add("MajorVersion", 5);
                     svcpackCriticalKeys.Add("MinorVersion", 1);
@@ -713,9 +658,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                 foreach (KeyValuePair<string, int> pair in svcpackCriticalKeys)
                 {
-                    if (!this._svcpackInfEditor.KeyExists("Version", pair.Key))
+                    if (!this._svcpackInf.KeyExists("Version", pair.Key))
                     {
-                        this._svcpackInfEditor.Add("Version", pair.Key,
+                        this._svcpackInf.Add("Version", pair.Key,
                             pair.Value.ToString(), 
                             IniParser.KeyExistsPolicy.Discard);
                     }
@@ -741,7 +686,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     }
                 }
 
-                this._svcpackInfEditor.Add(
+                this._svcpackInf.Add(
                     "ProductCatalogsToInstall",
                     this._filesToCompressInSvcpack.Keys,
                     false, false);
@@ -803,7 +748,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                 // HACK Fix some xml files overwriting each other due to same short 
                 // name but diff folders on x32
-                if (this._osInfo.Arch == TargetArchitecture.x86)
+                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 {
                     this._filesToCompressInCab["connecti.xml"]
                         = "connectionmanager_stub.xml";
@@ -813,12 +758,12 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         = "mediareceiverregistrar_stub.xml";
                 }
 
-                switch (this._params.RequestedType)
+                switch (this.Parameters.RequestedType)
                 {
                     case PackageType.Vanilla:
                         // Removing Tweaks.AddReg sections to get vanilla
                         string[] sectionsToProcess;
-                        if (this._osInfo.Arch == TargetArchitecture.x86)
+                        if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                         {
                             sectionsToProcess = new string[] {
                                 "InstallWMP7", "InstallWMP7.Reg"
@@ -849,9 +794,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                         // Remove quick launch and desktop icon stuff
                         string[] removeSources = null;
-                        if (this._osInfo.Arch == TargetArchitecture.x86)
+                        if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                             removeSources = new string[] { "PerUserStub" };
-                        else if (this._osInfo.Arch == TargetArchitecture.x64)
+                        else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                             removeSources = sectionsToProcess;
                         foreach (string wmp11Sect in removeSources)
                         {
@@ -888,7 +833,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                         //NotSupportedException exception = new NotSupportedException(
                         //    "Unknown or unsupport package type requested.");
-                        //exception.Data.Add("PackageType", this._params.RequestedType);
+                        //exception.Data.Add("PackageType", this.Parameters.RequestedType);
                         //throw exception;
                         goto case PackageType.Vanilla;
                 }
@@ -904,10 +849,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             CancelCheckpoint();
 
             // Figure out the external cab filename from the external inf
-            if (this._osInfo.Arch == TargetArchitecture.x86)
+            if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 this._externalCabFilename = this._wmp11ExtInfEditor.ReadAllValues(
                     "SourceDisksNames.x86", "1")[1];
-            else if (this._osInfo.Arch == TargetArchitecture.x64)
+            else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                 this._externalCabFilename = this._wmp11ExtInfEditor.ReadAllValues(
                     "SourceDisksNames.amd64", "1")[1];
 
@@ -923,7 +868,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             int biggestNumber = 0;
             Dictionary<int, string> usedTxtSetupDirs = new Dictionary<int, string>();
             foreach (KeyValuePair<string, List<string>> winntDirPair
-                in _txtsetupSifEditor.GetRef("WinntDirectories"))
+                in _txtsetupSif.GetRef("WinntDirectories"))
             {
                 int number;
                 if (int.TryParse(winntDirPair.Key, out number))
@@ -939,7 +884,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         throw new Exceptions.IntegrationException(
                             string.Format(
                             Messages.errDirIdDuplicated,
-                            number, this._txtsetupSifEditor.IniFileInfo.Name)
+                            number, this._txtsetupSif.IniFileInfo.Name)
                             );
                     }
                 }
@@ -948,7 +893,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     throw new Exceptions.IntegrationException(
                         String.Format(
                         Messages.errInvalidKeyInWinntDirs,
-                        winntDirPair.Key, this._txtsetupSifEditor.IniFileInfo.Name));
+                        winntDirPair.Key, this._txtsetupSif.IniFileInfo.Name));
                 }
             }
 
@@ -1108,7 +1053,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             // Get rid of superseded fixes by adding the hotfixes
             // listed in hotfixFileDictionary values only
-            if (!this._params.IgnoreCats)
+            if (!this.Parameters.IgnoreCats)
             {
                 foreach (IEnumerable<string> hotfixList in hotfixFileDictionary.Values)
                 {
@@ -1120,24 +1065,24 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             }
 
             // MCE requires KB913800 even with WMP11 installed
-            if (this._osInfo.SourceVersion == WindowsType._XP
-                && this._osInfo.Edition == WindowsEdition.MediaCenter
-                && this._osInfo.Arch == TargetArchitecture.x86)
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
+                && this.Parameters.SourceInfo.Edition == WindowsEdition.MediaCenter
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
                 this.IntegrateKB913800(fixesFolder);
             }
 
             // HACK Special treatment for KB926239 - Acadproc
-            if (_osInfo.SourceVersion == WindowsType._XP
-                && _osInfo.Arch == TargetArchitecture.x86)
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
                 ProcessKB926239(tempCompareFolder,
                     this.CreatePathString(_extractDir, "Update"));
             }
 
             // Check Uxtheme.dll and Msobmain.dll versions
-            if (this._osInfo.SourceVersion == WindowsType._XP
-                && this._osInfo.Arch == TargetArchitecture.x86)
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
+                && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
                 Version minUxthemeVer = new Version(6, 0, 2900, 2845);
                 Version minMsobmainVer = new Version(5, 1, 2600, 2659);
@@ -1188,18 +1133,18 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             // Normal hotfix file list dictionaries
             Dictionary<string, IEnumerable<string>> hotfixFileDictionary
                 = new Dictionary<string, IEnumerable<string>>(
-                    this._params.HotfixFiles.Count, StringComparer.OrdinalIgnoreCase);
+                    this.Parameters.HotfixFiles.Count, StringComparer.OrdinalIgnoreCase);
 
             ProgressTracker hfixExtractProgress = new ProgressTracker(
-                this._params.HotfixFiles.Count);
+                this.Parameters.HotfixFiles.Count);
             this.OnResetCurrentProgress();
 
-            foreach (string hotfix in this._params.HotfixFiles)
+            foreach (string hotfix in this.Parameters.HotfixFiles)
             {
                 try
                 {
                     NativeExtractHotfix(this.CreatePathString(
-                        this._params.HotfixFolder, hotfix), fixesFolder);
+                        this.Parameters.HotfixFolder, hotfix), fixesFolder);
                     if (!HotfixMatchesArch(fixesFolder))
                     {
                         throw new Exceptions.IntegrationException(
@@ -1232,16 +1177,16 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                     // Hotfix Update.inf processor condition evaluator
                     HotfixParserEvaluator evaluator = new HotfixParserEvaluator(
-                        this._extractDir, this._osInfo);
+                        this._extractDir, this.Parameters.SourceInfo);
 
                     // Hotfix Update.inf processor
                     HotfixInfParser hotfixParser = new HotfixInfParser(updateInfEditor,
-                        evaluator.EvaluateCondition, this._osInfo);
+                        evaluator.EvaluateCondition, this.Parameters.SourceInfo);
 
                     // HACK Block WMPAPPCOMPAT from Server 2003, in case someone 
                     // gets smart and tries to integrate it by itself
                     if (CM.SEqO(hotfixParser.HotfixName, "KB926239", true)
-                        && _osInfo.SourceVersion == WindowsType._Server2003)
+                        && this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003)
                     {
                         this.OnIncrementCurrentProgress(hfixExtractProgress);
                         continue;
@@ -1290,7 +1235,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                             // Bug reported here: Sometimes fixFullPath doesn't exist
                             // and CompareVersions throws FileNotFoundException
                             FileVersionComparison result
-                                = CM.CompareVersions(fixFullPath,
+                                = CompareVersions(fixFullPath,
                                 orgFullPath);
                             if (result == FileVersionComparison.Newer)
                             {
@@ -1335,19 +1280,15 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         void SaveFiles()
         {
             this.OnAnnounce(Messages.statSavingInis);
+
+            // Save wmp11 infs
             FileSystem.UnsetReadonly(this._wmp11ExtInfEditor.IniFileInfo);
             FileSystem.UnsetReadonly(this._wmp11InfEditor.IniFileInfo);
-            FileSystem.UnsetReadonly(this._txtsetupSifEditor.IniFileInfo);
-            FileSystem.UnsetReadonly(this._dosnetInfEditor.IniFileInfo);
-            FileSystem.UnsetReadonly(this._sysocInfEditor.IniFileInfo);
-            FileSystem.UnsetReadonly(this._svcpackInfEditor.IniFileInfo);
-
             this._wmp11ExtInfEditor.SaveIni();
             this._wmp11InfEditor.SaveIni();
-            this._txtsetupSifEditor.SaveIni();
-            this._dosnetInfEditor.SaveIni();
-            this._sysocInfEditor.SaveIni();
-            this._svcpackInfEditor.SaveIni();
+
+            this.SaveArchFiles();
+
             this.OnIncrementGlobalProgress();
         }
 
@@ -1364,12 +1305,12 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this._workDir, this._externalInfFilename));
 
             // Insert the custom icon
-            if (this._params.CustomIcon != null)
+            if (this.Parameters.CustomIcon != null)
             {
                 this.OnAnnounce(Messages.statApplyCustIcon);
                 ResourceEditor resEdit = new ResourceEditor(
                     this.CreatePathString(this._extractDir, "wmplayer.exe"));
-                resEdit.ReplaceMainIcon(this._params.CustomIcon);
+                resEdit.ReplaceMainIcon(this.Parameters.CustomIcon);
                 resEdit.Close();
                 PeEditor editor = new PeEditor(this.CreatePathString(
                     this._extractDir, "wmplayer.exe"));
@@ -1410,19 +1351,11 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             this.OnResetCurrentProgress();
 
-#if DEBUG
-            DateTime before = DateTime.Now;
-#endif
             Archival.NativeCabinetCreate(this.CreatePathString(
                 this._workDir, this._externalCabFilename),
                 wmp11cabdirectory, 
                 true, FCI.CompressionLevel.Lzx21, null,
                 this.OnUpdateCurrentProgress);
-#if DEBUG
-            DateTime after = DateTime.Now;
-            TimeSpan timeTaken = after - before;
-            this.OnDebuggingMessage(timeTaken.ToString(), "Time Taken");
-#endif
             this.OnHideCurrentProgress();
             this.OnIncrementGlobalProgress();
 
@@ -1450,7 +1383,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             foreach (KeyValuePair<string, string> pair in _filesToCompressInArch)
             {
                 RenameAndCompressArchFile(pair.Key, pair.Value, 
-                    this._osInfo.Arch, true, null);
+                    this.Parameters.SourceInfo.Arch, true, null);
                 this.OnIncrementCurrentProgress(compProgress);
                 this.CancelCheckpoint();
             }
@@ -1467,7 +1400,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             foreach (KeyValuePair<string, string> pair in _filesToCopyInArch)
             {
                 RenameAndCompressArchFile(pair.Key, pair.Value,
-                    this._osInfo.Arch, false, null);
+                    this.Parameters.SourceInfo.Arch, false, null);
                 this.OnIncrementCurrentProgress(compProgress);
                 this.CancelCheckpoint();
             }
@@ -1496,7 +1429,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 string archCompressedName = this.CreatePathString(
                     this._archDir, compressedFilename);
 
-                if (this._osInfo.Arch == TargetArchitecture.x64)
+                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                 {
                     // For 32-bit files that come with x64 arch, all of them
                     // in the source are prefixed with a "w" and renamed by
@@ -1597,7 +1530,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.OnIncrementGlobalProgress();
 
             // Svcpack stuff
-            if (!this._params.IgnoreCats)
+            if (!this.Parameters.IgnoreCats)
             {
                 this.OnAnnounce(Messages.statCompressCats);
                 this.OnResetCurrentProgress();
@@ -1648,17 +1581,17 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this.OnIncrementGlobalProgress();
 
             // 2k3/x64 repack DRIVER.CAB
-            if (_osInfo.SourceVersion == WindowsType._Server2003
-                || _osInfo.Arch == TargetArchitecture.x64)
+            if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003
+                || this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
             {
                 Debug.Assert(Directory.Exists(this._driverDir));
                 this.OnAnnounce(Messages.statReplaceInDriverCab);
                 List<string[]> filesToCopy = null;
-                if (_osInfo.SourceVersion == WindowsType._Server2003
-                    && _osInfo.Arch == TargetArchitecture.x86)
+                if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003
+                    && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                     filesToCopy = this._entriesCombinedEditor.ReadCsvLines(
                         "2k3_drivercab_expand");
-                else if (_osInfo.Arch == TargetArchitecture.x64)
+                else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     filesToCopy = this._entriesCombinedEditor.ReadCsvLines(
                         "xp_x64_drivercab_expand");
                 foreach (string[] fileComponents in filesToCopy)
@@ -1669,20 +1602,20 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         this.CreatePathString(this._driverDir, 
                         filename);
                     CancelCheckpoint();
-                    if (this._osInfo.Arch == TargetArchitecture.x64)
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     {
                         FileSystem.CopyFile(this.CreatePathString(
                             _extractDir, "AMD64", filename),
                             driverFolderFileName, true);
                     }
-                    else if (this._osInfo.Arch == TargetArchitecture.x86)
+                    else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                     {
                         FileSystem.CopyFile(this.CreatePathString(
                             this._extractDir, filename), 
                             driverFolderFileName, true);
                     }
                     FileVersionComparison compareResult
-                        = CM.CompareVersions(driverFolderFileName,
+                        = CompareVersions(driverFolderFileName,
                         Path.GetTempPath() + fileComponents);
                     if (compareResult == FileVersionComparison.Older)
                     {
@@ -1736,8 +1669,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         }
 
         /// <summary>
-        /// Compresses and renames files that are in extractedDirectory,
-        /// allows to check and prioritise files that are in a certain subfolder.
+        /// Compresses and renames files that are in extractedDirectory.
         /// </summary>
         /// <param name="sourceName">Name of file that will go in arch folder</param>
         /// <param name="destinationFolder">Name of file on the hard drive 
@@ -1828,168 +1760,28 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             {
                 File.Move(catFullPath, destCatPath);
             }
-            this._svcpackInfEditor.Add("ProductCatalogsToInstall", 
+            this._svcpackInf.Add("ProductCatalogsToInstall", 
                 catalogName, false);
         }
 
-        /*
-        static void UxthemePatchNewIfOld(string oldUxthemePath, 
-            string newUxthemePath)
-        {
-            // Get version of new uxtheme
-            int i386Version = FileVersionInfo.GetVersionInfo(
-                newUxthemePath).FilePrivatePart;
-
-            // Patch array
-            string[] UxThemePatchList = new string[]
-            { 
-                @"2180|113178|83EC1C568D4DE4|33C0C9C2040090",
-                @"2523|104714|83EC1C568D4DE4|33C0C9C2040090"
-            };
-
-            // Check if UxTheme is patched or not
-            string uxthemePatchLine = null;
-            foreach (string line in UxThemePatchList)
-            {
-                string[] data = line.Split(new char[] { '|' });
-                int version = int.Parse(data[0]);
-                if (i386Version == version)
-                {
-                    uxthemePatchLine = line;
-                    break;
-                }
-            }
-            if (String.IsNullOrEmpty(uxthemePatchLine))
-            {
-                throw new Exceptions.IntegrationException(
-                    "Unable to locate appropriate patch line for UxTheme.dll. "
-                    + "This is definitely a bug, please report it."
-                    );
-            }
-            else
-            {
-                string[] data = uxthemePatchLine.Split(new char[] { '|' });
-                int offset = int.Parse(data[1]);
-                string oldByteString = data[2];
-                string newByteString = data[3];
-
-                List<byte> oldBytes = null;
-                int capacity = newByteString.Length / 2;
-                oldBytes = new List<byte>(capacity);
-                for (int i = 0; i < oldByteString.Length; i += 2)
-                {
-                    oldBytes.Add(
-                        byte.Parse(oldByteString[i].ToString()
-                        + oldByteString[i + 1].ToString(),
-                        System.Globalization.NumberStyles.HexNumber
-                    )
-                    );
-                }
-                List<byte> newBytes = new List<byte>(capacity);
-                for (int i = 0; i < newByteString.Length; i += 2)
-                {
-                    newBytes.Add(
-                        byte.Parse(newByteString[i].ToString()
-                        + newByteString[i + 1].ToString(),
-                        System.Globalization.NumberStyles.HexNumber
-                    )
-                    );
-                }
-
-                FileStream fstream = new FileStream(oldUxthemePath, FileMode.Open);
-                byte[] compareArray = new byte[capacity];
-                fstream.Seek(offset, SeekOrigin.Begin);
-                fstream.Read(compareArray, 0, capacity);
-                fstream.Close();
-
-                bool resultOfCompareOld = ByteArraysAreEqual(
-                    compareArray, oldBytes.ToArray());
-                bool resultOfCompareNew = ByteArraysAreEqual(
-                    compareArray, newBytes.ToArray());
-
-                if (!resultOfCompareOld && !resultOfCompareNew)
-                {
-                    throw new Exceptions.IntegrationException(
-                        "UxTheme.dll in source is corrupted!");
-                }
-                else if (resultOfCompareOld) return;
-
-                fstream = new FileStream(
-                    newUxthemePath,
-                    FileMode.Open
-                );
-                fstream.Seek(offset, SeekOrigin.Begin);
-                List<byte> ourNewBytes = new List<byte>(capacity);
-                for (int i = 0; i < newByteString.Length; i += 2)
-                {
-                    ourNewBytes.Add(
-                        byte.Parse(newByteString[i].ToString()
-                        + newByteString[i + 1].ToString(),
-                        System.Globalization.NumberStyles.HexNumber
-                    )
-                    );
-                }
-                fstream.Write(ourNewBytes.ToArray(),
-                    0, capacity);
-                fstream.Flush();
-                fstream.Close();
-
-                // Fix the checksum
-                PeEditor editor = new PeEditor(newUxthemePath);
-                editor.FixChecksum();
-            }
-        }
-         */
-
-        void MergeFolders()
+        protected override void MergeFolders()
         {
             this.OnAnnounce(Messages.statMergeFolders);
-            this.OnBeginCriticalOperation();
-            FileSystem.MoveFiles(this._workDir, this._archDir, 
-                false);
-            if (this._osInfo.Arch == TargetArchitecture.x64)
-            {
-                FileSystem.MoveFiles(this._x64i386WorkDir, this._x64i386ArchDir, false);
-            }
-            if (!this._params.IgnoreCats)
-            {
-                if (!Directory.Exists(this.CreatePathString(
-                    _archDir, "SVCPACK")))
-                {
-                    Directory.CreateDirectory(this.CreatePathString(
-                        _archDir, "SVCPACK"));
-                }
-                foreach (string filepath in
-                    Directory.GetFiles(this.CreatePathString(_workDir,
-                        "SVCPACK"), "*.*", SearchOption.TopDirectoryOnly))
-                {
-                    string filename = Path.GetFileName(filepath);
-                    string svcpackname = this.CreatePathString(
-                        _archDir, "SVCPACK", filename);
-                    if (File.Exists(svcpackname))
-                    {
-                        File.SetAttributes(svcpackname, FileAttributes.Normal);
-                        File.Delete(svcpackname);
-                    }
-
-                    File.Move(filepath, svcpackname);
-                }
-            }
+            this.MergeFolders();
         }
 
-        void CleanUpFolders()
+        protected override void Cleanup()
         {
             this.OnAnnounce(Messages.statCleanTemp);
-            FileSystem.Delete(this._workDir);
-            this.OnEndCriticalOperation();
+            this.Cleanup();
         }
 
         void NativeExtractHotfix(string hotfixInstaller,
             string destinationPath)
         {
-            string tempFolder = FileSystem.GetGuaranteedTempDirectory(
-                this._workDir);
-            Stream hotfixStream = CM.GetCabStream(hotfixInstaller);
+            string tempFolder 
+                = FileSystem.GetGuaranteedTempDirectory(this._workDir);
+            Stream hotfixStream = Archival.GetCabStream(hotfixInstaller);
             Archival.NativeCabinetExtract(hotfixStream, tempFolder);
 
             if (File.Exists(this.CreatePathString(tempFolder, "_sfx_manifest_")))
@@ -2087,7 +1879,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         #region Fields
         // Backend parameters
-        readonly BackendParams _params;
+        protected BackendParams Parameters 
+        {
+            get { return (BackendParams)this._params; }
+        }
 
         // Other variables
         string _externalInfFilename;
@@ -2097,11 +1892,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         IniParser _entriesCombinedEditor;
         IniParser _wmp11ExtInfEditor;
         IniParser _wmp11InfEditor;
-        IniParser _txtsetupSifEditor;
-        IniParser _dosnetInfEditor;
-        IniParser _sysocInfEditor;
-        IniParser _svcpackInfEditor;
-        IniParser _drvIndexEditor;
 
         // List of files to copy
         Dictionary<string, string> _filesToCompressInArch;
@@ -2118,10 +1908,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         // Which CAB to extract / repack (only for 2k3/x64 so far)
         string _driverCabFile;
-
-        // Possibly compressed files
-        static string[] _possCompArchFile
-            = new string[] { "SYSOC.INF", "SVCPACK.INF" };
         #endregion
 
         #region Enums
