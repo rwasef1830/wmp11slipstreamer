@@ -32,7 +32,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             bool close, string customIconPath)
         {
         	// Initialise the buffer
-            _pathBuffer = new StringBuilder(FileSystem.MaximumPath);
+            _pathBuffer = new StringBuilder(FileSystem.MaximumPathLength);
         	
             InitializeComponent();
 

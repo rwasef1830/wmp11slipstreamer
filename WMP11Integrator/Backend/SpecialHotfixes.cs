@@ -60,7 +60,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 if (resultOfCopyOrExpand || isAcadProc)
                 {
                     FileVersionComparison result
-                        = CM.CompareVersions(
+                        = CompareVersions(
                             extractedName,
                             tempCompareName);
                     if ((result == FileVersionComparison.Newer && onlyThreeExist)
@@ -69,14 +69,14 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     {
                         if (isAcadProc)
                         {
-                            if (!this._txtsetupSifEditor.KeyExists(
+                            if (!base._txtsetupSif.KeyExists(
                                 "SourceDisksFiles", file))
                             {
-                                this._txtsetupSifEditor.Add("SourceDisksFiles",
+                                base._txtsetupSif.Add("SourceDisksFiles",
                                     acadprocTxtPair.Key, acadprocTxtPair.Value, 
                                     IniParser.KeyExistsPolicy.Ignore);
                             }
-                            this._dosnetInfEditor.Add("Files", acadprocDosLine, false);
+                            this._dosnetInf.Add("Files", acadprocDosLine, false);
                             if (!this._filesToCompressInArch.ContainsKey("acadproc.dll")
                                 && !resultOfCopyOrExpand)
                             {

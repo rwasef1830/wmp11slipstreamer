@@ -60,7 +60,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 {
                     if (!File.Exists(resFile))
                     {
-                        throw new FileNotFoundException("The resources file was not found.",
+                        throw new FileNotFoundException("The resource file was not found.",
                             resFile);
                     }
 

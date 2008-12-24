@@ -24,8 +24,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         public readonly List<FileListSection> FileList;
         #endregion
 
-        #region constants
-        const int _numOpLineValues = 5;
+        #region Private constants
+        const int c_NumOpLineValues = 5;
         #endregion
 
         public HotfixInfParser(IniParser updateInfEditor, 
@@ -239,7 +239,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         bool ProcessOpLine(string line)
         {
-            string[] opArguments = this._csvParser.Parse(line, _numOpLineValues,
+            string[] opArguments = this._csvParser.Parse(line, c_NumOpLineValues,
                 this._variableDict);
             string operation = opArguments[0];
 
@@ -296,7 +296,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this._variableDict);
         }
 
-        #region static methods
+        #region Private static methods
         static bool SEqOIC(string first, string second)
         {
             if (first == null || second == null) return false;
@@ -310,6 +310,15 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     "This operation has not been implemented: [{0}]",
                     operationLine)
             );
+        }
+        #endregion
+
+        #region Public static methods
+        internal static bool OperationTypeContains(
+            OperationType combined, 
+            OperationType singleFlag)
+        {
+            return ((combined & singleFlag) == singleFlag);
         }
         #endregion
 

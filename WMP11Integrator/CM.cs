@@ -18,120 +18,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
     /// </summary>
     public static class CM
     {
-        public static Stream GetCabStream(string pathToSfxCab)
-        {
-            ResourceEditor win32Res = new ResourceEditor(pathToSfxCab);
-            byte[] cabData = null;
-            if (win32Res.ReadRawResourceBytes(ResourceAPI.ResourceType.RcData,
-                "CABINET", out cabData))
-            {
-                // Close the resource editor
-                win32Res.Close();
-                return new MemoryStream(cabData);
-            }
-            else 
-            {
-                // Close the resource editor
-                win32Res.Close();
-
-                FileStream fileStream = File.Open(pathToSfxCab, FileMode.Open, 
-                    FileAccess.Read, FileShare.Read);
-                long fileLength = fileStream.Length;
-
-                string header = "MSCF\0\0\0\0";
-                byte[] sequence = Encoding.ASCII.GetBytes(header);
-                long seqPos = Streams.Search(fileStream, sequence);
-
-                BinaryReader bReader = new BinaryReader(fileStream);
-                uint reserved = 0;
-                uint cabSize = 0;
-
-                while (seqPos > 0 && seqPos + 8 < fileLength)
-                {
-                    fileStream.Seek(seqPos + sequence.LongLength, SeekOrigin.Begin);
-                    cabSize = bReader.ReadUInt32();
-                    reserved = bReader.ReadUInt32();
-                    if (reserved == 0) break; // Valid cabinet header
-                    else
-                    {
-                        // Not valid header, search again
-                        seqPos = Streams.Search(fileStream, sequence);
-                    }
-                }
-
-                if (reserved != 0)
-                {
-                    throw new InvalidDataException(
-                        String.Format("The file \"{0}\" is not a valid hotfix",
-                        pathToSfxCab));
-                }
-                else
-                {
-                    // Seek the stream again to the beginning of the 
-                    // header to allow FDI to process it correctly
-                    fileStream.Seek(seqPos, SeekOrigin.Begin);
-                    return fileStream;
-                }
-            }
-        }
-
-        internal static bool OperationTypeContains(
-            HotfixInfParser.OperationType combined, 
-            HotfixInfParser.OperationType singleFlag)
-        {
-            return ((combined & singleFlag) == singleFlag);
-        }
-
-        /// <summary>
-        /// Checks if a file is newer than the other. For EXEs and DLLs that have
-        /// the FileVersionInfo structure, their version is used, otherwise, thier last
-        /// modified date is used.
-        /// </summary>
-        /// <param name="fileToCompareAgainst">File to compare against</param>
-        /// <param name="fileToCompareTo">File to compare to the first</param>
-        /// <returns>FileVersionComparison result</returns>
-        public static FileVersionComparison CompareVersions(
-            string fileToCompareAgainst, 
-            string fileToCompareTo)
-        {
-            FileVersionInfo version1 
-                = FileVersionInfo.GetVersionInfo(fileToCompareAgainst);
-            if (!File.Exists(fileToCompareTo))
-                return FileVersionComparison.NotFound;
-            FileVersionInfo version2
-                = FileVersionInfo.GetVersionInfo(fileToCompareTo);
-            int? result = null;
-            if (version1.FileVersion == null || version2.FileVersion == null)
-            {
-                DateTime version1DateTime 
-                    = File.GetLastWriteTimeUtc(fileToCompareAgainst);
-                DateTime version2DateTime 
-                    = File.GetLastWriteTimeUtc(fileToCompareTo);
-                result = version1DateTime.CompareTo(version2DateTime);
-            }
-            else
-            {
-                Version vFirst 
-                    = new Version(version1.FileMajorPart, version1.FileMinorPart, 
-                    version1.FileBuildPart, version1.FilePrivatePart);
-                Version vSecond
-                    = new Version(version2.FileMajorPart, version2.FileMinorPart,
-                    version2.FileBuildPart, version2.FilePrivatePart);
-                result = vFirst.CompareTo(vSecond);
-            }
-            if (result.HasValue)
-            {
-                if (result == 0)
-                    return FileVersionComparison.Same;
-                else if (result < 0)
-                    return FileVersionComparison.Older;
-                else if (result > 0)
-                    return FileVersionComparison.Newer;
-            }
-            return FileVersionComparison.Error;
-        }
-    
-
         /// <summary>
         /// String comparer function using current culture
         /// </summary>
@@ -180,7 +66,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// Opens a standard win32 file open dialog for single file selection
         /// </summary>
         /// <param name="title">Title of dialog</param>
-        /// <param name="filter">Filetype filter: Use syntax: 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
+        /// <param name="filter">Filetype filter, Syntax: 
+        /// 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
         /// <returns>Filename selected by user</returns>
         public static string OpenFileDialogStandard(string title, string filter)
         {
@@ -202,7 +89,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// Opens a standard win32 file save dialog for single file selection
         /// </summary>
         /// <param name="title">Title of dialog</param>
-        /// <param name="filter">Filetype filter: Use syntax: 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
+        /// <param name="filter">Filetype filter, Syntax: 
+        /// 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
         /// <returns>Filename selected by user</returns>
         public static string SaveFileDialogStandard(string title, string filter)
         {
@@ -222,7 +110,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// Opens a standard win32 file open dialog for multi file selection
         /// </summary>
         /// <param name="title">Title of dialog</param>
-        /// <param name="filter">Filetype filter: Use syntax: 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
+        /// <param name="filter">Filetype filter, syntax: 
+        /// 'MyExtensions|*.ext1;*.ext2;*.ext3|MyExtension2|*.ext4'</param>
         /// <returns>String array of selected files</returns>
         public static string[] OpenFileDialogMulti(string title, string filter)
         {
@@ -285,35 +174,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         public static Version VerFromFileVer(FileVersionInfo fileVerInfo)
         {
-            return new Version(fileVerInfo.FileMajorPart, fileVerInfo.FileMinorPart, fileVerInfo.FileBuildPart,
-                fileVerInfo.FilePrivatePart);
+            return new Version(fileVerInfo.FileMajorPart, fileVerInfo.FileMinorPart, 
+                fileVerInfo.FileBuildPart, fileVerInfo.FilePrivatePart);
         }
-    }
-
-    /// <summary>
-    /// Enumeration for the file version comparison results
-    /// </summary>
-    public enum FileVersionComparison
-    {
-        /// <summary>
-        /// The files have identical dates or versions
-        /// </summary>
-        Same,
-        /// <summary>
-        /// The first file is newer than the second
-        /// </summary>
-        Newer,
-        /// <summary>
-        /// The first file is older than the second
-        /// </summary>
-        Older,
-        /// <summary>
-        /// The second file was not found
-        /// </summary>
-        NotFound,
-        /// <summary>
-        /// An unknown error occurred
-        /// </summary>
-        Error
     }
 }
