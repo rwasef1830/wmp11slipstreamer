@@ -7,9 +7,9 @@ using System.Drawing;
 using Epsilon.Win32.Resources;
 using System.Diagnostics;
 using Microsoft.Win32;
-using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
+using Epsilon.WMP11Slipstreamer.Localization;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm
     {
@@ -29,9 +29,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         void buttonHotfixBrowse_Click(object sender, EventArgs e)
         {
             string[] hotfixes = CM.OpenFileDialogMulti(
-                Messages.dlgPickHotfixes_Title,
+                Msg.dlgPickHotfixes_Title,
                 String.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*",
-                Messages.dlgPicker_ExeFiles, Messages.dlgPicker_AllFiles));
+                Msg.dlgPicker_ExeFiles, Msg.dlgPicker_AllFiles));
             if (hotfixes.Length > 0)
             {
                 StringBuilder hotfixText = new StringBuilder(100);
@@ -182,9 +182,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         {
             string selectedFile =
             CM.OpenFileDialogStandard(
-                Messages.dlgWMPRedistPicker_Header,
+                Msg.dlgWMPRedistPicker_Header,
                 String.Format("{0} (*.exe)|*.exe|{1} (*.*)|*.*",
-                Messages.dlgPicker_ExeFiles, Messages.dlgPicker_AllFiles)
+                Msg.dlgPicker_ExeFiles, Msg.dlgPicker_AllFiles)
             );
 
             if (selectedFile.Length > 0)
@@ -198,7 +198,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         void buttonWindowsSourceBrowse_Click(object sender, EventArgs e)
         {
-            string selectedPath = CM.OpenFolderDialog(Messages.dlgSrcPicker_Header, true);
+            string selectedPath = CM.OpenFolderDialog(Msg.dlgSrcPicker_Header, true);
 
             if (selectedPath.Length > 0)
             {
@@ -218,7 +218,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             else
             {
                 this.uxButtonCancel.Enabled = false;
-                this.uxStatusLabelSourceType.Text = Messages.statWaitCancel;
+                this.uxStatusLabelSourceType.Text = Msg.statWaitCancel;
                 this._backend.Abort();
             }
         }
@@ -261,9 +261,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     {
                         this.uxPictureBoxCustomIconPreview.Image = null;
                         string customIconLoc = CM.OpenFileDialogStandard(
-                            Messages.dlgIconPicker_Title,
+                            Msg.dlgIconPicker_Title,
                             String.Format("{0} (*.ico)|*.ico|{1} (*.*)|*.*",
-                            Messages.dlgPicker_IconFiles, Messages.dlgPicker_AllFiles));
+                            Msg.dlgPicker_IconFiles, Msg.dlgPicker_AllFiles));
                         if (String.IsNullOrEmpty(customIconLoc))
                         {
                             this.uxComboBoxCustomIcon.SelectedIndex--;
@@ -287,8 +287,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         else
                         {
                             MessageBox.Show(
-                                Messages.dlgIconError_Text,
-                                Messages.dlgIconError_Title, MessageBoxButtons.OK,
+                                Msg.dlgIconError_Text,
+                                Msg.dlgIconError_Title, MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
                            this.uxComboBoxCustomIcon.SelectedIndex--;
                         }

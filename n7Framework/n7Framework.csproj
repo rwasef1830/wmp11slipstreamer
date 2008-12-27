@@ -1,0 +1,168 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4596242-DBC4-4EEF-AB53-78A9A100D48F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>n7Framework</AssemblyName>
+    <RootNamespace>Epsilon.n7Framework</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Chi.pfx</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Epsilon\ArgumentParser.cs" />
+    <Compile Include="Epsilon\Collections\Generic\OrderedDictionary.cs" />
+    <Compile Include="Epsilon\DebugServices\ConsoleWriter.cs" />
+    <Compile Include="Epsilon\DebugServices\HelperConsole.cs" />
+    <Compile Include="Epsilon\IO\Compression\Archival.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\CabCompressor.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\CabDecompressor.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\FCI.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\FDI.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\IO\CabIO.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs" />
+    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs" />
+    <Compile Include="Epsilon\IO\Compression\Delta\Delta.cs" />
+    <Compile Include="Epsilon\IO\Compression\Delta\DeltaWin32.cs" />
+    <Compile Include="Epsilon\IO\FileSystem.cs" />
+    <Compile Include="Epsilon\IO\Streams.cs" />
+    <Compile Include="Epsilon\Parsers\CSVParser.cs" />
+    <Compile Include="Epsilon\Parsers\DelimValueParser.cs" />
+    <Compile Include="Epsilon\Parsers\IniParser.cs" />
+    <Compile Include="Epsilon\Parsers\KVParser.cs" />
+    <Compile Include="Epsilon\Parsers\ParserBase.cs" />
+    <Compile Include="Epsilon\Parsers\ParsersMsg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParsersMsg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Epsilon\Security\Cryptography\CryptoHelp.cs" />
+    <Compile Include="Epsilon\Slipstreamers\SlipstreamerArgumentsBase.cs" />
+    <Compile Include="Epsilon\Slipstreamers\SlipstreamerBase.cs" />
+    <Compile Include="Epsilon\Slipstreamers\SlipstreamersMsg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SlipstreamersMsg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Epsilon\Slipstreamers\SourceDetector.cs" />
+    <Compile Include="Epsilon\Slipstreamers\TxtsetupParser.cs" />
+    <Compile Include="Epsilon\Slipstreamers\WindowsSourceInfo.cs" />
+    <Compile Include="Epsilon\Win32\API\DebugHelp.cs" />
+    <Compile Include="Epsilon\Win32\API\DllFunctions.cs" />
+    <Compile Include="Epsilon\Win32\API\IO.cs" />
+    <Compile Include="Epsilon\Win32\API\Memory.cs" />
+    <Compile Include="Epsilon\Win32\API\MemoryManagement.cs" />
+    <Compile Include="Epsilon\Win32\API\ResourceAPI.cs" />
+    <Compile Include="Epsilon\Win32\API\SafeHandles.cs" />
+    <Compile Include="Epsilon\Win32\API\Security.cs" />
+    <Compile Include="Epsilon\Win32\API\System.cs" />
+    <Compile Include="Epsilon\Win32\API\WinConsole.cs" />
+    <Compile Include="Epsilon\Win32\API\Windows.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Epsilon\Win32\PeTools\PeEditor.cs" />
+    <Compile Include="Epsilon\Win32\PeTools\PeStructs.cs" />
+    <Compile Include="Epsilon\Win32\Resources\IconStructs.cs" />
+    <Compile Include="Epsilon\Win32\Resources\ResourceEditor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chi.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Epsilon\Parsers\ParsersMsg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ParsersMsg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Epsilon\Slipstreamers\SlipstreamersMsg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SlipstreamersMsg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\CABARC.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\CABFMT.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\FCI-FDI.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\LZXFMT.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\MAKECAB.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\DOCS\MSZIPFMT.DOC" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\LIB\FCI.LIB" />
+    <None Include="Epsilon\IO\Compression\Cabinet\CABSDK\LIB\FDI.LIB" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\BIN\CABARC.EXE" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\BIN\CABINET.DLL" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\BIN\EXTRACT.EXE" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\BIN\MAKECAB.EXE" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\EULA.txt" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\INCLUDE\FCI.H" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\INCLUDE\FDI.H" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\README.TXT" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\REDIST.TXT" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\SAMPLES\DLL\FCIDLL.C" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\SAMPLES\DLL\FDIDLL.C" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\SAMPLES\TESTFCI\TESTFCI.C" />
+    <Content Include="Epsilon\IO\Compression\Cabinet\CABSDK\SAMPLES\TESTFDI\TESTFDI.C" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>

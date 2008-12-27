@@ -1,18 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WMP11 Slipstreamer")]
-[assembly: AssemblyDescription("Windows Media Player 11 Slipstreamer")]
+[assembly: AssemblyTitle("n7Framework")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("boooggy and n7Epsilon")]
-[assembly: AssemblyProduct("Windows Media Player 11 Slipstreamer")]
-[assembly: AssemblyCopyright("Copyright © 2008 boooggy and n7Epsilon")]
-[assembly: AssemblyTrademark("Windows™ is a registered trademark of Microsoft Corporation. WMP11Slipstreamer is not developed, affiliated, endorsed or supported by Microsoft in any way.")]
+[assembly: AssemblyCompany("n7Epsilon")]
+[assembly: AssemblyProduct("n7Framework")]
+[assembly: AssemblyCopyright("Copyright © n7Epsilon 2008")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
@@ -21,7 +20,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8ec09945-2ae2-4b0c-8421-b18195e9acea")]
+[assembly: Guid("b12e315c-bb77-4e23-b2f7-497a02d6470a")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,6 +29,5 @@ using System.Resources;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.4.4")]
-[assembly: AssemblyFileVersion("1.3.4.4")]
-[assembly: NeutralResourcesLanguageAttribute("en-US")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Epsilon.Parsers;
-using Epsilon.WindowsModTools;
-using System.Text.RegularExpressions;
-using Epsilon.Collections.Generic;
+using Epsilon.Slipstreamers;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     class HotfixInfParser
     {
@@ -227,8 +225,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         bool ProcessOpSection(string opSection)
         {
-            OrderedDictionary<string, string> opSectionData = 
-                this._updateInf.ReadSectionJoinedValues(opSection);
+            ICollection<KeyValuePair<string, string>> opSectionData = 
+                this._updateInf.ReadSectionJoinedValues(opSection, null, true);
             bool conditionLinesResult = true;
             foreach (KeyValuePair<string, string> pair in opSectionData)
             {

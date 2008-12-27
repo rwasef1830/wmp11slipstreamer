@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Collections.ObjectModel;
-using Epsilon.WindowsModTools;
+using System.IO;
+using Epsilon.Slipstreamers;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     public class BackendParams : SlipstreamerArgumentsBase
     {

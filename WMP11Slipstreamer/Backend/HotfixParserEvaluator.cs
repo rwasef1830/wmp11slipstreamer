@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Epsilon.Parsers;
-using Epsilon.WindowsModTools;
-using Epsilon.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using Epsilon.DebugServices;
+using Epsilon.IO;
+using Epsilon.Parsers;
+using Epsilon.Slipstreamers;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     class HotfixParserEvaluator
     {

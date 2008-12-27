@@ -12,10 +12,10 @@ using Epsilon.Win32;
 using Epsilon.DebugServices;
 using Epsilon.Slipstreamers;
 using Epsilon.WindowsModTools;
-using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
+using Epsilon.WMP11Slipstreamer.Localization;
 #endregion
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm : Form
     {
@@ -52,27 +52,27 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         
         public void GetControlMessages()
         {
-            this.RightToLeft = (Messages.uxRightToLeft == bool.TrueString) ?
+            this.RightToLeft = (Msg.uxRightToLeft == bool.TrueString) ?
                 System.Windows.Forms.RightToLeft.Yes : System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = Messages.uxRightToLeft == bool.TrueString;
-            this.uxGroupBoxBasicOpts.Text = Messages.uxGroupBoxBasicOpts;
-            this.uxGroupBoxAdvOpts.Text = Messages.uxGroupBoxAdvOpts;
-            this.uxLabelChooseType.Text = Messages.uxLabelChooseType;
-            this.uxLinkAbout.Text = Messages.uxLinkAbout;
-            this.uxLabelEnterWmpRedist.Text = Messages.uxLabelEnterWMPRedistPath;
-            this.uxLinkDownloadWmpRedist.Text = Messages.uxLinkWMPRedist;
-            this.uxLabelEnterWinSrc.Text = Messages.uxLabelEnterSrcPath;
-            this.uxLabelEnterHotfixLine.Text = Messages.uxLabelEnterHotfixLine;
-            this.uxCheckBoxCustomIcon.Text = Messages.uxCheckboxCustomIcon;
-            this.uxLabelPreview.Text = Messages.uxLabelPreview;
-            this.uxCheckBoxNoCats.Text = Messages.uxCheckboxNoCats;
-            this.uxLabelOperation.Text = Messages.uxLabelDefaultOp;
-            this.uxStatusLabelSourceType.Text = Messages.uxStatusBarDefaultText;
-            this.uxButtonIntegrate.Text = Messages.uxButtonIntegrate;
-            this.uxButtonCancel.Text = Messages.uxButtonExit;
+            this.RightToLeftLayout = Msg.uxRightToLeft == bool.TrueString;
+            this.uxGroupBoxBasicOpts.Text = Msg.uxGroupBoxBasicOpts;
+            this.uxGroupBoxAdvOpts.Text = Msg.uxGroupBoxAdvOpts;
+            this.uxLabelChooseType.Text = Msg.uxLabelChooseType;
+            this.uxLinkAbout.Text = Msg.uxLinkAbout;
+            this.uxLabelEnterWmpRedist.Text = Msg.uxLabelEnterWMPRedistPath;
+            this.uxLinkDownloadWmpRedist.Text = Msg.uxLinkWMPRedist;
+            this.uxLabelEnterWinSrc.Text = Msg.uxLabelEnterSrcPath;
+            this.uxLabelEnterHotfixLine.Text = Msg.uxLabelEnterHotfixLine;
+            this.uxCheckBoxCustomIcon.Text = Msg.uxCheckboxCustomIcon;
+            this.uxLabelPreview.Text = Msg.uxLabelPreview;
+            this.uxCheckBoxNoCats.Text = Msg.uxCheckboxNoCats;
+            this.uxLabelOperation.Text = Msg.uxLabelDefaultOp;
+            this.uxStatusLabelSourceType.Text = Msg.uxStatusBarDefaultText;
+            this.uxButtonIntegrate.Text = Msg.uxButtonIntegrate;
+            this.uxButtonCancel.Text = Msg.uxButtonExit;
             
-            this.uxComboType.Items[0] = Messages.uxTypeVanilla;
-            this.uxComboType.Items[1] = Messages.uxTypeTweaked;
+            this.uxComboType.Items[0] = Msg.uxTypeVanilla;
+            this.uxComboType.Items[1] = Msg.uxTypeTweaked;
         }
 
         int ProcessParameters(string installer, string winsource, 
@@ -324,8 +324,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 Path.DirectorySeparatorChar);
             if (!File.Exists(uxTextBoxWmpRedist.Text))
             {
-                MessageBox.Show(Messages.dlgText_WmpRedistNotFound,
-                    Messages.dlgTitle_WmpRedistNotFound, MessageBoxButtons.OK,
+                MessageBox.Show(Msg.dlgText_WmpRedistNotFound,
+                    Msg.dlgTitle_WmpRedistNotFound, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 _closeOnSuccess = false;
             }
@@ -333,15 +333,15 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             {
                 if (!CheckEssentialWMPFiles(uxTextBoxWinSrc.Text))
                 {
-                    MessageBox.Show(Messages.dlgText_Wmp64FilesMissing,
-                        Messages.dlgTitle_Wmp64FilesMissing, MessageBoxButtons.OK,
+                    MessageBox.Show(Msg.dlgText_Wmp64FilesMissing,
+                        Msg.dlgTitle_Wmp64FilesMissing, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     _closeOnSuccess = false;
                 }
                 else if (!HotfixesExist(uxTextBoxHotfixLine.Text))
                 {
-                    MessageBox.Show(Messages.dlgText_InvalidHotfixLine,
-                        Messages.dlgTitle_InvalidHotfixLine, MessageBoxButtons.OK,
+                    MessageBox.Show(Msg.dlgText_InvalidHotfixLine,
+                        Msg.dlgTitle_InvalidHotfixLine, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     _closeOnSuccess = false;
                 }
@@ -356,7 +356,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         _workerInCriticalOperation = false;
 
                         // Detect source type
-                        this.uxLabelOperation.Text = Messages.statDetectingSource;
+                        this.uxLabelOperation.Text = Msg.statDetectingSource;
                         WindowsSourceInfo winSrcInfo = new WindowsSourceInfo();
                         Thread sourceDetector = new Thread(delegate()
                         {
@@ -389,15 +389,15 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
                         if (settings.Result == BackendResult.Cancelled)
                         {
-                            MessageBox.Show(Messages.dlgText_Cancelled,
-                                Messages.dlgTitle_Cancelled, MessageBoxButtons.OK,
+                            MessageBox.Show(Msg.dlgText_Cancelled,
+                                Msg.dlgTitle_Cancelled, MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                         }
                         else if (!_immediateLauch && !_closeOnSuccess
                             && settings.Result == BackendResult.Success)
                         {
-                            MessageBox.Show(Messages.dlgText_Success,
-                                Messages.dlgTitle_Success, MessageBoxButtons.OK,
+                            MessageBox.Show(Msg.dlgText_Success,
+                                Msg.dlgTitle_Success, MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                         }
 
@@ -445,11 +445,11 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             {
                 uxProgressBarOverall.Value = 0;
                 uxStatusLabelSourceType.Text = String.Empty;
-                uxButtonCancel.Text = Messages.uxButtonExit;
+                uxButtonCancel.Text = Msg.uxButtonExit;
             }
             if (!state)
             {
-                uxButtonCancel.Text = Messages.uxButtonCancel;
+                uxButtonCancel.Text = Msg.uxButtonCancel;
             }
             ResumeLayout();
         }

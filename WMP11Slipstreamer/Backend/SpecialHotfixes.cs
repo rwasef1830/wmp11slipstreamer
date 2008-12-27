@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using Epsilon.IO;
 using Epsilon.Parsers;
-using System.IO;
+using Epsilon.Slipstreamers;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class Backend
     {

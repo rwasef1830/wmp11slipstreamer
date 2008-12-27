@@ -18,14 +18,14 @@
     <ProjectGuid>{CE55098A-D00A-42E1-AB3C-173DD35AE700}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Epsilon.Slipstreamers.WMP11Slipstreamer</RootNamespace>
+    <RootNamespace>Epsilon.WMP11Slipstreamer</RootNamespace>
     <AssemblyName>WMP11Slipstreamer</AssemblyName>
     <ApplicationIcon>wmp.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>WMP11SlipstreamerKey.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <StartupObject>Epsilon.Slipstreamers.WMP11Slipstreamer.EntryPoint</StartupObject>
+    <StartupObject>Epsilon.WMP11Slipstreamer.EntryPoint</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -51,56 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backend\FixWbem.cs" />
-    <Compile Include="Epsilon\ArgumentParser.cs" />
-    <Compile Include="Epsilon\Collections\Generic\OrderedDictionary.cs" />
-    <Compile Include="Epsilon\DebugServices\ConsoleWriter.cs" />
-    <Compile Include="Epsilon\DebugServices\HelperConsole.cs" />
-    <Compile Include="Epsilon\IO\Compression\Archival.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\CabCompressor.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\CabDecompressor.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\CabinetException.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\FCI.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\FDI.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\Helpers.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Interop\SafeMemoryBlock.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\IO\CabIO.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\IO\CabStreamIO.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FCIWrapper.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FCntl.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\FDIWrapper.cs" />
-    <Compile Include="Epsilon\IO\Compression\Cabinet\Wrapper\StreamWrapper.cs" />
-    <Compile Include="Epsilon\IO\Compression\Delta\Delta.cs" />
-    <Compile Include="Epsilon\IO\Compression\Delta\DeltaWin32.cs" />
-    <Compile Include="Epsilon\IO\FileSystem.cs" />
-    <Compile Include="Epsilon\IO\Streams.cs" />
-    <Compile Include="Epsilon\Parsers\CSVParser.cs" />
-    <Compile Include="Epsilon\Parsers\DelimValueParser.cs" />
-    <Compile Include="Epsilon\Parsers\IniParser.cs" />
-    <Compile Include="Epsilon\Parsers\KVParser.cs" />
-    <Compile Include="Epsilon\Parsers\ParserBase.cs" />
-    <Compile Include="Epsilon\Security\Cryptography\CryptoHelp.cs" />
-    <Compile Include="Epsilon\Slipstreamers\SlipstreamerBase.cs" />
-    <Compile Include="Epsilon\Win32\API\DebugHelp.cs" />
-    <Compile Include="Epsilon\Win32\API\DllFunctions.cs" />
-    <Compile Include="Epsilon\Win32\API\IO.cs" />
-    <Compile Include="Epsilon\Win32\API\Memory.cs" />
-    <Compile Include="Epsilon\Win32\API\MemoryManagement.cs" />
-    <Compile Include="Epsilon\Win32\API\ResourceAPI.cs" />
-    <Compile Include="Epsilon\Win32\API\SafeHandles.cs" />
-    <Compile Include="Epsilon\Win32\API\Security.cs" />
-    <Compile Include="Epsilon\Win32\API\System.cs" />
-    <Compile Include="Epsilon\Win32\API\WinConsole.cs" />
-    <Compile Include="Epsilon\Win32\API\Windows.cs" />
-    <Compile Include="Epsilon\Win32\PeTools\PeEditor.cs" />
-    <Compile Include="Epsilon\Win32\PeTools\PeStructs.cs" />
-    <Compile Include="Epsilon\Win32\Resources\IconStructs.cs" />
-    <Compile Include="Epsilon\Win32\Resources\ResourceEditor.cs" />
-    <Compile Include="Epsilon\WindowsModTools\SourceDetector.cs" />
-    <Compile Include="Epsilon\WindowsModTools\WindowsSourceInfo.cs" />
-    <Compile Include="Localization\Messages.Designer.cs">
+    <Compile Include="Localization\Msg.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Messages.resx</DependentUpon>
+      <DependentUpon>Msg.resx</DependentUpon>
     </Compile>
     <Compile Include="UI\AboutForm\AboutBox.cs">
       <SubType>Form</SubType>
@@ -132,9 +86,9 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Backend\HotfixParserEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Localization\Messages.resx">
+    <EmbeddedResource Include="Localization\Msg.resx">
       <SubType>Designer</SubType>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      <LastGenOutput>Msg.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ErrorForm\ErrorForm.resx">
@@ -173,6 +127,12 @@
     <None Include="WMP11SlipstreamerKey.snk" />
     <None Include="Data\embed\KB913800.cab" />
     <Content Include="wmp.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\n7Framework\n7Framework.csproj">
+      <Project>{F4596242-DBC4-4EEF-AB53-78A9A100D48F}</Project>
+      <Name>n7Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
