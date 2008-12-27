@@ -7,7 +7,7 @@ using Epsilon.DebugServices;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm
     {
@@ -28,10 +28,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this._backend.Message
                     += new EventHandler<Backend.MessageEventArgs>(
                     this._backendInstance_OnMessage);
-                this._backend.CurrentProgressUpdate
+                this._backend.UpdateCurrentProgress
                     += new Backend.ProgressEventDelegate(
                     this._backend_OnCurrentProgressUpdate);
-                this._backend.GlobalProgressUpdate
+                this._backend.UpdateGlobalProgress
                     += new Backend.ProgressEventDelegate(
                     this._backend_OnGlobalProgressUpdate);
                 this._backend.EnterCriticalOperation

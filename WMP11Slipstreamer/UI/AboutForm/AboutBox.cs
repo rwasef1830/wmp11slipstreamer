@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
-using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
+using Epsilon.WMP11Slipstreamer.Localization;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class AboutBox : Form
     {
@@ -14,7 +14,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         {
             InitializeComponent();
             this.labelVersion.Text = String.Format("Version {0}", Globals.Version);
-            this.labelTranslator.Text += " " + Messages.LocalizerName;
+            this.labelTranslator.Text += " " + Msg.LocalizerName;
 
 #if BETA
             this.labelVersion.Text += " BETA";

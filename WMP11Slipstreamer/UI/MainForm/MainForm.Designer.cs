@@ -1,4 +1,4 @@
-﻿namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+﻿namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm
     {

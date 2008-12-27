@@ -1,53 +1,58 @@
 #region Using statements
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Xml;
-using Epsilon.IO.Compression;
-using Epsilon.IO;
-using Epsilon.WindowsModTools;
-using Epsilon.Win32.Resources;
-using Epsilon.Win32;
-using Epsilon.Parsers;
-using Epsilon.DebugServices;
-using Epsilon.Security.Cryptography;
 using Epsilon.Collections.Generic;
+using Epsilon.DebugServices;
+using Epsilon.IO;
+using Epsilon.IO.Compression;
 using Epsilon.IO.Compression.Cabinet;
-using Epsilon.Slipstreamers.WMP11Slipstreamer.Localization;
+using Epsilon.Parsers;
+using Epsilon.Security.Cryptography;
+using Epsilon.Slipstreamers;
+using Epsilon.Win32;
+using Epsilon.Win32.Resources;
+using Epsilon.WMP11Slipstreamer.Localization;
 #endregion
 
 // This is the main backend that performs the actual integration tasks
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     public partial class Backend : SlipstreamerBase
     {
         public Backend(BackendParams paramsObject) 
-            : base(13, paramsObject, "wmp11temp") { }
-
-        /// <summary>
-        /// Runs the slipstream operation
-        /// </summary>
-        public override void Slipstream()
+            : base(paramsObject, "wmp11temp") 
         {
-            this.ExtractWMP11Installer();
-            this.PrepareDependencies();
-            this.PrepareForParse();
-            this.ParseAndEditFiles();
-            this.ApplyFixes();
-            this.SaveFiles();
-            this.CompressFiles();
-#if DEBUG
-            if (this.OnBeforeMergeFolders())
-            {
-#endif
-                this.MergeFolders();
-                this.Cleanup();
-#if DEBUG
-            }
-#endif
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.ExtractWMP11Installer, 
+                Msg.statExtractWmpRedist));
+            
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.PrepareDependencies,
+                Msg.statReadCoreInfs));
+            
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.PrepareForParse,
+                Msg.statReadFiles));
+            
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.ParseAndEditFiles,
+                Msg.statPrepareEdit));
+            
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.ApplyFixes,
+                Msg.statPreparingFixes));
+
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.SaveFiles,
+                Msg.statSavingInis));
+
+            base.AddSlipstreamStep(new SlipstreamStep(
+                this.CompressFiles));
         }
 
         /// <summary>
@@ -91,14 +96,13 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         /// </summary>
         void PrepareForParse()
         {
-            this.OnAnnounce(Messages.statReadFiles);
             base.ExtractAndParseArchFiles();
 
             if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003 || 
                 this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
             {
                 // Determine which CAB to extract to repack drivers
-                this.OnAnnounce(Messages.statReplaceInDriverCab);
+                this.OnAnnounce(Msg.statReplaceInDriverCab);
                 this._drvindexInf = new IniParser(
                     this.CreatePathString(_archDir, "DrvIndex.inf"), true
                 );
@@ -121,7 +125,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 
                 CancelCheckpoint();
                 
-                this.OnAnnounce(String.Format(Messages.statExtractFile, this._driverCabFile));
+                this.OnAnnounce(String.Format(Msg.statExtractFile, this._driverCabFile));
 
                 this.OnResetCurrentProgress();
 #if DEBUG
@@ -140,126 +144,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 #endif
                 this.OnHideCurrentProgress();
             }
-
-            this.OnIncrementGlobalProgress();
-        }
-
-        void PrepareDependencies()
-        {
-            CryptoHelp crypto = new CryptoHelp(Globals.UniqueTag);
-
-            // Nice message for progress
-            this.OnAnnounce(Messages.statReadCoreInfs);
-
-            // entries.ini: repository1
-            string entriesContent = crypto.DecryptToString(
-                Properties.Resources.repository1,
-                Globals.Repo1Key,
-                Encoding.Default
-            );
-
-            this._entriesCombinedEditor =
-                new IniParser(entriesContent, true, "entries_wmp11.ini");
-
-            byte[] repository = null;
-            // repository1: entries_combined_wmp11.ini
-            // repository2: (reserved)
-            // repository3: XP Home/Pro x32
-            // repository4: XP MCE 2005 x32
-            // repository5: Server 2003 x32
-            // repository6: (reserved)
-            // repository7: XP/2k3 x64
-            switch (this.Parameters.SourceInfo.SourceVersion)
-            {
-                case WindowsType._Unknown:
-                    throw new Exceptions.IntegrationException(Messages.errSrcTypeDetectFail);
-
-                case WindowsType._XP:
-                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
-                        repository = Properties.Resources.repository7;
-                    else if (this.Parameters.SourceInfo.Edition == WindowsEdition.MediaCenter)
-                        repository = Properties.Resources.repository4;
-                    else
-                        repository = Properties.Resources.repository3;
-                    break;
-
-                case WindowsType._Server2003:
-                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
-                        goto case WindowsType._XP;
-                    else
-                        repository = Properties.Resources.repository5;
-                    break;
-            }
-
-            // Decrypt repositories
-            MemoryStream repositoryDecrypted = new MemoryStream();
-            crypto.DecryptStream(new MemoryStream(repository),
-                Globals.Repo2Key, repositoryDecrypted, false);
-            repositoryDecrypted.Seek(0, SeekOrigin.Begin);
-
-            // Temp Folder
-            string tempFolder = this.CreatePathString(_workDir,
-                "wmp11int.r" + new Random().Next(99).ToString());
-
-            CancelCheckpoint();
-
-            // Extract repository cabinet
-            Archival.NativeCabinetExtract(repositoryDecrypted, tempFolder, null, null);
-
-            string[] infEssentialOverwrites = new string[] { 
-                "wmp.inf", "wmfsdk.inf", "wpd.inf", "wmp11.inf" };
-
-            // Files that are embedded and should overwrite in extracted
-            foreach (string essentialOverwrite in infEssentialOverwrites)
-            {
-                if (File.Exists(this.CreatePathString(tempFolder, 
-                    essentialOverwrite)))
-                {
-                    FileSystem.MoveFileOverwrite(
-                        this.CreatePathString(tempFolder, essentialOverwrite),
-                        this.CreatePathString(_extractDir, essentialOverwrite)
-                    );
-                }
-            }
-
-            // External INF handled via special routine
-            File.Move(
-                this.CreatePathString(tempFolder, "wmp11ext.inf"),
-                this.CreatePathString(_workDir, "wmp11ext.inf")
-            );
-
-            // Attach both INF editors on the 2 main INFs
-            _wmp11ExtInfEditor = new IniParser(
-                this.CreatePathString(_workDir, "wmp11ext.inf"), true
-            );
-            _wmp11InfEditor = new IniParser(
-                this.CreatePathString(_extractDir, "wmp.inf"), true
-            );
-
-            // Migrate localizable [Strings] from original infs
-            string wmfSdkPath = this.CreatePathString(this._extractDir,
-                "wmfsdk.inf");
-            this.MigrateStringsFromOriginalInf("wmp.inf", tempFolder, _wmp11InfEditor);
-            if (File.Exists(wmfSdkPath))
-            {
-                IniParser wmfsdkEditor = new IniParser(wmfSdkPath, true);
-                this.MigrateStringsFromOriginalInf("wmfsdk.inf", tempFolder, 
-                    wmfsdkEditor);
-                wmfsdkEditor.SaveIni();
-            }
-
-            FileSystem.Delete(tempFolder);
-            CancelCheckpoint();
-            this.OnIncrementGlobalProgress();
         }
 
         void ExtractWMP11Installer()
         {
-            CancelCheckpoint();
-
-            this.OnIncrementGlobalProgress();
-            this.OnAnnounce(Messages.statExtractWmpRedist);
-
             string[] filesToExtract = null;
 
             switch (this.Parameters.SourceInfo.Arch)
@@ -303,7 +191,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     _extractDir);
                 if (!HotfixMatchesArch(_extractDir))
                 {
-                    throw new Exceptions.IntegrationException(Messages.errWmpRedistArchMismatch);
+                    throw new Exceptions.IntegrationException(Msg.errWmpRedistArchMismatch);
                 }
                 this.OnIncrementCurrentProgress(currProgress);
             }
@@ -332,7 +220,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             }
 
             this.OnHideCurrentProgress();
-            this.OnIncrementGlobalProgress();
 
 #if DEBUG
             this.OnDebuggingMessage("WMP11 installer extracted. This is a reference "
@@ -341,12 +228,118 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 #endif
         }
 
+        void PrepareDependencies()
+        {
+            CryptoHelp crypto = new CryptoHelp(Globals.UniqueTag);
+
+            // entries.ini: repository1
+            string entriesContent = crypto.DecryptToString(
+                Properties.Resources.repository1,
+                Globals.Repo1Key,
+                Encoding.Default
+            );
+
+            this._entriesCombinedEditor =
+                new IniParser(entriesContent, true, "entries_wmp11.ini");
+
+            byte[] repository = null;
+            // repository1: entries_combined_wmp11.ini
+            // repository2: (reserved)
+            // repository3: XP Home/Pro x32
+            // repository4: XP MCE 2005 x32
+            // repository5: Server 2003 x32
+            // repository6: (reserved)
+            // repository7: XP/2k3 x64
+            switch (this.Parameters.SourceInfo.SourceVersion)
+            {
+                case WindowsType._Unknown:
+                    throw new Exceptions.IntegrationException(Msg.errSrcTypeDetectFail);
+
+                case WindowsType._XP:
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
+                        repository = Properties.Resources.repository7;
+                    else if (this.Parameters.SourceInfo.Edition == WindowsEdition.MediaCenter)
+                        repository = Properties.Resources.repository4;
+                    else
+                        repository = Properties.Resources.repository3;
+                    break;
+
+                case WindowsType._Server2003:
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
+                        goto case WindowsType._XP;
+                    else
+                        repository = Properties.Resources.repository5;
+                    break;
+            }
+
+            // Decrypt repositories
+            MemoryStream repositoryDecrypted = new MemoryStream();
+            crypto.DecryptStream(new MemoryStream(repository),
+                Globals.Repo2Key, repositoryDecrypted, false);
+            repositoryDecrypted.Seek(0, SeekOrigin.Begin);
+
+            // Temp Folder
+            string tempFolder = this.CreatePathString(_workDir,
+                "wmp11int.r" + new Random().Next(99).ToString());
+
+            CancelCheckpoint();
+
+            // Extract repository cabinet
+            Archival.NativeCabinetExtract(repositoryDecrypted, tempFolder, null, null);
+
+            string[] infEssentialOverwrites = new string[] { 
+                "wmp.inf", "wmfsdk.inf", "wpd.inf", "wmp11.inf" };
+
+            // Files that are embedded and should overwrite in extracted
+            foreach (string essentialOverwrite in infEssentialOverwrites)
+            {
+                if (File.Exists(this.CreatePathString(tempFolder,
+                    essentialOverwrite)))
+                {
+                    FileSystem.MoveFileOverwrite(
+                        this.CreatePathString(tempFolder, essentialOverwrite),
+                        this.CreatePathString(_extractDir, essentialOverwrite)
+                    );
+                }
+            }
+
+            // External INF handled via special routine
+            File.Move(
+                this.CreatePathString(tempFolder, "wmp11ext.inf"),
+                this.CreatePathString(_workDir, "wmp11ext.inf")
+            );
+
+            // Attach both INF editors on the 2 main INFs
+            _wmp11ExtInfEditor = new IniParser(
+                this.CreatePathString(_workDir, "wmp11ext.inf"), true
+            );
+            _wmp11InfEditor = new IniParser(
+                this.CreatePathString(_extractDir, "wmp.inf"), true
+            );
+
+            // Migrate localizable [Strings] from original infs
+            string wmfSdkPath = this.CreatePathString(this._extractDir,
+                "wmfsdk.inf");
+            this.MigrateStringsFromOriginalInf("wmp.inf", tempFolder, _wmp11InfEditor);
+            if (File.Exists(wmfSdkPath))
+            {
+                IniParser wmfsdkEditor = new IniParser(wmfSdkPath, true);
+                this.MigrateStringsFromOriginalInf("wmfsdk.inf", tempFolder,
+                    wmfsdkEditor);
+                wmfsdkEditor.SaveIni();
+            }
+
+            FileSystem.Delete(tempFolder);
+            CancelCheckpoint();
+        }
+
         void ParseXmlVerifyOS(string xmlPath)
         {
             HelperConsole.InfoWriteLine("ParseXmlVerifyOS", "Backend");
             if (!File.Exists(xmlPath))
             {
-                throw new Exceptions.IntegrationException(Messages.errWmpRedistNoControlXml);
+                throw new Exceptions.IntegrationException(
+                    Msg.errWmpRedistNoControlXml);
             }
             string fileContents = File.ReadAllText(xmlPath);
             XmlDocument document = new XmlDocument();
@@ -381,7 +374,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     || !CM.SEqO(arch, osArch, true))
                 {
                     throw new Exceptions.IntegrationException(
-                        String.Format(Messages.errWmpRedistWrongVer,
+                        String.Format(Msg.errWmpRedistWrongVer,
                         osLowerBound + ((osUpperBound == null)? String.Empty : "-" + osUpperBound), 
                         arch, osVer, osArch));
                 }
@@ -389,7 +382,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             else
             {
                 throw new Exceptions.IntegrationException(
-                    String.Format(Messages.errControlXmlInvalid, 
+                    String.Format(Msg.errControlXmlInvalid, 
                     Path.GetFileName(xmlPath)));
             }
         }
@@ -409,7 +402,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         void ParseAndEditFiles()
         {
-            this.OnAnnounce(Messages.statPrepareEdit);
+            this.OnAnnounce(Msg.statPrepareEdit);
             string dosnetFilesSection = null;
             string txtsetupFilesSection = null;
             string txtsetupDirSection = null;
@@ -464,7 +457,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             OrderedDictionary<string, List<string>> txtsetupFilesRef
                 = this._entriesCombinedEditor.GetRef(txtsetupFilesSection);
-            this.OnAnnounce(String.Format(Messages.statEditFile, "Txtsetup.sif"));
+            this.OnAnnounce(String.Format(Msg.statEditFile, "Txtsetup.sif"));
             CancelCheckpoint();
 
             // Initialise the file copy dictionaries
@@ -496,7 +489,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
                 if (this._sdnEntryI386Folder == 0)
                 {
-                    throw new Exceptions.IntegrationException(Messages.errNoI386RefInX64Src);
+                    throw new Exceptions.IntegrationException(Msg.errNoI386RefInX64Src);
                 }
             }
             
@@ -515,7 +508,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 );
             }
 
-            this.OnAnnounce(Messages.statGenFileList);
+            this.OnAnnounce(Msg.statGenFileList);
             foreach (KeyValuePair<string, List<string>> txtPair in txtsetupFilesRef)
             {
                 string shortName = txtPair.Key;
@@ -570,7 +563,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
             }
 
-            this.OnAnnounce(String.Format(Messages.statEditFile, "Dosnet.inf"));
+            this.OnAnnounce(String.Format(Msg.statEditFile, "Dosnet.inf"));
             OrderedDictionary<string, List<string>> dosnetRef 
                 = this._entriesCombinedEditor.GetRef(dosnetFilesSection);
             this._dosnetInf.Add(
@@ -579,7 +572,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 IniParser.KeyExistsPolicy.Ignore
             );
 
-            this.OnAnnounce(String.Format(Messages.statEditFile, "SysOc.inf"));
+            this.OnAnnounce(String.Format(Msg.statEditFile, "SysOc.inf"));
             OrderedDictionary<string, List<string>> sysOcRef = 
                 this._entriesCombinedEditor.GetRef("common_sysoc");
 
@@ -607,7 +600,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             if (!this.Parameters.IgnoreCats)
             {
-            	this.OnAnnounce(String.Format(Messages.statEditFile, "Svcpack.inf"));
+            	this.OnAnnounce(String.Format(Msg.statEditFile, "Svcpack.inf"));
 
                 List<string[]> svcpackData = new List<string[]>();
                 if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
@@ -694,7 +687,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             CancelCheckpoint();
 
-            this.OnAnnounce(Messages.statGenFileList);
+            this.OnAnnounce(Msg.statGenFileList);
             try
             {
                 string wmp11ExtSect
@@ -857,7 +850,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     "SourceDisksNames.amd64", "1")[1];
 
             CancelCheckpoint();
-            this.OnIncrementGlobalProgress();
         }
 
         void ResolveDestinationDirIdConflicts(string txtsetupFilesSection, 
@@ -883,7 +875,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     {
                         throw new Exceptions.IntegrationException(
                             string.Format(
-                            Messages.errDirIdDuplicated,
+                            Msg.errDirIdDuplicated,
                             number, this._txtsetupSif.IniFileInfo.Name)
                             );
                     }
@@ -892,7 +884,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 {
                     throw new Exceptions.IntegrationException(
                         String.Format(
-                        Messages.errInvalidKeyInWinntDirs,
+                        Msg.errInvalidKeyInWinntDirs,
                         winntDirPair.Key, this._txtsetupSif.IniFileInfo.Name));
                 }
             }
@@ -905,7 +897,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
             if (txtsetupDirSection != null)
             {
-                this.OnAnnounce(Messages.statFixingTxtsetupDirs);
+                this.OnAnnounce(Msg.statFixingTxtsetupDirs);
                 OrderedDictionary<string, List<string>> txtsetupDirsRef 
                     = this._entriesCombinedEditor.GetRef(txtsetupDirSection);
                 renameDestDirDictionary = new Dictionary<int, int>(5);
@@ -1035,14 +1027,14 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
         void ApplyFixes()
         {
             // Check for DLL versions (msobmain.dll, uxtheme.dll)
-            this.OnAnnounce(Messages.statPreparingFixes);
+            this.OnAnnounce(Msg.statPreparingFixes);
             string fixesFolder = this.CreatePathString(_workDir, "Fixes");
             string tempCompareFolder = this.CreatePathString(_workDir, 
                 "FixesCompare");
             string fixesCab = this.CreatePathString(fixesFolder, "fixes.cab");
 
             // Apply hotfixes
-            this.OnAnnounce(Messages.statExtractApplyHotfix);
+            this.OnAnnounce(Msg.statExtractApplyHotfix);
 
             // Make the 2 folders
             Directory.CreateDirectory(fixesFolder);
@@ -1098,8 +1090,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     if (minUxthemeVer.CompareTo(sourceUxthemeVer) > 0)
                     {
                         this.OnShowMessage(
-                            Messages.dlgWarnUxtheme_Text,
-                            Messages.dlgWarnUxtheme_Title, MessageEventType.Warning);
+                            Msg.dlgWarnUxtheme_Text,
+                            Msg.dlgWarnUxtheme_Title, MessageEventType.Warning);
                     }
 
                     FileSystem.Delete(uxthemeComparePath);
@@ -1116,8 +1108,8 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     if (minMsobmainVer.CompareTo(sourceMsobmainVer) > 0)
                     {
                         this.OnShowMessage(
-                            Messages.dlgWarnOobe_Text,
-                            Messages.dlgWarnOobe_Title, MessageEventType.Warning);
+                            Msg.dlgWarnOobe_Text,
+                            Msg.dlgWarnOobe_Title, MessageEventType.Warning);
                     }
 
                     FileSystem.Delete(msobmainComparePath);
@@ -1148,7 +1140,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     if (!HotfixMatchesArch(fixesFolder))
                     {
                         throw new Exceptions.IntegrationException(
-                            String.Format(Messages.errHotfixArchMismatch,
+                            String.Format(Msg.errHotfixArchMismatch,
                             Path.GetFileName(hotfix)));
                     }
                     CancelCheckpoint();
@@ -1171,7 +1163,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     else
                     {
                         throw new FileNotFoundException(String.Format(
-                            Messages.errNoInfInHotfix,
+                            Msg.errNoInfInHotfix,
                             Path.GetFileName(hotfix)));
                     }
 
@@ -1260,7 +1252,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                             {
                                 throw new InvalidOperationException(
                                     String.Format(
-                                    Messages.errUnsupportedFixAttempt,
+                                    Msg.errUnsupportedFixAttempt,
                                     relativeFilePath, hotfixParser.HotfixName)
                                 );
                             }
@@ -1270,7 +1262,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 }
                 catch (Exception ex)
                 {
-                    ex.Data.Add(Messages.errOffendingFix, Path.GetFileName(hotfix));
+                    ex.Data.Add(Msg.errOffendingFix, Path.GetFileName(hotfix));
                     throw ex;
                 }
             }
@@ -1279,7 +1271,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
 
         void SaveFiles()
         {
-            this.OnAnnounce(Messages.statSavingInis);
+            this.OnAnnounce(Msg.statSavingInis);
 
             // Save wmp11 infs
             FileSystem.UnsetReadonly(this._wmp11ExtInfEditor.IniFileInfo);
@@ -1288,14 +1280,12 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             this._wmp11InfEditor.SaveIni();
 
             this.SaveArchFiles();
-
-            this.OnIncrementGlobalProgress();
         }
 
         void CompressFiles()
         {
             // Compress External INF
-            this.OnAnnounce(String.Format(Messages.statCompressFile, 
+            this.OnAnnounce(String.Format(Msg.statCompressFile, 
                 this._externalInfFilename));
             Archival.NativeCabinetMakeCab(
                 this.CreatePathString(
@@ -1307,7 +1297,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             // Insert the custom icon
             if (this.Parameters.CustomIcon != null)
             {
-                this.OnAnnounce(Messages.statApplyCustIcon);
+                this.OnAnnounce(Msg.statApplyCustIcon);
                 ResourceEditor resEdit = new ResourceEditor(
                     this.CreatePathString(this._extractDir, "wmplayer.exe"));
                 resEdit.ReplaceMainIcon(this.Parameters.CustomIcon);
@@ -1318,7 +1308,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             }
 
             // Create external CAB
-            this.OnAnnounce(String.Format(Messages.statCreateCab, 
+            this.OnAnnounce(String.Format(Msg.statCreateCab, 
                 this._externalCabFilename));
             string wmp11cabdirectory = this.CreatePathString(
                 this._workDir, "wmp11cab");
@@ -1357,10 +1347,11 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 true, FCI.CompressionLevel.Lzx21, null,
                 this.OnUpdateCurrentProgress);
             this.OnHideCurrentProgress();
-            this.OnIncrementGlobalProgress();
+            
+            // this.OnIncrementGlobalProgress();
 
             // Compress all i386 files
-            this.OnAnnounce(Messages.statCompressAdded);
+            this.OnAnnounce(Msg.statCompressAdded);
 
             // Hack for wpdshextres.dll.409
             File.Move(this.CreatePathString(
@@ -1405,10 +1396,11 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this.CancelCheckpoint();
             }
             this.OnHideCurrentProgress();
-            this.OnIncrementGlobalProgress();
+            
+            // this.OnIncrementGlobalProgress();
 
             // Locate files that directly overwrite
-            this.OnAnnounce(Messages.statDetOverwrite);
+            this.OnAnnounce(Msg.statDetOverwrite);
 
             // HACK: Delete EULA.txt after it went into the external CAB
             FileSystem.Delete(this.CreatePathString(this._extractDir, "EULA.TXT"));
@@ -1472,7 +1464,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             }
 
             // Compress directly overwriting files
-            this.OnAnnounce(Messages.statCompressOverwrite);
+            this.OnAnnounce(Msg.statCompressOverwrite);
             this.OnResetCurrentProgress();
             compProgress = new ProgressTracker(filesThatOverwrite.Count);
             foreach (KeyValuePair<int, OverwriteFileBehaviour> 
@@ -1527,12 +1519,13 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 this.OnIncrementCurrentProgress(compProgress);
                 this.CancelCheckpoint();
             }
-            this.OnIncrementGlobalProgress();
+            
+            // this.OnIncrementGlobalProgress();
 
             // Svcpack stuff
             if (!this.Parameters.IgnoreCats)
             {
-                this.OnAnnounce(Messages.statCompressCats);
+                this.OnAnnounce(Msg.statCompressCats);
                 this.OnResetCurrentProgress();
                 compProgress = new ProgressTracker(_filesToCompressInSvcpack.Count);
                 string svcpackTempFolder = this.CreatePathString(
@@ -1578,14 +1571,14 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
             }
 
             this.OnHideCurrentProgress();
-            this.OnIncrementGlobalProgress();
+            // this.OnIncrementGlobalProgress();
 
             // 2k3/x64 repack DRIVER.CAB
             if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003
                 || this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
             {
                 Debug.Assert(Directory.Exists(this._driverDir));
-                this.OnAnnounce(Messages.statReplaceInDriverCab);
+                this.OnAnnounce(Msg.statReplaceInDriverCab);
                 List<string[]> filesToCopy = null;
                 if (this.Parameters.SourceInfo.SourceVersion == WindowsType._Server2003
                     && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
@@ -1631,7 +1624,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                         File.Delete(Path.GetTempPath() + fileComponents);
                     }
                 }
-                this.OnAnnounce(String.Format(Messages.statCreateCab,
+                this.OnAnnounce(String.Format(Msg.statCreateCab,
                     Path.GetFileName(_driverCabFile)));
                 int numberOfFiles
                     = Directory.GetFiles(this._driverDir).Length;
@@ -1647,9 +1640,10 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 );
                 this.OnHideCurrentProgress();
             }
-            this.OnIncrementGlobalProgress();
+            
+            // this.OnIncrementGlobalProgress();
 
-            this.OnAnnounce(Messages.statCompressEdited);
+            this.OnAnnounce(Msg.statCompressEdited);
             foreach (string file in _possCompArchFile)
             {
                 string compressedFile = CM.GetCompressedFileName(file);
@@ -1664,7 +1658,9 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     CancelCheckpoint();
                 }
             }
-            this.OnIncrementGlobalProgress();
+            
+            // this.OnIncrementGlobalProgress();
+            
             CancelCheckpoint();
         }
 
@@ -1764,18 +1760,6 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                 catalogName, false);
         }
 
-        protected override void MergeFolders()
-        {
-            this.OnAnnounce(Messages.statMergeFolders);
-            this.MergeFolders();
-        }
-
-        protected override void Cleanup()
-        {
-            this.OnAnnounce(Messages.statCleanTemp);
-            this.Cleanup();
-        }
-
         void NativeExtractHotfix(string hotfixInstaller,
             string destinationPath)
         {
@@ -1836,7 +1820,7 @@ namespace Epsilon.Slipstreamers.WMP11Slipstreamer
                     if (!result)
                     {
                         throw new Exception(String.Format(
-                            Messages.errDeltaAPIFailed,
+                            Msg.errDeltaAPIFailed,
                             Path.GetFileName(patchFile), Path.GetFileName(basisFile)),
                             new System.ComponentModel.Win32Exception());
                     }

@@ -6,7 +6,7 @@ using Epsilon.WindowsModTools;
 using Epsilon.IO;
 using System.IO;
 
-namespace Epsilon.Slipstreamers.WMP11Slipstreamer
+namespace Epsilon.WMP11Slipstreamer
 {
     partial class Backend
     {
