@@ -52,9 +52,10 @@ namespace Epsilon.WMP11Slipstreamer
         
         public void GetControlMessages()
         {
-            this.RightToLeft = (Msg.uxRightToLeft == bool.TrueString) ?
-                System.Windows.Forms.RightToLeft.Yes : System.Windows.Forms.RightToLeft.No;
-            this.RightToLeftLayout = Msg.uxRightToLeft == bool.TrueString;
+            bool rtl = Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
+            this.RightToLeft = (rtl) ? RightToLeft.Yes : RightToLeft.No;
+            this.RightToLeftLayout = rtl;
+
             this.uxGroupBoxBasicOpts.Text = Msg.uxGroupBoxBasicOpts;
             this.uxGroupBoxAdvOpts.Text = Msg.uxGroupBoxAdvOpts;
             this.uxLabelChooseType.Text = Msg.uxLabelChooseType;
@@ -407,10 +408,10 @@ namespace Epsilon.WMP11Slipstreamer
                         }
                         else
                         {
-                            ControlUserInterface(true);
                             // Release memory held by Backend (which is quite a lot)
                             this._backend = null;
                             GC.Collect();
+                            ControlUserInterface(true);
                         }
                     }
                     catch (Exception)
@@ -489,14 +490,6 @@ namespace Epsilon.WMP11Slipstreamer
         string CreatePathString(params string[] components)
         {
             return FileSystem.CreatePathString(this._pathBuffer, components);
-        }
-
-        void DisplaySourceType(string sourceType)
-        {
-            this.Invoke(new Action<string>(delegate(string message)
-            {
-                this.uxStatusLabelSourceType.Text = "Source Type: " + message;
-            }), sourceType);
         }
     }
 }
