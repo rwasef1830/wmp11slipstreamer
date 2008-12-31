@@ -75,12 +75,11 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        if (this.Parameters.SourceInfo.ServicePack < 1)
-                            return false;
+                        goto case WindowsType._Server2003;
                     }
                     break;
 
-                case WindowsType._2000:
+                default:
                     return false;
             }
 
@@ -128,20 +127,12 @@ namespace Epsilon.WMP11Slipstreamer
                 this.OnAnnounce(String.Format(Msg.statExtractFile, this._driverCabFile));
 
                 this.OnResetCurrentProgress();
-#if DEBUG
-                DateTime before = DateTime.Now;
-#endif
                 Archival.NativeCabinetExtract(
                     this.CreatePathString(_archDir, _driverCabFile),
                     _driverDir,
                     null,
                     this.OnUpdateCurrentProgress
                 );
-#if DEBUG
-                DateTime after = DateTime.Now;
-                TimeSpan timer = after - before;
-                this.OnDebuggingMessage(timer.ToString(), "Extraction Speed");
-#endif
                 this.OnHideCurrentProgress();
             }
         }
@@ -191,7 +182,8 @@ namespace Epsilon.WMP11Slipstreamer
                     _extractDir);
                 if (!HotfixMatchesArch(_extractDir))
                 {
-                    throw new Exceptions.IntegrationException(Msg.errWmpRedistArchMismatch);
+                    throw new Exceptions.IntegrationException(
+                        Msg.errWmpRedistArchMismatch);
                 }
                 this.OnIncrementCurrentProgress(currProgress);
             }
@@ -222,9 +214,9 @@ namespace Epsilon.WMP11Slipstreamer
             this.OnHideCurrentProgress();
 
 #if DEBUG
-            this.OnDebuggingMessage("WMP11 installer extracted. This is a reference "
+            this.OnMessage("WMP11 installer extracted. This is a reference "
                 + "point to examine where the basic files are located.",
-                "Control");
+                "Notification", MessageEventType.Information);
 #endif
         }
 
@@ -253,7 +245,8 @@ namespace Epsilon.WMP11Slipstreamer
             switch (this.Parameters.SourceInfo.SourceVersion)
             {
                 case WindowsType._Unknown:
-                    throw new Exceptions.IntegrationException(Msg.errSrcTypeDetectFail);
+                    throw new Exceptions.IntegrationException(
+                        Msg.errSrcTypeDetectFail);
 
                 case WindowsType._XP:
                     if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
@@ -577,7 +570,7 @@ namespace Epsilon.WMP11Slipstreamer
                 this._entriesCombinedEditor.GetRef("common_sysoc");
 
             if (sysOcRef[0].Value.Count != 5)
-                throw new InvalidDataException(String.Format(
+                throw new Exceptions.IntegrationException(String.Format(
                     "Invalid SysOC line: [{0} = {1}] in common entries file.",
                     sysOcRef[0].Key, new CSVParser().Join(sysOcRef[0].Value)));
 
@@ -688,158 +681,149 @@ namespace Epsilon.WMP11Slipstreamer
             CancelCheckpoint();
 
             this.OnAnnounce(Msg.statGenFileList);
-            try
+            string wmp11ExtSect
+                = this._wmp11ExtInfEditor.ReadCsvLines("Optional Components")[0][0];
+            List<string> copyfilesSects
+                = this._wmp11ExtInfEditor.ReadAllValues(wmp11ExtSect, "CopyFiles");
+            this._filesToCompressInCab = new Dictionary<string, string>(10,
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (string copyfilesSect in copyfilesSects)
             {
-                string wmp11ExtSect
-                    = this._wmp11ExtInfEditor.ReadCsvLines("Optional Components")[0][0];
-                List<string> copyfilesSects
-                    = this._wmp11ExtInfEditor.ReadAllValues(wmp11ExtSect, "CopyFiles");
-                this._filesToCompressInCab = new Dictionary<string, string>(10,
-                    StringComparer.OrdinalIgnoreCase);
-
-                foreach (string copyfilesSect in copyfilesSects)
+                List<string[]> files 
+                    = this._wmp11ExtInfEditor.ReadCsvLines(copyfilesSect, 4);
+                foreach (string[] fileComponents in files)
                 {
-                    List<string[]> files 
-                        = this._wmp11ExtInfEditor.ReadCsvLines(copyfilesSect, 4);
-                    foreach (string[] fileComponents in files)
+                    int flags;
+                    if (!String.IsNullOrEmpty(fileComponents[3]) &&
+                        !int.TryParse(fileComponents[3], 
+                        System.Globalization.NumberStyles.HexNumber,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        out flags))
                     {
-                        int flags;
-                        if (!String.IsNullOrEmpty(fileComponents[3]) &&
-                            !int.TryParse(fileComponents[3], 
-                            System.Globalization.NumberStyles.HexNumber,
-                            System.Globalization.CultureInfo.CurrentCulture,
-                            out flags))
-                        {
-                            throw new Exceptions.IntegrationException(
-                                String.Format("Invalid syntax in [{0}]: ({1}).",
-                                copyfilesSect, fileComponents)
-                            );
-                        }
+                        throw new Exceptions.IntegrationException(
+                            String.Format(
+                            "Invalid syntax in external inf: [{0}]: ({1}).",
+                            copyfilesSect, fileComponents)
+                        );
+                    }
+                    else
+                    {
+                        string destName = fileComponents[0];
+                        string srcName = fileComponents[1];
+
+                        // Rare case when parser encounters ,,,, or something 
+                        // like that. Just continue on since a line like 
+                        // that would have no meaning.
+                        if (String.IsNullOrEmpty(destName))
+                            continue;
+
+                        // If no destination name, then file is not renamed
+                        // during INF FileCopy operations
+                        if (String.IsNullOrEmpty(srcName))
+                            srcName = destName;
+
+                        if (this._filesToCompressInCab.ContainsKey(srcName))
+                            this._filesToCompressInCab[srcName] = destName;
                         else
-                        {
-                            string destName = fileComponents[0];
-                            string srcName = fileComponents[1];
-
-                            // Rare case when parser encounters ,,,, or something 
-                            // like that. Just continue on since a line like 
-                            // that would have no meaning.
-                            if (String.IsNullOrEmpty(destName))
-                                continue;
-
-                            // If no destination name, then file is not renamed
-                            // during INF FileCopy operations
-                            if (String.IsNullOrEmpty(srcName))
-                                srcName = destName;
-
-                            if (this._filesToCompressInCab.ContainsKey(srcName))
-                                this._filesToCompressInCab[srcName] = destName;
-                            else
-                                this._filesToCompressInCab.Add(srcName, destName);
-                        }
+                            this._filesToCompressInCab.Add(srcName, destName);
                     }
                 }
-
-                // HACK Fix some xml files overwriting each other due to same short 
-                // name but diff folders on x32
-                if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
-                {
-                    this._filesToCompressInCab["connecti.xml"]
-                        = "connectionmanager_stub.xml";
-                    this._filesToCompressInCab["contentd.xml"]
-                        = "contentdirectory_stub.xml";
-                    this._filesToCompressInCab["mediarec.xml"]
-                        = "mediareceiverregistrar_stub.xml";
-                }
-
-                switch (this.Parameters.RequestedType)
-                {
-                    case PackageType.Vanilla:
-                        // Removing Tweaks.AddReg sections to get vanilla
-                        string[] sectionsToProcess;
-                        if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
-                        {
-                            sectionsToProcess = new string[] {
-                                "InstallWMP7", "InstallWMP7.Reg"
-                            };
-                        }
-                        else
-                        {
-                            sectionsToProcess = new string[] {
-                                "PerUserStub"
-                            };
-                        }
-
-                        const string wmpShortcutsSect = "WMP11.Shortcuts";
-                        const string tweaksSect = "Tweaks.AddReg";
-                        const string addRegDirective = "AddReg";
-
-                        foreach (string wmp11Sect in sectionsToProcess)
-                        {
-                            bool result1 = this._wmp11InfEditor.Remove(wmp11Sect,
-                                addRegDirective, tweaksSect);
-                            Debug.Assert(result1, String.Format(
-                                "wmp.inf doesn't have reference to \"{0}\" in \"{1}\" of [{0}]", 
-                                tweaksSect, addRegDirective, wmp11Sect));
-                        }
-                        bool result2 = this._wmp11InfEditor.Remove(tweaksSect);
-                        Debug.Assert(result2, String.Format(
-                            "wmp.inf doesn't have a [{0}] section.", tweaksSect));
-
-                        // Remove quick launch and desktop icon stuff
-                        string[] removeSources = null;
-                        if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
-                            removeSources = new string[] { "PerUserStub" };
-                        else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
-                            removeSources = sectionsToProcess;
-                        foreach (string wmp11Sect in removeSources)
-                        {
-                            result2 = this._wmp11InfEditor.Remove(wmp11Sect,
-                                addRegDirective,
-                                wmpShortcutsSect
-                            );
-                            Debug.Assert(result2, String.Format(
-                                "wmp.inf does not have a reference to \"{0}\" in \"{1}\" of [{0}]",
-                                wmpShortcutsSect, addRegDirective, wmp11Sect));
-                        }
-                        result2 = this._wmp11InfEditor.Remove(wmpShortcutsSect);
-                        Debug.Assert(result2, String.Format(
-                            "wmp.inf doesn't have a [{0}] section.", wmpShortcutsSect));
-                        break;
-
-                    case PackageType.Tweaked:
-                        // Removing WGA files to make Tweaked version
-                        bool result3 = _wmp11ExtInfEditor.RemoveLine("SourceDisksFiles",
-                            "LegitLibM.dll");
-                        Debug.Assert(result3, 
-                            "Wmp11Ext embedded doesn't have LegitLibM.dll in [SourceDisksFiles] for vanilla.");
-                        result3 = _wmp11ExtInfEditor.RemoveLine("WMPlayer.Copy",
-                            "LegitLibM.dll");
-                        Debug.Assert(result3,
-                            "Wmp11Ext embedded doesn't have LegitLibM.dll in [WMPlayer.Copy] for vanilla.");
-                        this._filesToCompressInCab.Remove("LegitLibM.dll");
-                        break;
-
-                    default:
-                        // Defaulting to vanilla is better than throwing exception
-                        // Because someone could meddle in the registry and set the 
-                        // index to something invalid, which would cause us to crash on startup.
-
-                        //NotSupportedException exception = new NotSupportedException(
-                        //    "Unknown or unsupport package type requested.");
-                        //exception.Data.Add("PackageType", this.Parameters.RequestedType);
-                        //throw exception;
-                        goto case PackageType.Vanilla;
-                }
             }
-            catch (Exception ex)
+
+            // HACK Fix some xml files overwriting each other due to same short 
+            // name but diff folders on x32
+            if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
-                throw new Exceptions.IntegrationException(
-                    "An error occurred while generating the file list.",
-                    ex
-                );
+                this._filesToCompressInCab["connecti.xml"]
+                    = "connectionmanager_stub.xml";
+                this._filesToCompressInCab["contentd.xml"]
+                    = "contentdirectory_stub.xml";
+                this._filesToCompressInCab["mediarec.xml"]
+                    = "mediareceiverregistrar_stub.xml";
             }
 
-            CancelCheckpoint();
+            switch (this.Parameters.RequestedType)
+            {
+                case PackageType.Vanilla:
+                    // Removing Tweaks.AddReg sections to get vanilla
+                    string[] sectionsToProcess;
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
+                    {
+                        sectionsToProcess = new string[] {
+                            "InstallWMP7", "InstallWMP7.Reg"
+                        };
+                    }
+                    else
+                    {
+                        sectionsToProcess = new string[] {
+                            "PerUserStub"
+                        };
+                    }
+
+                    const string wmpShortcutsSect = "WMP11.Shortcuts";
+                    const string tweaksSect = "Tweaks.AddReg";
+                    const string addRegDirective = "AddReg";
+
+                    foreach (string wmp11Sect in sectionsToProcess)
+                    {
+                        bool result1 = this._wmp11InfEditor.Remove(wmp11Sect,
+                            addRegDirective, tweaksSect);
+                        Debug.Assert(result1, String.Format(
+                            "wmp.inf doesn't have reference to \"{0}\" in \"{1}\" of [{0}]", 
+                            tweaksSect, addRegDirective, wmp11Sect));
+                    }
+                    bool result2 = this._wmp11InfEditor.Remove(tweaksSect);
+                    Debug.Assert(result2, String.Format(
+                        "wmp.inf doesn't have a [{0}] section.", tweaksSect));
+
+                    // Remove quick launch and desktop icon stuff
+                    string[] removeSources = null;
+                    if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
+                        removeSources = new string[] { "PerUserStub" };
+                    else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
+                        removeSources = sectionsToProcess;
+                    foreach (string wmp11Sect in removeSources)
+                    {
+                        result2 = this._wmp11InfEditor.Remove(wmp11Sect,
+                            addRegDirective,
+                            wmpShortcutsSect
+                        );
+                        Debug.Assert(result2, String.Format(
+                            "wmp.inf does not have a reference to \"{0}\" in \"{1}\" of [{0}]",
+                            wmpShortcutsSect, addRegDirective, wmp11Sect));
+                    }
+                    result2 = this._wmp11InfEditor.Remove(wmpShortcutsSect);
+                    Debug.Assert(result2, String.Format(
+                        "wmp.inf doesn't have a [{0}] section.", wmpShortcutsSect));
+                    break;
+
+                case PackageType.Tweaked:
+                    // Removing WGA files to make Tweaked version
+                    bool result3 = _wmp11ExtInfEditor.RemoveLine("SourceDisksFiles",
+                        "LegitLibM.dll");
+                    Debug.Assert(result3, 
+                        "Wmp11Ext embedded doesn't have LegitLibM.dll in [SourceDisksFiles] for vanilla.");
+                    result3 = _wmp11ExtInfEditor.RemoveLine("WMPlayer.Copy",
+                        "LegitLibM.dll");
+                    Debug.Assert(result3,
+                        "Wmp11Ext embedded doesn't have LegitLibM.dll in [WMPlayer.Copy] for vanilla.");
+                    this._filesToCompressInCab.Remove("LegitLibM.dll");
+                    break;
+
+                default:
+                    // Defaulting to vanilla is better than throwing exception
+                    // Because someone could meddle in the registry and set the 
+                    // index to something invalid, which would cause us to crash on startup.
+
+                    //NotSupportedException exception = new NotSupportedException(
+                    //    "Unknown or unsupport package type requested.");
+                    //exception.Data.Add("PackageType", this.Parameters.RequestedType);
+                    //throw exception;
+                    goto case PackageType.Vanilla;
+            }
+
+        CancelCheckpoint();
 
             // Figure out the external cab filename from the external inf
             if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
@@ -960,7 +944,7 @@ namespace Epsilon.WMP11Slipstreamer
                     else
                     {
                         throw new Exceptions.IntegrationException(
-                            string.Format(
+                            String.Format(
                             "Invalid key in [txtsetup_dirs] section in \"{0}\": [{1}].",
                             txtDir.Key, this._entriesCombinedEditor.IniFileInfo.Name
                             )
@@ -1068,7 +1052,7 @@ namespace Epsilon.WMP11Slipstreamer
             if (this.Parameters.SourceInfo.SourceVersion == WindowsType._XP
                 && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
-                ProcessKB926239(tempCompareFolder,
+                this.ProcessKB926239(tempCompareFolder,
                     this.CreatePathString(_extractDir, "Update"));
             }
 
@@ -1089,7 +1073,7 @@ namespace Epsilon.WMP11Slipstreamer
 
                     if (minUxthemeVer.CompareTo(sourceUxthemeVer) > 0)
                     {
-                        this.OnShowMessage(
+                        this.OnMessage(
                             Msg.dlgWarnUxtheme_Text,
                             Msg.dlgWarnUxtheme_Title, MessageEventType.Warning);
                     }
@@ -1107,7 +1091,7 @@ namespace Epsilon.WMP11Slipstreamer
 
                     if (minMsobmainVer.CompareTo(sourceMsobmainVer) > 0)
                     {
-                        this.OnShowMessage(
+                        this.OnMessage(
                             Msg.dlgWarnOobe_Text,
                             Msg.dlgWarnOobe_Title, MessageEventType.Warning);
                     }
@@ -1162,7 +1146,7 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new FileNotFoundException(String.Format(
+                        throw new Exceptions.IntegrationException(String.Format(
                             Msg.errNoInfInHotfix,
                             Path.GetFileName(hotfix)));
                     }
@@ -1250,7 +1234,7 @@ namespace Epsilon.WMP11Slipstreamer
                             }
                             else if (result == FileVersionComparison.NotFound)
                             {
-                                throw new InvalidOperationException(
+                                throw new Exceptions.IntegrationException(
                                     String.Format(
                                     Msg.errUnsupportedFixAttempt,
                                     relativeFilePath, hotfixParser.HotfixName)
@@ -1334,9 +1318,11 @@ namespace Epsilon.WMP11Slipstreamer
                     continue;
                 }
                 else
-                    throw new FileNotFoundException(string.Format(
-                        "File: \"{0}\" ({1}) not found.", pair.Key, pair.Value), 
-                        pair.Key);
+                {
+                    throw new Exceptions.FileNotFoundException(String.Format(
+                        "Creating external cab failed. File: \"{0}\" ({1}) not found.", 
+                        pair.Key, pair.Value), pair.Key);
+                }
             }
 
             this.OnResetCurrentProgress();
@@ -1902,16 +1888,6 @@ namespace Epsilon.WMP11Slipstreamer
             UncompressedPossiblex32x64Combo = 2,
             CompressedPossiblex32x64Combo = 3
         }
-        #endregion
-
-        #region Debugging events
-#if DEBUG
-        internal delegate bool DebuggingYesNoQuestionDelegate();
-        internal event DebuggingYesNoQuestionDelegate OnBeforeMergeFolders;
-
-        internal delegate void DebuggingMessageDelegate(string message, string title);
-        internal event DebuggingMessageDelegate OnDebuggingMessage;
-#endif
         #endregion
     }
 }

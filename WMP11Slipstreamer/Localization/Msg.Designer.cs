@@ -429,42 +429,6 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid Windows™ source..
-        /// </summary>
-        internal static string errInvalidSource {
-            get {
-                return ResourceManager.GetString("errInvalidSource", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid 32-bit Windows™ source..
-        /// </summary>
-        internal static string errInvalidX32Src {
-            get {
-                return ResourceManager.GetString("errInvalidX32Src", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &quot;{0}&quot; does not seem to contain a valid x64 Windows™ source..
-        /// </summary>
-        internal static string errInvalidX64Src {
-            get {
-                return ResourceManager.GetString("errInvalidX64Src", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The essential setup file &quot;{0}&quot; is missing from this source. This source is corrupt..
-        /// </summary>
-        internal static string errMissingSetupFileFromArch {
-            get {
-                return ResourceManager.GetString("errMissingSetupFileFromArch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot find the index of the 32-bit &quot;i386&quot; folder. This x64 source is corrupt..
         /// </summary>
         internal static string errNoI386RefInX64Src {
@@ -488,15 +452,6 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string errOffendingFix {
             get {
                 return ResourceManager.GetString("errOffendingFix", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot integrate WMP11 on a windows source of this type..
-        /// </summary>
-        internal static string errSourceNotSupported {
-            get {
-                return ResourceManager.GetString("errSourceNotSupported", resourceCulture);
             }
         }
         
@@ -561,7 +516,7 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3270d2f650dacfe8c48f2f66ce3179d7.
+        ///   Looks up a localized string similar to dc826746e1b7919b6275ea3f14c5e1bd.
         /// </summary>
         internal static string LocalizerKey {
             get {
@@ -719,15 +674,6 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string statGenFileList {
             get {
                 return ResourceManager.GetString("statGenFileList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Merging folders....
-        /// </summary>
-        internal static string statMergeFolders {
-            get {
-                return ResourceManager.GetString("statMergeFolders", resourceCulture);
             }
         }
         
@@ -926,15 +872,6 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string uxLinkWMPRedist {
             get {
                 return ResourceManager.GetString("uxLinkWMPRedist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to False.
-        /// </summary>
-        internal static string uxRightToLeft {
-            get {
-                return ResourceManager.GetString("uxRightToLeft", resourceCulture);
             }
         }
         

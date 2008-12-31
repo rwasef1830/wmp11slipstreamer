@@ -126,12 +126,8 @@
     <comment>Culture name string (eg: it-IT, fr-FR, en-US, fr)</comment>
   </data>
   <data name="LocalizerKey" xml:space="preserve">
-    <value>3270d2f650dacfe8c48f2f66ce3179d7</value>
+    <value>dc826746e1b7919b6275ea3f14c5e1bd</value>
     <comment>Do not change unless a new key is announced.</comment>
-  </data>
-  <data name="uxRightToLeft" xml:space="preserve">
-    <value>False</value>
-    <comment>(Do not localize) True = Right-To-Left Layout</comment>
   </data>
   <data name="uxGroupBoxBasicOpts" xml:space="preserve">
     <value>Basic Options</value>
@@ -237,9 +233,6 @@
   </data>
   <data name="statCompressEdited" xml:space="preserve">
     <value>Compressing edited files...</value>
-  </data>
-  <data name="statMergeFolders" xml:space="preserve">
-    <value>Merging folders...</value>
   </data>
   <data name="statCleanTemp" xml:space="preserve">
     <value>Cleaning up temporary folders...</value>
@@ -376,18 +369,6 @@ Current source: Windows v{2} {3}</value>
   <data name="errNoI386RefInX64Src" xml:space="preserve">
     <value>Cannot find the index of the 32-bit "i386" folder. This x64 source is corrupt.</value>
   </data>
-  <data name="errInvalidSource" xml:space="preserve">
-    <value>"{0}" does not seem to contain a valid Windows™ source.</value>
-  </data>
-  <data name="errInvalidX32Src" xml:space="preserve">
-    <value>"{0}" does not seem to contain a valid 32-bit Windows™ source.</value>
-  </data>
-  <data name="errInvalidX64Src" xml:space="preserve">
-    <value>"{0}" does not seem to contain a valid x64 Windows™ source.</value>
-  </data>
-  <data name="errMissingSetupFileFromArch" xml:space="preserve">
-    <value>The essential setup file "{0}" is missing from this source. This source is corrupt.</value>
-  </data>
   <data name="errDirIdDuplicated" xml:space="preserve">
     <value>DirId: "{0}" is defined more than once in "{1}"</value>
   </data>
@@ -423,9 +404,6 @@ You may need an updated version of this program to properly integrate this hotfi
   </data>
   <data name="errDeltaAPIFailed" xml:space="preserve">
     <value>Delta API failed to apply patch "{0}" to the file "{1}".</value>
-  </data>
-  <data name="errSourceNotSupported" xml:space="preserve">
-    <value>Cannot integrate WMP11 on a windows source of this type.</value>
   </data>
   <data name="dlgUsageInfo_Text" xml:space="preserve">
     <value>WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\MyWindowsSource" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"pathToIcon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]

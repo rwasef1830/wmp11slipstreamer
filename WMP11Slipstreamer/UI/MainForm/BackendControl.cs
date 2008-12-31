@@ -6,6 +6,8 @@ using Epsilon.IO;
 using Epsilon.DebugServices;
 using System.Windows.Forms;
 using System.Threading;
+using Epsilon.Slipstreamers;
+using System.Diagnostics;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -26,8 +28,11 @@ namespace Epsilon.WMP11Slipstreamer
                 this._backend.AnnounceOperation
                     += new Action<string>(_backend_OnAnnounceOperation);
                 this._backend.Message
-                    += new EventHandler<Backend.MessageEventArgs>(
-                    this._backendInstance_OnMessage);
+                    += delegate(object eventSender, Backend.MessageEventArgs args)
+                    {
+                        MessageBox.Show(args.Message, args.MessageTitle,
+                            MessageBoxButtons.OK, (MessageBoxIcon)args.MessageType);
+                    };
                 this._backend.UpdateCurrentProgress
                     += new Backend.ProgressEventDelegate(
                     this._backend_OnCurrentProgressUpdate);
@@ -35,21 +40,15 @@ namespace Epsilon.WMP11Slipstreamer
                     += new Backend.ProgressEventDelegate(
                     this._backend_OnGlobalProgressUpdate);
                 this._backend.EnterCriticalOperation
-                    += new Backend.CriticalOperationEventDelegate(
-                    delegate() { this._workerInCriticalOperation = true; });
+                    += delegate(SlipstreamerBase slip)
+                    { this._workerInCriticalOperation = true; };
                 this._backend.ExitCriticalOperation
-                    += new Backend.CriticalOperationEventDelegate(
-                    delegate() { this._workerInCriticalOperation = false; });
+                    += delegate(SlipstreamerBase slip) 
+                    { this._workerInCriticalOperation = false; };
 
-#if DEBUG
                 // Helps in debugging
-                this._backend.OnBeforeMergeFolders
-                    += new Backend.DebuggingYesNoQuestionDelegate(
-                    this._backendInstance_OnBeforeMergeFolders);
-                this._backend.OnDebuggingMessage
-                    += new Backend.DebuggingMessageDelegate(
-                    this._backendInstance_OnDebuggingMessage);
-#endif
+                this._backend.Checkpoint
+                    += new Predicate<string>(this.Backend_Checkpoint);
 
                 // Start the backend's operations
                 this._backend.Slipstream();
@@ -169,31 +168,22 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void _backendInstance_OnMessage(object sender, Backend.MessageEventArgs e)
-        {
-            MessageBoxIcon msgIcon = (MessageBoxIcon)e.MessageType;
-            string msgTitle = (!String.IsNullOrEmpty(e.MessageTitle)) ?
-                e.MessageTitle : Application.ProductName;
-            string msgText = (!String.IsNullOrEmpty(e.Message)) ?
-                e.Message : "No message text was specified by the caller.";
-            this.CrossThreadMessageBox(msgText, msgTitle, msgIcon);
-        }
-
 #if DEBUG
-        bool _backendInstance_OnBeforeMergeFolders()
+        bool Backend_Checkpoint(string message)
         {
             DialogResult result =
-                MessageBox.Show("Do you want to merge folders ?\n\nThis process"
-                + " is irreversible and will permanently modify your source.",
-                "Merge Folders ?", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+                MessageBox.Show(message, "Checkpoint",
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
-            return result == DialogResult.Yes;
-        }
 
-        void _backendInstance_OnDebuggingMessage(string message, string title)
-        {
-            MessageBox.Show(message, title, MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            switch (result)
+            {
+                case DialogResult.Yes: return true;
+                case DialogResult.No: return false;
+                case DialogResult.Cancel: this._backend.Abort(); break;
+            }
+
+            return false;
         }
 #endif
         #endregion

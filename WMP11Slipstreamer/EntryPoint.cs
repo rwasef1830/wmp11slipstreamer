@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
-using Epsilon;
-using System.Threading;
 using System.Reflection;
 using System.Resources;
-using System.Globalization;
+using System.Threading;
+using System.Windows.Forms;
 using Epsilon.DebugServices;
 using Epsilon.WMP11Slipstreamer.Localization;
 
@@ -23,6 +21,9 @@ namespace Epsilon.WMP11Slipstreamer
         {
             try
             {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
                 StartDebugConsole();
 
                 ArgumentParser argParser = new ArgumentParser(args);
@@ -91,9 +92,6 @@ namespace Epsilon.WMP11Slipstreamer
                 }
 
                 ValidateResource();
-
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm(installer, winsource, hotfixes,
                     output, customicon, nocats, slipstream, closeonsuccess,
                     customiconpath));
