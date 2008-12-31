@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="dlgAbout_InfoText" xml:space="preserve">
+    <value>A program belefűzi a Windows Media Player 11-t a Windows telepítőbe.
+
+Amikor legközelebb telepíted a Windows, Windows Media Player 11 már telepítve lesz, és készen áll a digitális anyagok lejátszására.
+
+Megj.: A programnak semmi köze sincsen a Microsoft-hoz. 
+
+Ne panaszkodj a Microsoft-nak, ha valamilyen problémába ütközöl a programmal kapcsolatban. Csak saját felelősségre használd.</value>
+  </data>
+  <data name="dlgPicker_IconFiles" xml:space="preserve">
+    <value>ikon fájlok</value>
+  </data>
+  <data name="uxLinkWMPRedist" xml:space="preserve">
+    <value>Töltsd le a telepítőt, ha nincs meg. (Eredeti Windows kell)</value>
+  </data>
+  <data name="uxCheckboxCustomIcon" xml:space="preserve">
+    <value>Egyedi ikon a wmplayer.exe-hez</value>
+  </data>
+  <data name="dlgError_ButtonClose" xml:space="preserve">
+    <value>&amp;Bezár</value>
+  </data>
+  <data name="uxLinkAbout" xml:space="preserve">
+    <value>Névjegy...</value>
+  </data>
+  <data name="errOffendingFix" xml:space="preserve">
+    <value>Offending Javítás</value>
+  </data>
+  <data name="statFixingTxtsetupDirs" xml:space="preserve">
+    <value>[txtsetup_dirs] rész javítása...</value>
+  </data>
+  <data name="errInvalidSource" xml:space="preserve">
+    <value>"{0}" nem tartalmaz érvényes Windows™ forrás.</value>
+  </data>
+  <data name="dlgText_Success" xml:space="preserve">
+    <value>Az integrálás sikeresen befejeződött.</value>
+  </data>
+  <data name="dlgText_WmpRedistNotFound" xml:space="preserve">
+    <value>Windows Media Player 11 nem található. Add meg újból a helyét.</value>
+  </data>
+  <data name="uxLabelEnterWMPRedistPath" xml:space="preserve">
+    <value>Ird be a Media Player 11 telepítő elérési útját vagy használd a "..." gombot:</value>
+  </data>
+  <data name="errSrcTypeDetectFail" xml:space="preserve">
+    <value>A forrás megállapítása sikertelen. nem sikerült megállapítani a korrekt fájlbeállítást.</value>
+  </data>
+  <data name="dlgUsageInfo_Title" xml:space="preserve">
+    <value>Felhasználói információk</value>
+  </data>
+  <data name="dlgPicker_ExeFiles" xml:space="preserve">
+    <value>Futtatható fájlok</value>
+  </data>
+  <data name="statEditFile" xml:space="preserve">
+    <value>Szerkesztés "{0}"...</value>
+  </data>
+  <data name="uxLabelEnterSrcPath" xml:space="preserve">
+    <value>Add meg a Windows telepítő helyét, amibe a WMP11 belekerül (tartalmazza a "i386" mappát):</value>
+  </data>
+  <data name="errInvalidX32Src" xml:space="preserve">
+    <value>"{0}" nem tartalmaz érvényes 32-bit Windows™ forrást.</value>
+  </data>
+  <data name="dlgAbout_GotoSite" xml:space="preserve">
+    <value>Kattints ide a weboldal megnyitásához</value>
+  </data>
+  <data name="errInvalidX64Src" xml:space="preserve">
+    <value>"{0}" nem tartalmaz érvényes x64 Windows™ forrást.</value>
+  </data>
+  <data name="uxTypeVanilla" xml:space="preserve">
+    <value>Vanilla (eredeti telepítés WGA-val)</value>
+  </data>
+  <data name="dlgIntegError_Title" xml:space="preserve">
+    <value>Integrálási Hiba</value>
+  </data>
+  <data name="uxButtonExit" xml:space="preserve">
+    <value>&amp;Kilép</value>
+  </data>
+  <data name="statReadCoreInfs" xml:space="preserve">
+    <value>Maginformációk olvasása...</value>
+  </data>
+  <data name="statWaitCancel" xml:space="preserve">
+    <value>Várakozás az aktuális folyamat befejezésére...</value>
+  </data>
+  <data name="statCreateCab" xml:space="preserve">
+    <value>Készítés "{0}"...</value>
+  </data>
+  <data name="dlgIconError_Title" xml:space="preserve">
+    <value>Hiba az ikon betöltésekor</value>
+  </data>
+  <data name="errNoI386RefInX64Src" xml:space="preserve">
+    <value>Nem találom a 32bites "i386" mappa indexét. Ez az x64 forrás hibás.</value>
+  </data>
+  <data name="dlgAbout_ButtonOK" xml:space="preserve">
+    <value>&amp;OK</value>
+  </data>
+  <data name="uxStatusBarDefaultText" xml:space="preserve">
+    <value>Kész</value>
+  </data>
+  <data name="statPreparingFixes" xml:space="preserve">
+    <value>Javítások előkészítése...</value>
+  </data>
+  <data name="statExtractFile" xml:space="preserve">
+    <value>Kitömörítés "{0}"...</value>
+  </data>
+  <data name="statExtractWmpRedist" xml:space="preserve">
+    <value>Windows Media Player 11 telepítő kibontása...</value>
+  </data>
+  <data name="statSavingInis" xml:space="preserve">
+    <value>Módosított fájlok mentése...</value>
+  </data>
+  <data name="statReadFiles" xml:space="preserve">
+    <value>Telepítőfájlok olvasása...</value>
+  </data>
+  <data name="statCompressEdited" xml:space="preserve">
+    <value>Módosított fájlok tömörítése...</value>
+  </data>
+  <data name="statPrepareEdit" xml:space="preserve">
+    <value>Felkészülés a fájlok módosítására...</value>
+  </data>
+  <data name="uxGroupBoxBasicOpts" xml:space="preserve">
+    <value>Alapbeállítás</value>
+  </data>
+  <data name="statInit" xml:space="preserve">
+    <value>Előkészítés...</value>
+  </data>
+  <data name="dlgTitle_Wmp64FilesMissing" xml:space="preserve">
+    <value>Nem találom a régi WMP komponenseket</value>
+  </data>
+  <data name="errDirIdDuplicated" xml:space="preserve">
+    <value>DirId: "{0}" többször definiált itt: "{1}"</value>
+  </data>
+  <data name="dlgIconError_Text" xml:space="preserve">
+    <value>A kijelölt fájl nem valós ikon.</value>
+  </data>
+  <data name="dlgPicker_AllFiles" xml:space="preserve">
+    <value>Minden fájl</value>
+  </data>
+  <data name="statDetectingSource" xml:space="preserve">
+    <value>Forrás elemzése...</value>
+  </data>
+  <data name="dlgText_Wmp64FilesMissing" xml:space="preserve">
+    <value>Alapvető WMP9 és WMP6.4 fájlok hiányoznak a forrásból.
+
+A Windows Media Player 11 integrálása nem lehetséges, ha ezek az elemek nLite-al vagy más programmal el lettek távolítva.</value>
+  </data>
+  <data name="dlgUsageInfo_Text" xml:space="preserve">
+    <value>WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\WindowsForrás" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"pathToIcon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]
+
+/installer - Megadja a Microsoft WMP11 telepítő elérési útját.
+/winsource - Megadja a Windows forrás helyét, amibe a WMP11 bele fog kerülni.
+/hotfix - További WMP11 javítások, melyek integrálásra kerülnek.
+/output - A WMP11 integrálás módját állítja be, használható parancs: "Normal" vagy "Tweaked".
+/customicon - Az ikont állítja be a wmplayer.exe fájlhoz, használható parancs: "Boooggy", "Vista" vagy "Custom".
+/customiconpath - Az egyedi ikon elérési útja "/customicon Custom" parancs esetén.
+/nocats - WMP11 integrálása a biztonsági katalógusok nélkül (ha kikapcsoltad a WFP-t).
+/slipstream - Integrálás megkezdése, ha minden parancs helyes és minden fájl létezik.
+/closeonsuccess - Bezárja a programot, ha az integrálás sikeresen befejeződött.</value>
+  </data>
+  <data name="errInvalidKeyInWinntDirs" xml:space="preserve">
+    <value>Hibás kulcs a [WinntDirectories] részben "{0}": "{1}"</value>
+  </data>
+  <data name="uxGroupBoxAdvOpts" xml:space="preserve">
+    <value>Haladó beállítások</value>
+  </data>
+  <data name="dlgWarnUxtheme_Text" xml:space="preserve">
+    <value>Integráld a KB908536-t, miután a folyamat befejeződött, különben a "Témák" szolgáltatás nem fog elindulni a Windows telepítése után.</value>
+  </data>
+  <data name="LocalizerKey" xml:space="preserve">
+    <value>3270d2f650dacfe8c48f2f66ce3179d7</value>
+  </data>
+  <data name="uxButtonIntegrate" xml:space="preserve">
+    <value>&amp;Integrál</value>
+  </data>
+  <data name="dlgText_Cancelled" xml:space="preserve">
+    <value>Az integrálást a felhasználó megszakította. A forrás változatlan maradt.</value>
+  </data>
+  <data name="statCompressAdded" xml:space="preserve">
+    <value>Hozzáadott fájlok tömörítése...</value>
+  </data>
+  <data name="uxLabelEnterHotfixLine" xml:space="preserve">
+    <value>Használd a "..." gombot a WMP11 javítások kijelölésére:</value>
+  </data>
+  <data name="statApplyCustIcon" xml:space="preserve">
+    <value>Egyedi ikonok beállítása...</value>
+  </data>
+  <data name="uxLabelChooseType" xml:space="preserve">
+    <value>WMP11 integrálás típusa:</value>
+  </data>
+  <data name="dlgWarnUxtheme_Title" xml:space="preserve">
+    <value>Figyelmeztetés: "Témák" szolgáltatás</value>
+  </data>
+  <data name="uxTypeTweaked" xml:space="preserve">
+    <value>Módosított (registry módosítással és nincs WGA)</value>
+  </data>
+  <data name="LocalizerName" xml:space="preserve">
+    <value>SSJocó</value>
+  </data>
+  <data name="errHotfixArchMismatch" xml:space="preserve">
+    <value>Az integrálandó javítás ({0}) nem azonos a forrás CPU arhitektúrájával.
+Ellenőrizd, hogy mindkettő 32-bit vagy x64 verzió.</value>
+  </data>
+  <data name="errWmpRedistNoControlXml" xml:space="preserve">
+    <value>Rossz WMP11 telepítő. A control.xml hiányzik a forrás megállapításához.</value>
+  </data>
+  <data name="dlgSrcPicker_Header" xml:space="preserve">
+    <value>Jelöld ki a módosítandó Microsoft® Windows™ forrást ("i386" mappát tartalmaznia kell):</value>
+  </data>
+  <data name="statMergeFolders" xml:space="preserve">
+    <value>Mappák egyesítése...</value>
+  </data>
+  <data name="statCompressCats" xml:space="preserve">
+    <value>Biztonsági katalógus tömörítése...</value>
+  </data>
+  <data name="statCompressFile" xml:space="preserve">
+    <value>Tömörítés "{0}"...</value>
+  </data>
+  <data name="dlgWarnOobe_Title" xml:space="preserve">
+    <value>"Első használat" figyelmeztetés</value>
+  </data>
+  <data name="statCleanTemp" xml:space="preserve">
+    <value>Ideiglenes mappák törlése...</value>
+  </data>
+  <data name="errNoInfInHotfix" xml:space="preserve">
+    <value>Nem sikerült beazonosítani a következőt: "{0}".</value>
+  </data>
+  <data name="errControlXmlInvalid" xml:space="preserve">
+    <value>"{0}" nem tartalmazza a szükséges elemeket. Nem tudom ellenőrizni a kompatibilitást.</value>
+  </data>
+  <data name="dlgTitle_Success" xml:space="preserve">
+    <value>Sikeres</value>
+  </data>
+  <data name="uxCheckboxNoCats" xml:space="preserve">
+    <value>Ne adjon hozzá biztonsági katalógust (ha letiltottad a Windows Fájlvédelmet)</value>
+  </data>
+  <data name="uxLabelPreview" xml:space="preserve">
+    <value>Előnézet:</value>
+  </data>
+  <data name="dlgText_InvalidHotfixLine" xml:space="preserve">
+    <value>Érvénytelen elem a javításokban, vagy a javítás nem létezik.
+
+Jelöld ki újból a javítás, majf próbáld újra.</value>
+  </data>
+  <data name="dlgPickHotfixes_Title" xml:space="preserve">
+    <value>WMP11 Javítás(ok) kijelölése integrálásra:</value>
+  </data>
+  <data name="errDeltaAPIFailed" xml:space="preserve">
+    <value>A Delta API módosítási hiba "{0}" fájlban "{1}".</value>
+  </data>
+  <data name="errSourceNotSupported" xml:space="preserve">
+    <value>A WMP11 integrálása ebbe a forrásba nem lehetséges.</value>
+  </data>
+  <data name="dlgTitle_Cancelled" xml:space="preserve">
+    <value>Megszakítva</value>
+  </data>
+  <data name="errWmpRedistWrongVer" xml:space="preserve">
+    <value>A jelen WMP11 telepítő nem alkalmas ehhez a Windowshoz.
+
+A WMP11 telepítő a következővel kompatibilis: Windows v{0} {1}
+Jelenlegi verzió: Windows v{2} {3}</value>
+  </data>
+  <data name="statExtractApplyHotfix" xml:space="preserve">
+    <value>Javítások kitömörítése és integrálása...</value>
+  </data>
+  <data name="errWmpRedistArchMismatch" xml:space="preserve">
+    <value>A jelen Windows Media Player 11 telepítő nem kompatibilis a kiválasztott OP rendszer forrásával.
+Ellenőrizd, hogy mind a kettő 32-bit vagy x64 verzió.</value>
+  </data>
+  <data name="uxRightToLeft" xml:space="preserve">
+    <value>Hamis</value>
+  </data>
+  <data name="dlgIntegError_Header" xml:space="preserve">
+    <value>Hiba az integrálás közben:</value>
+  </data>
+  <data name="LocalizerCulture" xml:space="preserve">
+    <value>hu-HU</value>
+  </data>
+  <data name="dlgIconPicker_Title" xml:space="preserve">
+    <value>Egyedi ikon kijelölése:</value>
+  </data>
+  <data name="dlgTitle_InvalidHotfixLine" xml:space="preserve">
+    <value>Érvénytelen Javítás</value>
+  </data>
+  <data name="dlgError_Header" xml:space="preserve">
+    <value>Egy váratlan kivétel történt a feldolgozási szálban.
+Másold ki a következő szöveget és küldj egy hibajelentést.</value>
+  </data>
+  <data name="uxButtonCancel" xml:space="preserve">
+    <value>&amp;Mégsem</value>
+  </data>
+  <data name="statReplaceInDriverCab" xml:space="preserve">
+    <value>Fájlok cseréje a driver cabinetben...</value>
+  </data>
+  <data name="statDetOverwrite" xml:space="preserve">
+    <value>Felülírandó fájlok elemzése...</value>
+  </data>
+  <data name="uxLabelDefaultOp" xml:space="preserve">
+    <value>Nincs művelet</value>
+  </data>
+  <data name="dlgAbout_uxLabelTranslated" xml:space="preserve">
+    <value>Fordítás készítője:</value>
+  </data>
+  <data name="dlgWMPRedistPicker_Header" xml:space="preserve">
+    <value>WMP11 telepítő helye (pl: wmp11-windowsxp-x86-hun.exe):</value>
+  </data>
+  <data name="statGenFileList" xml:space="preserve">
+    <value>Fájllista készítése...</value>
+  </data>
+  <data name="dlgError_Footer" xml:space="preserve">
+    <value>Kattints a "Bezárás"-ra és visszatérsz az alkalmazáshoz.</value>
+  </data>
+  <data name="errUnsupportedFixAttempt" xml:space="preserve">
+    <value>nem-WMP11 javítás integrálása. Offending fájl: "{0}", Javítás: {1}
+
+Frissítsd ezt a programot egy újabb verzióra a sikeres integráláshoz.</value>
+  </data>
+  <data name="errMissingSetupFileFromArch" xml:space="preserve">
+    <value>Az alapvető telepítőfájl "{0}" hiányzik a forrásból. A forrás hibás.</value>
+  </data>
+  <data name="dlgTitle_WmpRedistNotFound" xml:space="preserve">
+    <value>Nem találom a WMP11 telepítőt</value>
+  </data>
+  <data name="statCompressOverwrite" xml:space="preserve">
+    <value>Felülírt fájlok tömörítése...</value>
+  </data>
+  <data name="dlgWarnOobe_Text" xml:space="preserve">
+    <value>Integráld a KB894871-t, miután a folyamat befejeződött, különben az OOBE (out-of-box-experience) varázsló nem fog elindulni  a Windows telepítése után.</value>
+  </data>
+</root>
