@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Collections;
+using Epsilon.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -20,13 +21,23 @@ namespace Epsilon.WMP11Slipstreamer
         public ErrorForm(Exception ex, bool critical, 
             string tempFolder, string osString, string hotfixList)
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.ReadLocalizedMessages();
 
             this._exception = ex;
             this._critical = critical;
             this._tempFolder = tempFolder;
             this._osString = osString;
             this._hotfixList = hotfixList;
+        }
+
+        void ReadLocalizedMessages()
+        {
+            this.SuspendLayout();
+            this.uxLabelHeader.Text = Msg.dlgError_Header;
+            this.uxLabelFooter.Text = Msg.dlgError_Footer;
+            this.uxButtonClose.Text = Msg.dlgError_ButtonClose;
+            this.ResumeLayout();
         }
 
         void buttonClose_Click(object sender, EventArgs e)
@@ -38,113 +49,91 @@ namespace Epsilon.WMP11Slipstreamer
         {
             try
             {
-                errorLogBox.Text
+                this.uxTextBoxErrorLog.Text
                         = String.Format("WMP11Slipstreamer v{0}",
                         Globals.Version.ToString());
-                errorLogBox.AppendText(Environment.NewLine);
+                this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
 
-                if (!String.IsNullOrEmpty(this._osString))
-                {
-                    errorLogBox.AppendText("Detected source: ");
-                    errorLogBox.AppendText(this._osString);
-                    errorLogBox.AppendText(Environment.NewLine);
-                }
-
-                errorLogBox.AppendText(Environment.NewLine);
+                this.uxTextBoxErrorLog.AppendText(Msg.dlgError_DetectedSource);
+                this.uxTextBoxErrorLog.AppendText(
+                    this._osString ?? Msg.dlgError_NotAvailable);
+                this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
 
                 string[] hotfixesList = this._hotfixList.Split('|');
                 if (hotfixesList.Length > 1)
                 {
-                    errorLogBox.AppendText("Hotfixes:");
-                    errorLogBox.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Msg.dlgError_Hotfixes);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     for (int i = 1; i < hotfixesList.Length; i++)
                     {
                         if (!String.IsNullOrEmpty(hotfixesList[i]))
                         {
-                            errorLogBox.AppendText(hotfixesList[i]);
-                            errorLogBox.AppendText(Environment.NewLine);
+                            this.uxTextBoxErrorLog.AppendText(hotfixesList[i]);
+                            this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                         }
                     }
-                    errorLogBox.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                 }
 
-                errorLogBox.AppendText(this._exception.ToString());
-                errorLogBox.AppendText(Environment.NewLine);
-                errorLogBox.AppendText(Environment.NewLine);
+                this.uxTextBoxErrorLog.AppendText(this._exception.ToString());
+                this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
 
                 if (this._exception.Data.Count > 0)
                 {
-                    errorLogBox.AppendText("Extra error information:");
-                    errorLogBox.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Msg.dlgError_ExtraErrorInfo);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     foreach (DictionaryEntry pair in this._exception.Data)
                     {
-                        errorLogBox.AppendText(pair.Key.ToString());
-                        errorLogBox.AppendText(": ");
-                        errorLogBox.AppendText(pair.Value.ToString());
-                        errorLogBox.AppendText(Environment.NewLine);
+                        this.uxTextBoxErrorLog.AppendText(pair.Key.ToString());
+                        this.uxTextBoxErrorLog.AppendText(": ");
+                        this.uxTextBoxErrorLog.AppendText(pair.Value.ToString());
+                        this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     }
-                    errorLogBox.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                 }
 
                 if (!this._critical)
                 {
                     if (this._tempFolder != null)
                     {
-                        this.errorLogBox.AppendText(
-                            String.Format("Deleting \"{0}\"...", this._tempFolder));
-                        try
+                        if (Directory.Exists(this._tempFolder))
                         {
-                            Directory.Delete(this._tempFolder, true);
-                            errorLogBox.AppendText("  Done!");
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(
-                                "The source being modified has not been "
-                            + "damaged." + Environment.NewLine
-                            + "All changes have been successfully reverted.");
+                            this.uxTextBoxErrorLog.AppendText(
+                                Msg.dlgError_ErrorDuringCleanup);
+                            this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                            this.uxTextBoxErrorLog.AppendText(
+                                Msg.dlgError_DeleteTempDirManually);
+                            this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                            this.uxTextBoxErrorLog.AppendText(this._tempFolder);
                         }
-                        catch (Exception exSub)
+                        else
                         {
-                            errorLogBox.AppendText("  FAILED!");
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(
-                                "An exception occurred while attempting to "
-                                + "delete the temporary folder to revert "
-                                + "the changes done to the source. You can delete "
-                                + "the temporary folder by yourself later.");
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(String.Format("Temporary folder: \"{0}\"",
-                                this._tempFolder));
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(Environment.NewLine);
-                            errorLogBox.AppendText(exSub.ToString());
+                            this.uxTextBoxErrorLog.AppendText(
+                                Msg.dlgError_SourceNotCorrupted
+                                + " " + Msg.dlgError_ChangesUndone);
                         }
                     }
                     else
                     {
-                        errorLogBox.AppendText("The error occurred before any changes "
-                        + "were done to the source being modified."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "The source being modified has not been damaged.");
+                        this.uxTextBoxErrorLog.AppendText(
+                            Msg.dlgError_ErrorBeforeModifications
+                            + Environment.NewLine
+                            + Msg.dlgError_SourceNotCorrupted);
                     }
                 }
                 else
                 {
-                    errorLogBox.AppendText("Unfortunately, the error occurred during "
-                    + "the critical process of overwriting files in the \"i386\" folder. "
-                    + "This source is now corrupt, please use a fresh new "
-                    + "source for subsequent windows setup installations and modifications.");
-                    errorLogBox.AppendText(Environment.NewLine);
-                    errorLogBox.AppendText(Environment.NewLine);
-                    errorLogBox.AppendText(String.Format("Temporary folder: \"{0}\"",
+                    this.uxTextBoxErrorLog.AppendText(Msg.dlgError_SourceCorruptedSorry);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(
+                        String.Format(Msg.dlgError_TemporaryFolder,
                         this._tempFolder));
-                    errorLogBox.AppendText(Environment.NewLine);
-                    errorLogBox.AppendText(Environment.NewLine);
-                    errorLogBox.AppendText("We apologize for any inconvenience. "
-                    + "Please report this bug.");
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
+                    this.uxTextBoxErrorLog.AppendText(Msg.dlgError_ApologiesReportBug);
                 }
             }
             catch (Exception unexpected)

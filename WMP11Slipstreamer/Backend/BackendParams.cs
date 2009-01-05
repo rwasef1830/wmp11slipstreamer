@@ -12,8 +12,6 @@ namespace Epsilon.WMP11Slipstreamer
         public readonly PackageType RequestedType;
         public readonly byte[] CustomIcon;
 
-        public BackendResult Result;
-
         public BackendParams(string winSrc, WindowsSourceInfo srcInfo, 
             string wmpInstallerSource, string hotfixLine, PackageType addonType, 
             byte[] customIcon, bool ignoreCats) : base(winSrc, srcInfo, ignoreCats)
@@ -22,17 +20,7 @@ namespace Epsilon.WMP11Slipstreamer
             base.ParseHotfixLine(hotfixLine, out this.HotfixFolder, out this.HotfixFiles);
             this.CustomIcon = customIcon;
             this.RequestedType = addonType;
-            this.Result = BackendResult.NotStarted;
         }
-    }
-
-    public enum BackendResult
-    {
-        Success = 0,
-        Cancelled = 1,
-        Error = 2,
-        UnhandledException = 3,
-        NotStarted = 4,
     }
 
     public enum PackageType

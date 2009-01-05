@@ -25,7 +25,7 @@ namespace Epsilon.WMP11Slipstreamer
                     this.CreatePathString(this._extractDir, file)
                 );
             }
-            if (!this._params.IgnoreCats)
+            if (!this._state.IgnoreCats)
             {
                 this.AddSvcpackCatalog(this.CreatePathString(
                     "Update", kbName + ".cat"), fixesFolder);
@@ -97,7 +97,7 @@ namespace Epsilon.WMP11Slipstreamer
                     FileSystem.Delete(extractedName);
                 }
             }
-            if (counter > 0 && !this._params.IgnoreCats)
+            if (counter > 0 && !this._state.IgnoreCats)
             {
                 this.AddSvcpackCatalog(this.CreatePathString(
                     "Update", kbName + ".cat"), 

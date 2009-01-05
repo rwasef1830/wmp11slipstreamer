@@ -34,15 +34,15 @@ namespace Epsilon.WMP11Slipstreamer
             base.AddSlipstreamStep(new SlipstreamStep(
                 this.PrepareDependencies,
                 Msg.statReadCoreInfs));
-            
+
             base.AddSlipstreamStep(new SlipstreamStep(
                 this.PrepareForParse,
                 Msg.statReadFiles));
-            
+
             base.AddSlipstreamStep(new SlipstreamStep(
                 this.ParseAndEditFiles,
                 Msg.statPrepareEdit));
-            
+
             base.AddSlipstreamStep(new SlipstreamStep(
                 this.ApplyFixes,
                 Msg.statPreparingFixes));
@@ -182,8 +182,7 @@ namespace Epsilon.WMP11Slipstreamer
                     _extractDir);
                 if (!HotfixMatchesArch(_extractDir))
                 {
-                    throw new Exceptions.IntegrationException(
-                        Msg.errWmpRedistArchMismatch);
+                    throw new IntegrationException(Msg.errWmpRedistArchMismatch);
                 }
                 this.OnIncrementCurrentProgress(currProgress);
             }
@@ -245,8 +244,7 @@ namespace Epsilon.WMP11Slipstreamer
             switch (this.Parameters.SourceInfo.SourceVersion)
             {
                 case WindowsType._Unknown:
-                    throw new Exceptions.IntegrationException(
-                        Msg.errSrcTypeDetectFail);
+                    throw new IntegrationException(Msg.errSrcTypeDetectFail);
 
                 case WindowsType._XP:
                     if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
@@ -331,7 +329,7 @@ namespace Epsilon.WMP11Slipstreamer
             HelperConsole.InfoWriteLine("ParseXmlVerifyOS", "Backend");
             if (!File.Exists(xmlPath))
             {
-                throw new Exceptions.IntegrationException(
+                throw new IntegrationException(
                     Msg.errWmpRedistNoControlXml);
             }
             string fileContents = File.ReadAllText(xmlPath);
@@ -360,21 +358,26 @@ namespace Epsilon.WMP11Slipstreamer
                 else if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     osArch = "amd64";
 
-                osVer = this.Parameters.SourceInfo.ToVersion();
+                // Take number of fields equal to the number of fields
+                // that were specified by the ini to prevent false negative.
+                osVer = new Version(
+                    this.Parameters.SourceInfo.ToVersion().ToString(
+                    osUpperBoundVer.ToString().Split('.').Length));
 
                 if (osVer.CompareTo(osLowerBoundVer) < 0
                     || osVer.CompareTo(osUpperBoundVer) > 0
                     || !CM.SEqO(arch, osArch, true))
                 {
-                    throw new Exceptions.IntegrationException(
+                    throw new IntegrationException(
                         String.Format(Msg.errWmpRedistWrongVer,
-                        osLowerBound + ((osUpperBound == null)? String.Empty : "-" + osUpperBound), 
+                        osLowerBound + ((osUpperBound == null)? 
+                        String.Empty : "-" + osUpperBound), 
                         arch, osVer, osArch));
                 }
             }
             else
             {
-                throw new Exceptions.IntegrationException(
+                throw new IntegrationException(
                     String.Format(Msg.errControlXmlInvalid, 
                     Path.GetFileName(xmlPath)));
             }
@@ -482,7 +485,7 @@ namespace Epsilon.WMP11Slipstreamer
                 }
                 if (this._sdnEntryI386Folder == 0)
                 {
-                    throw new Exceptions.IntegrationException(Msg.errNoI386RefInX64Src);
+                    throw new IntegrationException(Msg.errNoI386RefInX64Src);
                 }
             }
             
@@ -511,7 +514,7 @@ namespace Epsilon.WMP11Slipstreamer
 
                 if (txtPair.Value.Count < 10)
                 {
-                    throw new Exceptions.IntegrationException(String.Format(
+                    throw new IntegrationException(String.Format(
                         "Malformed line in entries file. ({0} = {1})",
                         txtPair.Key, new CSVParser().Join(txtPair.Value))
                     );
@@ -570,7 +573,7 @@ namespace Epsilon.WMP11Slipstreamer
                 this._entriesCombinedEditor.GetRef("common_sysoc");
 
             if (sysOcRef[0].Value.Count != 5)
-                throw new Exceptions.IntegrationException(String.Format(
+                throw new IntegrationException(String.Format(
                     "Invalid SysOC line: [{0} = {1}] in common entries file.",
                     sysOcRef[0].Key, new CSVParser().Join(sysOcRef[0].Value)));
 
@@ -581,7 +584,7 @@ namespace Epsilon.WMP11Slipstreamer
                 && this._filesToCompressInI386.ContainsKey(_externalInfFilename))
                 this._filesToCompressInI386.Remove(_externalInfFilename);
             else
-                throw new Exceptions.IntegrationException(
+                throw new IntegrationException(
                     "SysOc-referenced Inf not referenced in [dosnet_files].");
 
             this._sysocInf.Add(
@@ -701,7 +704,7 @@ namespace Epsilon.WMP11Slipstreamer
                         System.Globalization.CultureInfo.CurrentCulture,
                         out flags))
                     {
-                        throw new Exceptions.IntegrationException(
+                        throw new IntegrationException(
                             String.Format(
                             "Invalid syntax in external inf: [{0}]: ({1}).",
                             copyfilesSect, fileComponents)
@@ -857,7 +860,7 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new Exceptions.IntegrationException(
+                        throw new IntegrationException(
                             string.Format(
                             Msg.errDirIdDuplicated,
                             number, this._txtsetupSif.IniFileInfo.Name)
@@ -866,7 +869,7 @@ namespace Epsilon.WMP11Slipstreamer
                 }
                 else
                 {
-                    throw new Exceptions.IntegrationException(
+                    throw new IntegrationException(
                         String.Format(
                         Msg.errInvalidKeyInWinntDirs,
                         winntDirPair.Key, this._txtsetupSif.IniFileInfo.Name));
@@ -943,7 +946,7 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new Exceptions.IntegrationException(
+                        throw new IntegrationException(
                             String.Format(
                             "Invalid key in [txtsetup_dirs] section in \"{0}\": [{1}].",
                             txtDir.Key, this._entriesCombinedEditor.IniFileInfo.Name
@@ -999,7 +1002,7 @@ namespace Epsilon.WMP11Slipstreamer
                 txtDir.Value
              ))
             {
-                throw new Exceptions.IntegrationException(
+                throw new IntegrationException(
                     String.Format(
                     "Unable to modify the key for this [txtsetup_dirs] "
                         + "entry in \"{0}\": [{1} = {2}].",
@@ -1123,7 +1126,7 @@ namespace Epsilon.WMP11Slipstreamer
                         this.Parameters.HotfixFolder, hotfix), fixesFolder);
                     if (!HotfixMatchesArch(fixesFolder))
                     {
-                        throw new Exceptions.IntegrationException(
+                        throw new IntegrationException(
                             String.Format(Msg.errHotfixArchMismatch,
                             Path.GetFileName(hotfix)));
                     }
@@ -1146,7 +1149,7 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new Exceptions.IntegrationException(String.Format(
+                        throw new IntegrationException(String.Format(
                             Msg.errNoInfInHotfix,
                             Path.GetFileName(hotfix)));
                     }
@@ -1234,7 +1237,7 @@ namespace Epsilon.WMP11Slipstreamer
                             }
                             else if (result == FileVersionComparison.NotFound)
                             {
-                                throw new Exceptions.IntegrationException(
+                                throw new IntegrationException(
                                     String.Format(
                                     Msg.errUnsupportedFixAttempt,
                                     relativeFilePath, hotfixParser.HotfixName)
@@ -1319,7 +1322,8 @@ namespace Epsilon.WMP11Slipstreamer
                 }
                 else
                 {
-                    throw new Exceptions.FileNotFoundException(String.Format(
+                    throw new Epsilon.Slipstreamers.FileNotFoundException
+                        (String.Format(
                         "Creating external cab failed. File: \"{0}\" ({1}) not found.", 
                         pair.Key, pair.Value), pair.Key);
                 }
@@ -1544,7 +1548,7 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new Exceptions.IntegrationException(
+                        throw new IntegrationException(
                                 String.Format(
                                 "The file \"{0}\" ({1}) is not present in the svcpack folder.",
                                 pair.Key, pair.Value
@@ -1752,6 +1756,12 @@ namespace Epsilon.WMP11Slipstreamer
             string tempFolder 
                 = FileSystem.GetGuaranteedTempDirectory(this._workDir);
             Stream hotfixStream = Archival.GetCabStream(hotfixInstaller);
+
+            if (hotfixStream == null)
+            {
+                throw new Exceptions.InvalidCabinetArchiveException(hotfixInstaller);
+            }
+
             Archival.NativeCabinetExtract(hotfixStream, tempFolder);
 
             if (File.Exists(this.CreatePathString(tempFolder, "_sfx_manifest_")))
@@ -1851,7 +1861,7 @@ namespace Epsilon.WMP11Slipstreamer
         // Backend parameters
         protected BackendParams Parameters 
         {
-            get { return (BackendParams)this._params; }
+            get { return (BackendParams)this._state; }
         }
 
         // Other variables
@@ -1887,6 +1897,23 @@ namespace Epsilon.WMP11Slipstreamer
             CompressedStandardArch = 1,
             UncompressedPossiblex32x64Combo = 2,
             CompressedPossiblex32x64Combo = 3
+        }
+        #endregion
+
+        #region Exceptions
+        public static class Exceptions
+        {
+            public class InvalidCabinetArchiveException
+                : IntegrationException
+            {
+                static string s_DefaultMessage = Msg.errInvalidSfxCab;
+
+                public InvalidCabinetArchiveException(string filePath) 
+                    : base(s_DefaultMessage)
+                {
+                    base.Data.Add("Filename", filePath);
+                }
+            }
         }
         #endregion
     }
