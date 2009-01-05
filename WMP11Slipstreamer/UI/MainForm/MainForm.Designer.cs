@@ -49,7 +49,6 @@
             this.uxProgressBarCurrent = new System.Windows.Forms.ProgressBar();
             this.uxCheckBoxNoCats = new System.Windows.Forms.CheckBox();
             this.uxGroupBoxAdvOpts = new System.Windows.Forms.GroupBox();
-            this.uxLabelPreview = new System.Windows.Forms.Label();
             this.uxPictureBoxCustomIconPreview = new System.Windows.Forms.PictureBox();
             this.uxComboBoxCustomIcon = new System.Windows.Forms.ComboBox();
             this.uxCheckBoxCustomIcon = new System.Windows.Forms.CheckBox();
@@ -94,7 +93,7 @@
             this.uxLinkAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.uxLinkAbout.Name = "uxLinkAbout";
             this.uxLinkAbout.Size = new System.Drawing.Size(83, 17);
-            this.uxLinkAbout.TabIndex = 0;
+            this.uxLinkAbout.TabIndex = 8;
             this.uxLinkAbout.TabStop = true;
             this.uxLinkAbout.Text = "Placeholder";
             this.uxLinkAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -106,7 +105,7 @@
             this.uxButtonHotfixPicker.Margin = new System.Windows.Forms.Padding(4);
             this.uxButtonHotfixPicker.Name = "uxButtonHotfixPicker";
             this.uxButtonHotfixPicker.Size = new System.Drawing.Size(36, 28);
-            this.uxButtonHotfixPicker.TabIndex = 8;
+            this.uxButtonHotfixPicker.TabIndex = 7;
             this.uxButtonHotfixPicker.Text = "...";
             this.uxButtonHotfixPicker.UseVisualStyleBackColor = true;
             this.uxButtonHotfixPicker.Click += new System.EventHandler(this.buttonHotfixBrowse_Click);
@@ -117,7 +116,7 @@
             this.uxTextBoxHotfixLine.Margin = new System.Windows.Forms.Padding(4);
             this.uxTextBoxHotfixLine.Name = "uxTextBoxHotfixLine";
             this.uxTextBoxHotfixLine.Size = new System.Drawing.Size(586, 22);
-            this.uxTextBoxHotfixLine.TabIndex = 7;
+            this.uxTextBoxHotfixLine.TabIndex = 6;
             // 
             // uxLabelEnterHotfixLine
             // 
@@ -151,7 +150,7 @@
             this.uxComboType.Margin = new System.Windows.Forms.Padding(4);
             this.uxComboType.Name = "uxComboType";
             this.uxComboType.Size = new System.Drawing.Size(393, 24);
-            this.uxComboType.TabIndex = 1;
+            this.uxComboType.TabIndex = 0;
             // 
             // uxButtonWinSrcPicker
             // 
@@ -159,7 +158,7 @@
             this.uxButtonWinSrcPicker.Margin = new System.Windows.Forms.Padding(4);
             this.uxButtonWinSrcPicker.Name = "uxButtonWinSrcPicker";
             this.uxButtonWinSrcPicker.Size = new System.Drawing.Size(36, 28);
-            this.uxButtonWinSrcPicker.TabIndex = 6;
+            this.uxButtonWinSrcPicker.TabIndex = 5;
             this.uxButtonWinSrcPicker.Text = "...";
             this.uxButtonWinSrcPicker.UseVisualStyleBackColor = true;
             this.uxButtonWinSrcPicker.Click += new System.EventHandler(this.buttonWindowsSourceBrowse_Click);
@@ -171,8 +170,8 @@
             this.uxTextBoxWinSrc.Location = new System.Drawing.Point(9, 154);
             this.uxTextBoxWinSrc.Margin = new System.Windows.Forms.Padding(4);
             this.uxTextBoxWinSrc.Name = "uxTextBoxWinSrc";
-            this.uxTextBoxWinSrc.Size = new System.Drawing.Size(584, 22);
-            this.uxTextBoxWinSrc.TabIndex = 5;
+            this.uxTextBoxWinSrc.Size = new System.Drawing.Size(586, 22);
+            this.uxTextBoxWinSrc.TabIndex = 4;
             this.uxTextBoxWinSrc.TextChanged += new System.EventHandler(this.textBoxWindowsSource_TextChanged);
             // 
             // uxLabelEnterWinSrc
@@ -195,18 +194,18 @@
             this.uxLinkDownloadWmpRedist.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.uxLinkDownloadWmpRedist.Name = "uxLinkDownloadWmpRedist";
             this.uxLinkDownloadWmpRedist.Size = new System.Drawing.Size(77, 17);
-            this.uxLinkDownloadWmpRedist.TabIndex = 4;
+            this.uxLinkDownloadWmpRedist.TabIndex = 3;
             this.uxLinkDownloadWmpRedist.TabStop = true;
             this.uxLinkDownloadWmpRedist.Text = "Placeholder";
             this.uxLinkDownloadWmpRedist.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelWmp11SourceDownload_LinkClicked);
             // 
             // uxButtonWmpRedistPicker
             // 
-            this.uxButtonWmpRedistPicker.Location = new System.Drawing.Point(604, 73);
+            this.uxButtonWmpRedistPicker.Location = new System.Drawing.Point(602, 73);
             this.uxButtonWmpRedistPicker.Margin = new System.Windows.Forms.Padding(4);
             this.uxButtonWmpRedistPicker.Name = "uxButtonWmpRedistPicker";
-            this.uxButtonWmpRedistPicker.Size = new System.Drawing.Size(35, 28);
-            this.uxButtonWmpRedistPicker.TabIndex = 3;
+            this.uxButtonWmpRedistPicker.Size = new System.Drawing.Size(36, 28);
+            this.uxButtonWmpRedistPicker.TabIndex = 2;
             this.uxButtonWmpRedistPicker.Text = "...";
             this.uxButtonWmpRedistPicker.UseVisualStyleBackColor = true;
             this.uxButtonWmpRedistPicker.Click += new System.EventHandler(this.btnWmp11SourceBrowse_Click);
@@ -219,7 +218,7 @@
             this.uxTextBoxWmpRedist.Margin = new System.Windows.Forms.Padding(4);
             this.uxTextBoxWmpRedist.Name = "uxTextBoxWmpRedist";
             this.uxTextBoxWmpRedist.Size = new System.Drawing.Size(586, 22);
-            this.uxTextBoxWmpRedist.TabIndex = 2;
+            this.uxTextBoxWmpRedist.TabIndex = 1;
             this.uxTextBoxWmpRedist.TextChanged += new System.EventHandler(this.textBoxWmp11Source_TextChanged);
             // 
             // uxLabelEnterWmpRedist
@@ -280,13 +279,12 @@
             this.uxCheckBoxNoCats.Margin = new System.Windows.Forms.Padding(4);
             this.uxCheckBoxNoCats.Name = "uxCheckBoxNoCats";
             this.uxCheckBoxNoCats.Size = new System.Drawing.Size(102, 21);
-            this.uxCheckBoxNoCats.TabIndex = 3;
+            this.uxCheckBoxNoCats.TabIndex = 2;
             this.uxCheckBoxNoCats.Text = "Placeholder";
             this.uxCheckBoxNoCats.UseVisualStyleBackColor = true;
             // 
             // uxGroupBoxAdvOpts
             // 
-            this.uxGroupBoxAdvOpts.Controls.Add(this.uxLabelPreview);
             this.uxGroupBoxAdvOpts.Controls.Add(this.uxPictureBoxCustomIconPreview);
             this.uxGroupBoxAdvOpts.Controls.Add(this.uxComboBoxCustomIcon);
             this.uxGroupBoxAdvOpts.Controls.Add(this.uxCheckBoxCustomIcon);
@@ -299,17 +297,6 @@
             this.uxGroupBoxAdvOpts.TabIndex = 1;
             this.uxGroupBoxAdvOpts.TabStop = false;
             this.uxGroupBoxAdvOpts.Text = "Placeholder";
-            // 
-            // uxLabelPreview
-            // 
-            this.uxLabelPreview.AutoSize = true;
-            this.uxLabelPreview.Location = new System.Drawing.Point(524, 30);
-            this.uxLabelPreview.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.uxLabelPreview.Name = "uxLabelPreview";
-            this.uxLabelPreview.Size = new System.Drawing.Size(83, 17);
-            this.uxLabelPreview.TabIndex = 2;
-            this.uxLabelPreview.Text = "Placeholder";
-            this.uxLabelPreview.Visible = false;
             // 
             // uxPictureBoxCustomIconPreview
             // 
@@ -332,7 +319,7 @@
             this.uxComboBoxCustomIcon.Location = new System.Drawing.Point(369, 27);
             this.uxComboBoxCustomIcon.Margin = new System.Windows.Forms.Padding(2);
             this.uxComboBoxCustomIcon.Name = "uxComboBoxCustomIcon";
-            this.uxComboBoxCustomIcon.Size = new System.Drawing.Size(142, 24);
+            this.uxComboBoxCustomIcon.Size = new System.Drawing.Size(226, 24);
             this.uxComboBoxCustomIcon.TabIndex = 1;
             this.uxComboBoxCustomIcon.Visible = false;
             this.uxComboBoxCustomIcon.SelectedIndexChanged += new System.EventHandler(this.comboBoxIconSelect_SelectedIndexChanged);
@@ -442,7 +429,6 @@
         System.Windows.Forms.CheckBox uxCheckBoxCustomIcon;
         System.Windows.Forms.ComboBox uxComboBoxCustomIcon;
         System.Windows.Forms.PictureBox uxPictureBoxCustomIconPreview;
-        System.Windows.Forms.Label uxLabelPreview;
         System.Windows.Forms.ToolStripStatusLabel uxStatusLabelSourceType;
         System.Windows.Forms.LinkLabel uxLinkAbout;
         System.Windows.Forms.Button uxButtonHotfixPicker;

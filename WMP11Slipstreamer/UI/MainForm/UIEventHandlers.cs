@@ -231,9 +231,9 @@ namespace Epsilon.WMP11Slipstreamer
         void checkBoxUseCustIcon_CheckedChanged(object sender,
             EventArgs e)
         {
-            this.uxLabelPreview.Visible = this.uxCheckBoxCustomIcon.Checked;
             this.uxComboBoxCustomIcon.Visible = this.uxCheckBoxCustomIcon.Checked;
-            this.uxPictureBoxCustomIconPreview.Visible = this.uxCheckBoxCustomIcon.Checked;
+            this.uxPictureBoxCustomIconPreview.Visible 
+                = this.uxCheckBoxCustomIcon.Checked;
             if (this.uxCheckBoxCustomIcon.Checked)
             {
                 this.uxComboBoxCustomIcon.Focus();
@@ -246,13 +246,15 @@ namespace Epsilon.WMP11Slipstreamer
             {
                 case 0:
                     this.uxPictureBoxCustomIconPreview.Image
-                        = new Icon(new MemoryStream(Properties.Resources._0)).ToBitmap();
+                        = new Icon(
+                            new MemoryStream(Properties.Resources._0)).ToBitmap();
                     this._customIconRaw = Properties.Resources._0;
                     break;
 
                 case 1:
                     this.uxPictureBoxCustomIconPreview.Image
-                        = new Icon(new MemoryStream(Properties.Resources._1)).ToBitmap();
+                        = new Icon(
+                            new MemoryStream(Properties.Resources._1)).ToBitmap();
                     this._customIconRaw = Properties.Resources._1;
                     break;
 

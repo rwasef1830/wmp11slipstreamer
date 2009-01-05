@@ -12,13 +12,25 @@ namespace Epsilon.WMP11Slipstreamer
     {
         public AboutBox()
         {
-            InitializeComponent();
-            this.labelVersion.Text = String.Format("Version {0}", Globals.Version);
-            this.labelTranslator.Text += " " + Msg.LocalizerName;
+            this.InitializeComponent();
+            this.ReadLocalizedMessages();
+
+            this.uxLabelVersion.Text = String.Format("Version {0}", Globals.Version);
+            this.uxLabelTranslator.Text += " " + Msg.LocalizerName;
 
 #if BETA
             this.labelVersion.Text += " BETA";
 #endif
+        }
+
+        void ReadLocalizedMessages()
+        {
+            this.SuspendLayout();
+            this.uxButtonOk.Text = Msg.dlgAbout_ButtonOK;
+            this.uxLabelTranslator.Text = Msg.dlgAbout_uxLabelTranslated;
+            this.uxLinkLabelWebSite.Text = Msg.dlgAbout_GotoSite;
+            this.uxTextBoxDescription.Text = Msg.dlgAbout_InfoText;
+            this.ResumeLayout();
         }
 
         #region Assembly Attribute Accessors

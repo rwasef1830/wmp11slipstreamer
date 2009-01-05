@@ -103,11 +103,83 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error during cleanup.
+        /// </summary>
+        internal static string dlgCleanupFailed_Title {
+            get {
+                return ResourceManager.GetString("dlgCleanupFailed_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We apologize for any inconvenience. Please report this bug..
+        /// </summary>
+        internal static string dlgError_ApologiesReportBug {
+            get {
+                return ResourceManager.GetString("dlgError_ApologiesReportBug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Close.
         /// </summary>
         internal static string dlgError_ButtonClose {
             get {
                 return ResourceManager.GetString("dlgError_ButtonClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All changes have been successfully undone..
+        /// </summary>
+        internal static string dlgError_ChangesUndone {
+            get {
+                return ResourceManager.GetString("dlgError_ChangesUndone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please delete the following folder manually to restore your source to its previous condition:.
+        /// </summary>
+        internal static string dlgError_DeleteTempDirManually {
+            get {
+                return ResourceManager.GetString("dlgError_DeleteTempDirManually", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected source: .
+        /// </summary>
+        internal static string dlgError_DetectedSource {
+            get {
+                return ResourceManager.GetString("dlgError_DetectedSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The error occurred before any changes were made to the source being modified..
+        /// </summary>
+        internal static string dlgError_ErrorBeforeModifications {
+            get {
+                return ResourceManager.GetString("dlgError_ErrorBeforeModifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while cleaning up the source to undo any changes..
+        /// </summary>
+        internal static string dlgError_ErrorDuringCleanup {
+            get {
+                return ResourceManager.GetString("dlgError_ErrorDuringCleanup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra error information:.
+        /// </summary>
+        internal static string dlgError_ExtraErrorInfo {
+            get {
+                return ResourceManager.GetString("dlgError_ExtraErrorInfo", resourceCulture);
             }
         }
         
@@ -127,6 +199,51 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string dlgError_Header {
             get {
                 return ResourceManager.GetString("dlgError_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotfixes:.
+        /// </summary>
+        internal static string dlgError_Hotfixes {
+            get {
+                return ResourceManager.GetString("dlgError_Hotfixes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Not available&gt;.
+        /// </summary>
+        internal static string dlgError_NotAvailable {
+            get {
+                return ResourceManager.GetString("dlgError_NotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unfortunately, the error occurred during the critical process of overwriting files in the architecture folder. This source is now corrupt and no longer clean, please use a fresh new source for subsequent windows installation and modification..
+        /// </summary>
+        internal static string dlgError_SourceCorruptedSorry {
+            get {
+                return ResourceManager.GetString("dlgError_SourceCorruptedSorry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The source has not been corrupted..
+        /// </summary>
+        internal static string dlgError_SourceNotCorrupted {
+            get {
+                return ResourceManager.GetString("dlgError_SourceNotCorrupted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary folder: &quot;{0}&quot;.
+        /// </summary>
+        internal static string dlgError_TemporaryFolder {
+            get {
+                return ResourceManager.GetString("dlgError_TemporaryFolder", resourceCulture);
             }
         }
         
@@ -425,6 +542,15 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string errInvalidKeyInWinntDirs {
             get {
                 return ResourceManager.GetString("errInvalidKeyInWinntDirs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified file is not a valid cabinet archive..
+        /// </summary>
+        internal static string errInvalidSfxCab {
+            get {
+                return ResourceManager.GetString("errInvalidSfxCab", resourceCulture);
             }
         }
         
@@ -845,15 +971,6 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         internal static string uxLabelEnterWMPRedistPath {
             get {
                 return ResourceManager.GetString("uxLabelEnterWMPRedistPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Preview:.
-        /// </summary>
-        internal static string uxLabelPreview {
-            get {
-                return ResourceManager.GetString("uxLabelPreview", resourceCulture);
             }
         }
         

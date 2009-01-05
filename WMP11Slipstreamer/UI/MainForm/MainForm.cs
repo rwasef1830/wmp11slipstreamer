@@ -65,7 +65,6 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxLabelEnterWinSrc.Text = Msg.uxLabelEnterSrcPath;
             this.uxLabelEnterHotfixLine.Text = Msg.uxLabelEnterHotfixLine;
             this.uxCheckBoxCustomIcon.Text = Msg.uxCheckboxCustomIcon;
-            this.uxLabelPreview.Text = Msg.uxLabelPreview;
             this.uxCheckBoxNoCats.Text = Msg.uxCheckboxNoCats;
             this.uxLabelOperation.Text = Msg.uxLabelDefaultOp;
             this.uxStatusLabelSourceType.Text = Msg.uxStatusBarDefaultText;
@@ -353,33 +352,36 @@ namespace Epsilon.WMP11Slipstreamer
                         // Disable UI
                         ControlUserInterface(false);
 
-                        // Reset critical condition flag in case we crashed before 
-                        _workerInCriticalOperation = false;
-
                         // Detect source type
                         this.uxLabelOperation.Text = Msg.statDetectingSource;
                         WindowsSourceInfo winSrcInfo = new WindowsSourceInfo();
                         Thread sourceDetector = new Thread(delegate()
                         {
-                           winSrcInfo = SourceDetector.Detect(this.uxTextBoxWinSrc.Text, 
+                           winSrcInfo = SourceDetector.Detect(
+                               this.uxTextBoxWinSrc.Text, 
                                this._pathBuffer);
                         });
+                        this.uxButtonCancel.Enabled = false;
                         sourceDetector.Start();
                         while (sourceDetector.IsAlive)
                         {
                             Application.DoEvents();
                             Thread.Sleep(50);
                         }
-                        this.uxStatusLabelSourceType.Text = "Source Type: " + winSrcInfo.ToString();
+                        this.uxStatusLabelSourceType.Text 
+                            = "Source Type: " + winSrcInfo.ToString();
+                        this.uxButtonCancel.Enabled = true;
 
                         BackendParams settings = new BackendParams(
                             uxTextBoxWinSrc.Text, winSrcInfo, uxTextBoxWmpRedist.Text, 
-                            uxTextBoxHotfixLine.Text, (PackageType)(uxComboType.SelectedIndex + 1),
+                            uxTextBoxHotfixLine.Text, 
+                            (PackageType)(uxComboType.SelectedIndex + 1),
                             (uxCheckBoxCustomIcon.Checked) ? _customIconRaw : null,
                             uxCheckBoxNoCats.Checked);
 
                         _workerThread = new Thread(WorkerMethod);
-                        _workerThread.CurrentUICulture = Thread.CurrentThread.CurrentUICulture;
+                        _workerThread.CurrentUICulture 
+                            = Thread.CurrentThread.CurrentUICulture;
                         _workerThread.Start(settings);
 
                         while (_workerThread.IsAlive)
@@ -388,21 +390,22 @@ namespace Epsilon.WMP11Slipstreamer
                             Application.DoEvents();
                         }
 
-                        if (settings.Result == BackendResult.Cancelled)
+                        if (settings.Status == SlipstreamerStatus.Cancelled)
                         {
                             MessageBox.Show(Msg.dlgText_Cancelled,
                                 Msg.dlgTitle_Cancelled, MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                         }
                         else if (!_immediateLauch && !_closeOnSuccess
-                            && settings.Result == BackendResult.Success)
+                            && settings.Status == SlipstreamerStatus.Success)
                         {
                             MessageBox.Show(Msg.dlgText_Success,
                                 Msg.dlgTitle_Success, MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                         }
 
-                        if (_closeOnSuccess && settings.Result == BackendResult.Success)
+                        if (_closeOnSuccess 
+                            && settings.Status == SlipstreamerStatus.Success)
                         {
                             Application.Exit();
                         }

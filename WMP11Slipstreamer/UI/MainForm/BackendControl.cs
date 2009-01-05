@@ -8,13 +8,13 @@ using System.Windows.Forms;
 using System.Threading;
 using Epsilon.Slipstreamers;
 using System.Diagnostics;
+using Epsilon.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm
     {
         Backend _backend;
-        bool _workerInCriticalOperation;
 
         void WorkerMethod(object workerParam)
         {
@@ -39,67 +39,65 @@ namespace Epsilon.WMP11Slipstreamer
                 this._backend.UpdateGlobalProgress
                     += new Backend.ProgressEventDelegate(
                     this._backend_OnGlobalProgressUpdate);
-                this._backend.EnterCriticalOperation
+                this._backend.BeginCriticalOperation
                     += delegate(SlipstreamerBase slip)
-                    { this._workerInCriticalOperation = true; };
+                    {
+                        this.CrossThreadControlEnabled(this.uxButtonCancel, false);
+                    };
                 this._backend.ExitCriticalOperation
                     += delegate(SlipstreamerBase slip) 
-                    { this._workerInCriticalOperation = false; };
+                    {
+                        this.CrossThreadControlEnabled(this.uxButtonCancel, true);
+                    };
 
+#if DEBUG
                 // Helps in debugging
                 this._backend.Checkpoint
-                    += new Predicate<string>(this.Backend_Checkpoint);
+                    += new Predicate<string>(delegate(string message)
+                        {
+                            DialogResult result =
+                                MessageBox.Show(message, "Checkpoint",
+                                MessageBoxButtons.YesNoCancel, 
+                                MessageBoxIcon.Question,
+                                MessageBoxDefaultButton.Button2);
+
+                            switch (result)
+                            {
+                                case DialogResult.Yes: return true;
+                                case DialogResult.No: return false;
+                                case DialogResult.Cancel: 
+                                    this._backend.Abort(); break;
+                            }
+                            return false;
+                        });
+#endif
 
                 // Start the backend's operations
                 this._backend.Slipstream();
-
-                // If it made it up to here with no exceptions, then it succeeded.
-                paramsBackend.Result = BackendResult.Success;
             }
-            catch (Backend.Exceptions.SlipstreamerAbortedException)
-            {
-                try
-                {
-                    FileSystem.Delete(this._backend.WorkingDirectory);
-                }
-                catch (Exception unexpected)
-                {
-                    this.CrossThreadMessageBox(
-                        "An error occurred while deleting the temporary folder."
-                        + Environment.NewLine
-                        + "Please delete the following folder manually"
-                        + " to restore your source to its previous condition:"
-                        + Environment.NewLine + Environment.NewLine
-                        + this._backend.WorkingDirectory
-                        + Environment.NewLine + Environment.NewLine
-                        + "Error details: " + unexpected.Message, 
-                        "Error while cancelling", MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    paramsBackend.Result = BackendResult.Cancelled;
-                }
-            }
-            catch (Backend.Exceptions.IntegrationException ex)
+            catch (IntegrationException ex)
             {
                 HelperConsole.ErrorWriteLine("Integration Error:");
                 HelperConsole.ErrorWriteLine(ex.ToString());
 
                 if (ex.InnerException != null)
                 {
-                    this.ShowUnhandledExceptionForm(paramsBackend, ex.InnerException);
+                    this.ShowUnhandledExceptionForm(
+                        paramsBackend, 
+                        ex.InnerException);
                 }
                 else
                 {
-                    this.CrossThreadMessageBox("An error occurred during integration:"
+                    this.CrossThreadMessageBox(
+                        Msg.dlgIntegError_Header
                         + Environment.NewLine
                         + Environment.NewLine
                         + ex.FullMessage,
-                        "Integration Error", MessageBoxIcon.Error
+                        Msg.dlgIntegError_Title, MessageBoxIcon.Error
                     );
 
-                    paramsBackend.Result = BackendResult.Error;
-
+                    if (Directory.Exists(this._backend.WorkingDirectory))
+                        this.ShowCleanupFailedBox();
                 }
             }
             catch (Exception ex)
@@ -107,10 +105,14 @@ namespace Epsilon.WMP11Slipstreamer
                 HelperConsole.ErrorWriteLine("Unhandled Error:");
                 HelperConsole.ErrorWriteLine(ex.ToString());
 
-                ShowUnhandledExceptionForm(paramsBackend, ex);
+                this.ShowUnhandledExceptionForm(paramsBackend, ex);
             }
             finally
             {
+                if (paramsBackend.Status == SlipstreamerStatus.Cancelled
+                    && Directory.Exists(this._backend.WorkingDirectory))
+                    this.ShowCleanupFailedBox();
+
                 // Return to first state
                 this.CrossThreadControlVisibility(this.uxProgressBarCurrent, false);
                 this.CrossThreadProgressUpdate(this.uxProgressBarOverall, 0, 1);
@@ -119,20 +121,23 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        private void ShowUnhandledExceptionForm(BackendParams paramsBackend, Exception ex)
+        void ShowCleanupFailedBox()
         {
-            try
-            {
-                this.CrossThreadShowDialog(new ErrorForm(ex,
-                    this._workerInCriticalOperation,
-                    this._backend.WorkingDirectory,
-                    this._backend.OsInfo.ToString(),
-                    this.uxTextBoxHotfixLine.Text));
-            }
-            finally
-            {
-                paramsBackend.Result = BackendResult.UnhandledException;
-            }
+            this.CrossThreadMessageBox(Msg.dlgError_ErrorDuringCleanup
+                + Environment.NewLine
+                + Msg.dlgError_DeleteTempDirManually
+                + Environment.NewLine + Environment.NewLine
+                + this._backend.WorkingDirectory,
+                Msg.dlgCleanupFailed_Title, MessageBoxIcon.Error);
+        }
+
+        void ShowUnhandledExceptionForm(BackendParams paramsBackend, Exception ex)
+        {
+            this.CrossThreadShowDialog(new ErrorForm(ex,
+                paramsBackend.Status == SlipstreamerStatus.CriticalError,
+                (this._backend != null) ? this._backend.WorkingDirectory : null,
+                (this._backend != null) ? this._backend.OsInfo.ToString() : null,
+                this.uxTextBoxHotfixLine.Text));
         }
 
         #region Backend event handlers
@@ -167,25 +172,6 @@ namespace Epsilon.WMP11Slipstreamer
                 this.CrossThreadControlVisibility(progressBar, false);
             }
         }
-
-#if DEBUG
-        bool Backend_Checkpoint(string message)
-        {
-            DialogResult result =
-                MessageBox.Show(message, "Checkpoint",
-                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
-
-            switch (result)
-            {
-                case DialogResult.Yes: return true;
-                case DialogResult.No: return false;
-                case DialogResult.Cancel: this._backend.Abort(); break;
-            }
-
-            return false;
-        }
-#endif
         #endregion
 
         #region Cross-thread UI manipulation helpers

@@ -30,61 +30,62 @@ namespace Epsilon.WMP11Slipstreamer
         void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorForm));
-            this.label1 = new System.Windows.Forms.Label();
-            this.errorLogBox = new System.Windows.Forms.TextBox();
-            this.buttonClose = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.uxLabelHeader = new System.Windows.Forms.Label();
+            this.uxTextBoxErrorLog = new System.Windows.Forms.TextBox();
+            this.uxButtonClose = new System.Windows.Forms.Button();
+            this.uxLabelFooter = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // uxLabelHeader
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(441, 34);
-            this.label1.TabIndex = 0;
-            this.label1.Text = Msg.dlgError_Header;
+            this.uxLabelHeader.AutoSize = true;
+            this.uxLabelHeader.Location = new System.Drawing.Point(14, 9);
+            this.uxLabelHeader.Name = "uxLabelHeader";
+            this.uxLabelHeader.Size = new System.Drawing.Size(454, 34);
+            this.uxLabelHeader.TabIndex = 0;
+            this.uxLabelHeader.Text = "An unhandled exception has occurred in the worker thread.\r\nPlease copy the follow" +
+                "ing diagnostic information and post a bug report.";
             // 
-            // errorLogBox
+            // uxTextBoxErrorLog
             // 
-            this.errorLogBox.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.errorLogBox.ForeColor = System.Drawing.Color.Black;
-            this.errorLogBox.Location = new System.Drawing.Point(15, 46);
-            this.errorLogBox.Multiline = true;
-            this.errorLogBox.Name = "errorLogBox";
-            this.errorLogBox.ReadOnly = true;
-            this.errorLogBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.errorLogBox.Size = new System.Drawing.Size(498, 244);
-            this.errorLogBox.TabIndex = 0;
+            this.uxTextBoxErrorLog.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.uxTextBoxErrorLog.ForeColor = System.Drawing.Color.Black;
+            this.uxTextBoxErrorLog.Location = new System.Drawing.Point(17, 46);
+            this.uxTextBoxErrorLog.Multiline = true;
+            this.uxTextBoxErrorLog.Name = "uxTextBoxErrorLog";
+            this.uxTextBoxErrorLog.ReadOnly = true;
+            this.uxTextBoxErrorLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.uxTextBoxErrorLog.Size = new System.Drawing.Size(569, 244);
+            this.uxTextBoxErrorLog.TabIndex = 0;
             // 
-            // buttonClose
+            // uxButtonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(438, 296);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 29);
-            this.buttonClose.TabIndex = 1;
-            this.buttonClose.Text = Msg.dlgError_ButtonClose;
-            this.buttonClose.UseVisualStyleBackColor = true;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            this.uxButtonClose.Location = new System.Drawing.Point(501, 296);
+            this.uxButtonClose.Name = "uxButtonClose";
+            this.uxButtonClose.Size = new System.Drawing.Size(86, 29);
+            this.uxButtonClose.TabIndex = 1;
+            this.uxButtonClose.Text = global::Epsilon.WMP11Slipstreamer.Localization.Msg.dlgError_ButtonClose;
+            this.uxButtonClose.UseVisualStyleBackColor = true;
+            this.uxButtonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // label2
+            // uxLabelFooter
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 302);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(275, 17);
-            this.label2.TabIndex = 2;
-            this.label2.Text = Msg.dlgError_Footer;
+            this.uxLabelFooter.AutoSize = true;
+            this.uxLabelFooter.Location = new System.Drawing.Point(14, 302);
+            this.uxLabelFooter.Name = "uxLabelFooter";
+            this.uxLabelFooter.Size = new System.Drawing.Size(280, 17);
+            this.uxLabelFooter.TabIndex = 2;
+            this.uxLabelFooter.Text = "Click on \"Close\" to return to the application.";
             // 
             // ErrorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(525, 337);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.buttonClose);
-            this.Controls.Add(this.errorLogBox);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(600, 337);
+            this.Controls.Add(this.uxLabelFooter);
+            this.Controls.Add(this.uxButtonClose);
+            this.Controls.Add(this.uxTextBoxErrorLog);
+            this.Controls.Add(this.uxLabelHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -100,9 +101,9 @@ namespace Epsilon.WMP11Slipstreamer
 
         #endregion
 
-        System.Windows.Forms.Label label1;
-        public System.Windows.Forms.TextBox errorLogBox;
-        System.Windows.Forms.Button buttonClose;
-        System.Windows.Forms.Label label2;
+        System.Windows.Forms.Label uxLabelHeader;
+        public System.Windows.Forms.TextBox uxTextBoxErrorLog;
+        System.Windows.Forms.Button uxButtonClose;
+        System.Windows.Forms.Label uxLabelFooter;
     }
 }

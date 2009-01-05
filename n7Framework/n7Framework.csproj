@@ -94,6 +94,7 @@
       <DependentUpon>ParsersMsg.resx</DependentUpon>
     </Compile>
     <Compile Include="Epsilon\Security\Cryptography\CryptoHelp.cs" />
+    <Compile Include="Epsilon\Slipstreamers\Exceptions.cs" />
     <Compile Include="Epsilon\Slipstreamers\SlipstreamerArgumentsBase.cs" />
     <Compile Include="Epsilon\Slipstreamers\SlipstreamerBase.cs" />
     <Compile Include="Epsilon\Slipstreamers\SlipstreamersMsg.Designer.cs">

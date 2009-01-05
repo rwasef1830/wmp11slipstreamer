@@ -159,9 +159,6 @@
   <data name="uxCheckboxCustomIcon" xml:space="preserve">
     <value>Use a custom icon for wmplayer.exe</value>
   </data>
-  <data name="uxLabelPreview" xml:space="preserve">
-    <value>Preview:</value>
-  </data>
   <data name="uxCheckboxNoCats" xml:space="preserve">
     <value>Do not add security catalogs (for those who disable Windows File Protection)</value>
   </data>
@@ -420,5 +417,47 @@ You may need an updated version of this program to properly integrate this hotfi
   </data>
   <data name="dlgUsageInfo_Title" xml:space="preserve">
     <value>Usage information</value>
+  </data>
+  <data name="errInvalidSfxCab" xml:space="preserve">
+    <value>The specified file is not a valid cabinet archive.</value>
+  </data>
+  <data name="dlgError_DetectedSource" xml:space="preserve">
+    <value>Detected source: </value>
+  </data>
+  <data name="dlgError_NotAvailable" xml:space="preserve">
+    <value>&lt;Not available&gt;</value>
+  </data>
+  <data name="dlgError_Hotfixes" xml:space="preserve">
+    <value>Hotfixes:</value>
+  </data>
+  <data name="dlgError_ExtraErrorInfo" xml:space="preserve">
+    <value>Extra error information:</value>
+  </data>
+  <data name="dlgError_ErrorDuringCleanup" xml:space="preserve">
+    <value>An error occurred while cleaning up the source to undo any changes.</value>
+  </data>
+  <data name="dlgError_DeleteTempDirManually" xml:space="preserve">
+    <value>Please delete the following folder manually to restore your source to its previous condition:</value>
+  </data>
+  <data name="dlgError_SourceNotCorrupted" xml:space="preserve">
+    <value>The source has not been corrupted.</value>
+  </data>
+  <data name="dlgError_ChangesUndone" xml:space="preserve">
+    <value>All changes have been successfully undone.</value>
+  </data>
+  <data name="dlgError_ErrorBeforeModifications" xml:space="preserve">
+    <value>The error occurred before any changes were made to the source being modified.</value>
+  </data>
+  <data name="dlgError_SourceCorruptedSorry" xml:space="preserve">
+    <value>Unfortunately, the error occurred during the critical process of overwriting files in the architecture folder. This source is now corrupt and no longer clean, please use a fresh new source for subsequent windows installation and modification.</value>
+  </data>
+  <data name="dlgError_TemporaryFolder" xml:space="preserve">
+    <value>Temporary folder: "{0}"</value>
+  </data>
+  <data name="dlgError_ApologiesReportBug" xml:space="preserve">
+    <value>We apologize for any inconvenience. Please report this bug.</value>
+  </data>
+  <data name="dlgCleanupFailed_Title" xml:space="preserve">
+    <value>Error during cleanup</value>
   </data>
 </root>
