@@ -9,6 +9,9 @@ set strongNameKey=..\WMP11Slipstreamer\WMP11SlipstreamerKey.snk
 set assemblyName=WMP11Slipstreamer
 set assemblyVersion=1.1.0.0
 set tempGenPath=%Temp%\%~n0%Random%.tmp
+goto executeLoop
+
+:executeLoop
 If exist "%tempGenPath%" rd /s /q "%tempGenPath%"
 FOR /F "usebackq tokens=5" %%i IN (`dir .\Source ^| FIND "<DIR>"`) DO (
 	If not "%%i"=="." If not "%%i"==".." CALL :genResource "%%i"
