@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.uxGroupBoxBasicOpts = new System.Windows.Forms.GroupBox();
-            this.uxLinkAbout = new System.Windows.Forms.LinkLabel();
+            this.uxLinkLabelAbout = new System.Windows.Forms.LinkLabel();
             this.uxButtonHotfixPicker = new System.Windows.Forms.Button();
             this.uxTextBoxHotfixLine = new System.Windows.Forms.TextBox();
             this.uxLabelEnterHotfixLine = new System.Windows.Forms.Label();
@@ -39,7 +39,7 @@
             this.uxButtonWinSrcPicker = new System.Windows.Forms.Button();
             this.uxTextBoxWinSrc = new System.Windows.Forms.TextBox();
             this.uxLabelEnterWinSrc = new System.Windows.Forms.Label();
-            this.uxLinkDownloadWmpRedist = new System.Windows.Forms.LinkLabel();
+            this.uxLinkLabelWmp11SourceDownload = new System.Windows.Forms.LinkLabel();
             this.uxButtonWmpRedistPicker = new System.Windows.Forms.Button();
             this.uxTextBoxWmpRedist = new System.Windows.Forms.TextBox();
             this.uxLabelEnterWmpRedist = new System.Windows.Forms.Label();
@@ -63,7 +63,6 @@
             // 
             // uxGroupBoxBasicOpts
             // 
-            this.uxGroupBoxBasicOpts.Controls.Add(this.uxLinkAbout);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxButtonHotfixPicker);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxTextBoxHotfixLine);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxLabelEnterHotfixLine);
@@ -72,7 +71,7 @@
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxButtonWinSrcPicker);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxTextBoxWinSrc);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxLabelEnterWinSrc);
-            this.uxGroupBoxBasicOpts.Controls.Add(this.uxLinkDownloadWmpRedist);
+            this.uxGroupBoxBasicOpts.Controls.Add(this.uxLinkLabelWmp11SourceDownload);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxButtonWmpRedistPicker);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxTextBoxWmpRedist);
             this.uxGroupBoxBasicOpts.Controls.Add(this.uxLabelEnterWmpRedist);
@@ -85,19 +84,19 @@
             this.uxGroupBoxBasicOpts.TabStop = false;
             this.uxGroupBoxBasicOpts.Text = "Placeholder";
             // 
-            // uxLinkAbout
+            // uxLinkLabelAbout
             // 
-            this.uxLinkAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxLinkAbout.AutoSize = true;
-            this.uxLinkAbout.Location = new System.Drawing.Point(568, -3);
-            this.uxLinkAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.uxLinkAbout.Name = "uxLinkAbout";
-            this.uxLinkAbout.Size = new System.Drawing.Size(83, 17);
-            this.uxLinkAbout.TabIndex = 8;
-            this.uxLinkAbout.TabStop = true;
-            this.uxLinkAbout.Text = "Placeholder";
-            this.uxLinkAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.uxLinkAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.aboutStatusLabel_Click);
+            this.uxLinkLabelAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxLinkLabelAbout.AutoSize = true;
+            this.uxLinkLabelAbout.Location = new System.Drawing.Point(11, 362);
+            this.uxLinkLabelAbout.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.uxLinkLabelAbout.Name = "uxLinkLabelAbout";
+            this.uxLinkLabelAbout.Size = new System.Drawing.Size(83, 17);
+            this.uxLinkLabelAbout.TabIndex = 2;
+            this.uxLinkLabelAbout.TabStop = true;
+            this.uxLinkLabelAbout.Text = "Placeholder";
+            this.uxLinkLabelAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.uxLinkLabelAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelAbout_LinkClicked);
             // 
             // uxButtonHotfixPicker
             // 
@@ -108,7 +107,7 @@
             this.uxButtonHotfixPicker.TabIndex = 7;
             this.uxButtonHotfixPicker.Text = "...";
             this.uxButtonHotfixPicker.UseVisualStyleBackColor = true;
-            this.uxButtonHotfixPicker.Click += new System.EventHandler(this.buttonHotfixBrowse_Click);
+            this.uxButtonHotfixPicker.Click += new System.EventHandler(this.uxButtonHotfixPicker_Click);
             // 
             // uxTextBoxHotfixLine
             // 
@@ -161,7 +160,7 @@
             this.uxButtonWinSrcPicker.TabIndex = 5;
             this.uxButtonWinSrcPicker.Text = "...";
             this.uxButtonWinSrcPicker.UseVisualStyleBackColor = true;
-            this.uxButtonWinSrcPicker.Click += new System.EventHandler(this.buttonWindowsSourceBrowse_Click);
+            this.uxButtonWinSrcPicker.Click += new System.EventHandler(this.uxButtonWinSrcPicker_Click);
             // 
             // uxTextBoxWinSrc
             // 
@@ -172,7 +171,7 @@
             this.uxTextBoxWinSrc.Name = "uxTextBoxWinSrc";
             this.uxTextBoxWinSrc.Size = new System.Drawing.Size(586, 22);
             this.uxTextBoxWinSrc.TabIndex = 4;
-            this.uxTextBoxWinSrc.TextChanged += new System.EventHandler(this.textBoxWindowsSource_TextChanged);
+            this.uxTextBoxWinSrc.TextChanged += new System.EventHandler(this.uxTextBoxWinSrc_TextChanged);
             // 
             // uxLabelEnterWinSrc
             // 
@@ -185,19 +184,19 @@
             this.uxLabelEnterWinSrc.TabIndex = 5;
             this.uxLabelEnterWinSrc.Text = "Placeholder";
             // 
-            // uxLinkDownloadWmpRedist
+            // uxLinkLabelWmp11SourceDownload
             // 
-            this.uxLinkDownloadWmpRedist.AutoSize = true;
-            this.uxLinkDownloadWmpRedist.Font = new System.Drawing.Font("Tahoma", 7.8F);
-            this.uxLinkDownloadWmpRedist.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.uxLinkDownloadWmpRedist.Location = new System.Drawing.Point(6, 105);
-            this.uxLinkDownloadWmpRedist.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.uxLinkDownloadWmpRedist.Name = "uxLinkDownloadWmpRedist";
-            this.uxLinkDownloadWmpRedist.Size = new System.Drawing.Size(77, 17);
-            this.uxLinkDownloadWmpRedist.TabIndex = 3;
-            this.uxLinkDownloadWmpRedist.TabStop = true;
-            this.uxLinkDownloadWmpRedist.Text = "Placeholder";
-            this.uxLinkDownloadWmpRedist.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelWmp11SourceDownload_LinkClicked);
+            this.uxLinkLabelWmp11SourceDownload.AutoSize = true;
+            this.uxLinkLabelWmp11SourceDownload.Font = new System.Drawing.Font("Tahoma", 7.8F);
+            this.uxLinkLabelWmp11SourceDownload.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.uxLinkLabelWmp11SourceDownload.Location = new System.Drawing.Point(6, 105);
+            this.uxLinkLabelWmp11SourceDownload.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.uxLinkLabelWmp11SourceDownload.Name = "uxLinkLabelWmp11SourceDownload";
+            this.uxLinkLabelWmp11SourceDownload.Size = new System.Drawing.Size(77, 17);
+            this.uxLinkLabelWmp11SourceDownload.TabIndex = 3;
+            this.uxLinkLabelWmp11SourceDownload.TabStop = true;
+            this.uxLinkLabelWmp11SourceDownload.Text = "Placeholder";
+            this.uxLinkLabelWmp11SourceDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelWmp11SourceDownload_LinkClicked);
             // 
             // uxButtonWmpRedistPicker
             // 
@@ -208,7 +207,7 @@
             this.uxButtonWmpRedistPicker.TabIndex = 2;
             this.uxButtonWmpRedistPicker.Text = "...";
             this.uxButtonWmpRedistPicker.UseVisualStyleBackColor = true;
-            this.uxButtonWmpRedistPicker.Click += new System.EventHandler(this.btnWmp11SourceBrowse_Click);
+            this.uxButtonWmpRedistPicker.Click += new System.EventHandler(this.uxButtonWmpRedistPicker_Click);
             // 
             // uxTextBoxWmpRedist
             // 
@@ -219,7 +218,7 @@
             this.uxTextBoxWmpRedist.Name = "uxTextBoxWmpRedist";
             this.uxTextBoxWmpRedist.Size = new System.Drawing.Size(586, 22);
             this.uxTextBoxWmpRedist.TabIndex = 1;
-            this.uxTextBoxWmpRedist.TextChanged += new System.EventHandler(this.textBoxWmp11Source_TextChanged);
+            this.uxTextBoxWmpRedist.TextChanged += new System.EventHandler(this.uxTextBoxWmpRedist_TextChanged);
             // 
             // uxLabelEnterWmpRedist
             // 
@@ -238,10 +237,10 @@
             this.uxButtonCancel.Margin = new System.Windows.Forms.Padding(4);
             this.uxButtonCancel.Name = "uxButtonCancel";
             this.uxButtonCancel.Size = new System.Drawing.Size(88, 28);
-            this.uxButtonCancel.TabIndex = 3;
+            this.uxButtonCancel.TabIndex = 4;
             this.uxButtonCancel.Text = "E&xit";
             this.uxButtonCancel.UseVisualStyleBackColor = true;
-            this.uxButtonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            this.uxButtonCancel.Click += new System.EventHandler(this.uxButtonCancel_Click);
             // 
             // uxButtonIntegrate
             // 
@@ -250,10 +249,10 @@
             this.uxButtonIntegrate.Margin = new System.Windows.Forms.Padding(4);
             this.uxButtonIntegrate.Name = "uxButtonIntegrate";
             this.uxButtonIntegrate.Size = new System.Drawing.Size(88, 28);
-            this.uxButtonIntegrate.TabIndex = 2;
+            this.uxButtonIntegrate.TabIndex = 3;
             this.uxButtonIntegrate.Text = "Placeholder";
             this.uxButtonIntegrate.UseVisualStyleBackColor = true;
-            this.uxButtonIntegrate.Click += new System.EventHandler(this.buttonIntegrate_Click);
+            this.uxButtonIntegrate.Click += new System.EventHandler(this.uxButtonIntegrate_Click);
             // 
             // uxProgressBarOverall
             // 
@@ -322,7 +321,7 @@
             this.uxComboBoxCustomIcon.Size = new System.Drawing.Size(226, 24);
             this.uxComboBoxCustomIcon.TabIndex = 1;
             this.uxComboBoxCustomIcon.Visible = false;
-            this.uxComboBoxCustomIcon.SelectedIndexChanged += new System.EventHandler(this.comboBoxIconSelect_SelectedIndexChanged);
+            this.uxComboBoxCustomIcon.SelectedIndexChanged += new System.EventHandler(this.uxComboBoxCustomIcon_SelectedIndexChanged);
             // 
             // uxCheckBoxCustomIcon
             // 
@@ -334,7 +333,7 @@
             this.uxCheckBoxCustomIcon.TabIndex = 0;
             this.uxCheckBoxCustomIcon.Text = "Placeholder";
             this.uxCheckBoxCustomIcon.UseVisualStyleBackColor = true;
-            this.uxCheckBoxCustomIcon.CheckedChanged += new System.EventHandler(this.checkBoxUseCustIcon_CheckedChanged);
+            this.uxCheckBoxCustomIcon.CheckedChanged += new System.EventHandler(this.uxCheckBoxCustomIcon_CheckedChanged);
             // 
             // uxLabelOperation
             // 
@@ -376,6 +375,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(674, 474);
+            this.Controls.Add(this.uxLinkLabelAbout);
             this.Controls.Add(this.uxStatusStrip);
             this.Controls.Add(this.uxLabelOperation);
             this.Controls.Add(this.uxProgressBarCurrent);
@@ -412,7 +412,7 @@
         System.Windows.Forms.Label uxLabelEnterWmpRedist;
         System.Windows.Forms.Button uxButtonWmpRedistPicker;
         System.Windows.Forms.TextBox uxTextBoxWmpRedist;
-        System.Windows.Forms.LinkLabel uxLinkDownloadWmpRedist;
+        System.Windows.Forms.LinkLabel uxLinkLabelWmp11SourceDownload;
         System.Windows.Forms.Label uxLabelEnterWinSrc;
         System.Windows.Forms.Button uxButtonWinSrcPicker;
         System.Windows.Forms.TextBox uxTextBoxWinSrc;
@@ -430,7 +430,7 @@
         System.Windows.Forms.ComboBox uxComboBoxCustomIcon;
         System.Windows.Forms.PictureBox uxPictureBoxCustomIconPreview;
         System.Windows.Forms.ToolStripStatusLabel uxStatusLabelSourceType;
-        System.Windows.Forms.LinkLabel uxLinkAbout;
+        System.Windows.Forms.LinkLabel uxLinkLabelAbout;
         System.Windows.Forms.Button uxButtonHotfixPicker;
         System.Windows.Forms.Label uxLabelEnterHotfixLine;
         System.Windows.Forms.TextBox uxTextBoxHotfixLine;

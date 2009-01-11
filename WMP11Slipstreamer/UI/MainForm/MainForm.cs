@@ -59,9 +59,9 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxGroupBoxBasicOpts.Text = Msg.uxGroupBoxBasicOpts;
             this.uxGroupBoxAdvOpts.Text = Msg.uxGroupBoxAdvOpts;
             this.uxLabelChooseType.Text = Msg.uxLabelChooseType;
-            this.uxLinkAbout.Text = Msg.uxLinkAbout;
+            this.uxLinkLabelAbout.Text = Msg.uxLinkLabelAbout;
             this.uxLabelEnterWmpRedist.Text = Msg.uxLabelEnterWMPRedistPath;
-            this.uxLinkDownloadWmpRedist.Text = Msg.uxLinkWMPRedist;
+            this.uxLinkLabelWmp11SourceDownload.Text = Msg.uxLinkLabelWMPRedist;
             this.uxLabelEnterWinSrc.Text = Msg.uxLabelEnterSrcPath;
             this.uxLabelEnterHotfixLine.Text = Msg.uxLabelEnterHotfixLine;
             this.uxCheckBoxCustomIcon.Text = Msg.uxCheckboxCustomIcon;
@@ -444,7 +444,8 @@ namespace Epsilon.WMP11Slipstreamer
             uxComboBoxCustomIcon.Enabled = state;
             uxPictureBoxCustomIconPreview.Enabled = state;
             uxLabelOperation.Visible = !state;
-            uxLinkAbout.Visible = state;
+            uxLinkLabelAbout.Visible = state;
+            uxLinkLabelWmp11SourceDownload.Enabled = state;
             if (state)
             {
                 uxProgressBarOverall.Value = 0;

@@ -13,20 +13,20 @@ namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm
     {
-        void aboutStatusLabel_Click(object sender, 
+        void uxLinkLabelAbout_LinkClicked(object sender, 
             LinkLabelLinkClickedEventArgs e)
         {
             AboutBox box = new AboutBox();
             box.ShowDialog();
         }
 
-        void linkLabelWmp11SourceDownload_LinkClicked(object sender, 
+        void uxLinkLabelWmp11SourceDownload_LinkClicked(object sender, 
             LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(Globals.WmpRedistUrl);
+            CM.LaunchInDefaultHandler(Globals.WmpRedistUrl);
         }
 
-        void buttonHotfixBrowse_Click(object sender, EventArgs e)
+        void uxButtonHotfixPicker_Click(object sender, EventArgs e)
         {
             string[] hotfixes = CM.OpenFileDialogMulti(
                 Msg.dlgPickHotfixes_Title,
@@ -48,12 +48,15 @@ namespace Epsilon.WMP11Slipstreamer
 
         void MainForm_Load(object sender, EventArgs e)
         {
-        	GetControlMessages();
+        	this.GetControlMessages();
             this.Text += " v" + Globals.Version;
+            this.AppendBetaToTitle();
+        }
 
-#if BETA
+        [Conditional("BETA")]
+        void AppendBetaToTitle()
+        {
             this.Text += " BETA";
-#endif
         }
 
         void MainForm_Shown(object sender, EventArgs e)
@@ -102,7 +105,7 @@ namespace Epsilon.WMP11Slipstreamer
                         this._customIconRaw,
                         Microsoft.Win32.RegistryValueKind.Binary);
                 }
-                if (HotfixesExist(uxTextBoxHotfixLine.Text))
+                if (this.HotfixesExist(uxTextBoxHotfixLine.Text))
                 {
                     wmp11Key.SetValue(Globals.hotfixLineValue,
                         uxTextBoxHotfixLine.Text);
@@ -112,7 +115,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void textBoxWmp11Source_TextChanged(object sender, EventArgs e)
+        void uxTextBoxWmpRedist_TextChanged(object sender, EventArgs e)
         {
             if (this.uxTextBoxWmpRedist.Text.Length > 0)
             {
@@ -140,7 +143,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void textBoxWindowsSource_TextChanged(object sender, EventArgs e)
+        void uxTextBoxWinSrc_TextChanged(object sender, EventArgs e)
         {
             if (this.uxTextBoxWinSrc.Text.Length > 0)
             {
@@ -178,7 +181,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void btnWmp11SourceBrowse_Click(object sender, EventArgs e)
+        void uxButtonWmpRedistPicker_Click(object sender, EventArgs e)
         {
             string selectedFile =
             CM.OpenFileDialogStandard(
@@ -196,7 +199,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void buttonWindowsSourceBrowse_Click(object sender, EventArgs e)
+        void uxButtonWinSrcPicker_Click(object sender, EventArgs e)
         {
             string selectedPath = CM.OpenFolderDialog(Msg.dlgSrcPicker_Header, true);
 
@@ -209,7 +212,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void buttonCancel_Click(object sender, EventArgs e)
+        void uxButtonCancel_Click(object sender, EventArgs e)
         {
             if (this._workerThread == null || !this._workerThread.IsAlive)
             {
@@ -218,17 +221,34 @@ namespace Epsilon.WMP11Slipstreamer
             else
             {
                 this.uxButtonCancel.Enabled = false;
-                this.uxStatusLabelSourceType.Text = Msg.statWaitCancel;
-                this._backend.Abort();
+                this._backend.Pause();
+
+                DialogResult result
+                    = MessageBox.Show(Msg.dlgCancel_Text,
+                    Msg.dlgCancel_Title, 
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button2);
+
+                if (result == DialogResult.Yes)
+                {
+                    this.uxStatusLabelSourceType.Text = Msg.statWaitCancel;
+                    this._backend.Abort();
+                }
+                else
+                {
+                    this.uxButtonCancel.Enabled = true;
+                    this._backend.Resume();
+                }
             }
         }
 
-        void buttonIntegrate_Click(object sender, EventArgs e)
+        void uxButtonIntegrate_Click(object sender, EventArgs e)
         {
             this.StartIntegration();
         }
 
-        void checkBoxUseCustIcon_CheckedChanged(object sender,
+        void uxCheckBoxCustomIcon_CheckedChanged(object sender,
             EventArgs e)
         {
             this.uxComboBoxCustomIcon.Visible = this.uxCheckBoxCustomIcon.Checked;
@@ -240,7 +260,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
-        void comboBoxIconSelect_SelectedIndexChanged(object sender, EventArgs e)
+        void uxComboBoxCustomIcon_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (this.uxComboBoxCustomIcon.SelectedIndex)
             {

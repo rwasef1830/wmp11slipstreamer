@@ -144,7 +144,7 @@
   <data name="uxLabelEnterWMPRedistPath" xml:space="preserve">
     <value>Enter the full path to the Media Player 11 installation file or use the "..." button to locate it:</value>
   </data>
-  <data name="uxLinkWMPRedist" xml:space="preserve">
+  <data name="uxLinkLabelWMPRedist" xml:space="preserve">
     <value>If you don't have the installation file, click here to download it (Genuine Windows required)</value>
   </data>
   <data name="uxLabelEnterSrcPath" xml:space="preserve">
@@ -272,8 +272,8 @@ Please copy the following diagnostic information and post a bug report.</value>
   <data name="dlgIntegError_Title" xml:space="preserve">
     <value>Integration Error</value>
   </data>
-  <data name="uxLinkAbout" xml:space="preserve">
-    <value>About...</value>
+  <data name="uxLinkLabelAbout" xml:space="preserve">
+    <value>About this program...</value>
   </data>
   <data name="dlgAbout_ButtonOK" xml:space="preserve">
     <value>&amp;OK</value>
@@ -403,17 +403,25 @@ You may need an updated version of this program to properly integrate this hotfi
     <value>Delta API failed to apply patch "{0}" to the file "{1}".</value>
   </data>
   <data name="dlgUsageInfo_Text" xml:space="preserve">
-    <value>WMP11Slipstreamer.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\MyWindowsSource" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /customicon:"[Boooggy|Vista|Custom]" [/customiconpath:"pathToIcon"] /output:"[Normal|Tweaked]" [/nocats] [/slipstream] [/closeonsuccess]
+    <value>{0}.exe /installer:"wmp11-windowsxp-x86-enu.exe" /winsource:"D:\MyWindowsSource" /hotfix:"D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe" /output:"Normal|Tweaked" [/customicon:"Boooggy|Vista|Custom"] [/customiconpath:"pathToIcon"] [/nocats] [/slipstream] [/closeonsuccess] [/culture:"en-US"] [/resdir:".\Resources"]
 
-/installer - Specifies the full path to the Microsoft WMP11 redistributable installer.
-/winsource - Specifies the Windows source to integrate WMP11 in.
-/hotfix - Specifies additional WMP11 hotfixes to integrate.
+/installer - Specifies the full path to the original WMP11 installer as released by Microsoft.
+/winsource - Specifies the Windows source to integrate WMP11 in..
+/hotfix - Specifies WMP11 hotfixes to integrate. Must be in the format demonstrated above.
 /output - Specifies the output type of WMP11, allowed values: "Normal" or "Tweaked".
 /customicon - Specifies a custom icon to use for wmplayer.exe, allowed values: "Boooggy" or "Vista" or "Custom".
 /customiconpath - Specifies the location of the custom icon to use if /customicon value is "Custom".
-/nocats - Modifies WMP11 integration so that it no longer includes the security catalogs (only use when disabling WFP).
+/nocats - Modifies slipstream to no longer include the file security catalogs (only use when disabling WFP).
 /slipstream - Begins slipstream immediately if no arguments are invalid and all referenced files are present.
-/closeonsuccess - Exits the slipstreamer after unattended operation is complete (if successful).</value>
+/closeonsuccess - Exits the slipstreamer after unattended operation is complete (if successful).
+/culture - Specifies a different culture to use other than the default operating system culture, eg: it-IT, fr.
+/resDir - Specifies a directory to load custom resource files from. Used by translators for testing.
+
+Notes: 
+1. Parameters in [braces] are optional.
+2. /culture: The correct {0}.resources.dll file must be present in a subfolder having the culture name or the parameter will be ignored.
+3. /resDir: The folder must contain the following resource files: {1}.resources, {2}.resources and {3}.resources. These can be generated from their corresponding .resx files using the RESGEN utility. Messages in missing files will display in English.
+4. /resDir and /culture cannot be specified together on the same command line.</value>
   </data>
   <data name="dlgUsageInfo_Title" xml:space="preserve">
     <value>Usage information</value>
@@ -459,5 +467,14 @@ You may need an updated version of this program to properly integrate this hotfi
   </data>
   <data name="dlgCleanupFailed_Title" xml:space="preserve">
     <value>Error during cleanup</value>
+  </data>
+  <data name="uxButtonUsageInfo" xml:space="preserve">
+    <value>Command Line Usage</value>
+  </data>
+  <data name="dlgCancel_Text" xml:space="preserve">
+    <value>Are you sure you want to cancel slipstream ?</value>
+  </data>
+  <data name="dlgCancel_Title" xml:space="preserve">
+    <value>Confirm cancellation</value>
   </data>
 </root>

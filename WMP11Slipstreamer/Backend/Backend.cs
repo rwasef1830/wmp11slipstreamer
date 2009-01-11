@@ -122,7 +122,7 @@ namespace Epsilon.WMP11Slipstreamer
                     this._driverCabFile = "driver.cab";
                 }
                 
-                CancelCheckpoint();
+                CancelOrPauseCheckpoint();
                 
                 this.OnAnnounce(String.Format(Msg.statExtractFile, this._driverCabFile));
 
@@ -175,7 +175,7 @@ namespace Epsilon.WMP11Slipstreamer
 
             foreach (string file in filesToExtract)
             {
-                CancelCheckpoint();
+                CancelOrPauseCheckpoint();
                 HelperConsole.InfoWriteLine(file, "NativeExtractHotfix");
                 NativeExtractHotfix(this.CreatePathString(
                     _extractDir, file), 
@@ -273,7 +273,7 @@ namespace Epsilon.WMP11Slipstreamer
             string tempFolder = this.CreatePathString(_workDir,
                 "wmp11int.r" + new Random().Next(99).ToString());
 
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
 
             // Extract repository cabinet
             Archival.NativeCabinetExtract(repositoryDecrypted, tempFolder, null, null);
@@ -321,7 +321,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
 
             FileSystem.Delete(tempFolder);
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
         }
 
         void ParseXmlVerifyOS(string xmlPath)
@@ -454,7 +454,7 @@ namespace Epsilon.WMP11Slipstreamer
             OrderedDictionary<string, List<string>> txtsetupFilesRef
                 = this._entriesCombinedEditor.GetRef(txtsetupFilesSection);
             this.OnAnnounce(String.Format(Msg.statEditFile, "Txtsetup.sif"));
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
 
             // Initialise the file copy dictionaries
             this._filesToCompressInArch = new Dictionary<string, string>(
@@ -681,7 +681,7 @@ namespace Epsilon.WMP11Slipstreamer
                     false, false);
             }
 
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
 
             this.OnAnnounce(Msg.statGenFileList);
             string wmp11ExtSect
@@ -826,7 +826,7 @@ namespace Epsilon.WMP11Slipstreamer
                     goto case PackageType.Vanilla;
             }
 
-        CancelCheckpoint();
+        CancelOrPauseCheckpoint();
 
             // Figure out the external cab filename from the external inf
             if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
@@ -836,7 +836,7 @@ namespace Epsilon.WMP11Slipstreamer
                 this._externalCabFilename = this._wmp11ExtInfEditor.ReadAllValues(
                     "SourceDisksNames.amd64", "1")[1];
 
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
         }
 
         void ResolveDestinationDirIdConflicts(string txtsetupFilesSection, 
@@ -880,7 +880,7 @@ namespace Epsilon.WMP11Slipstreamer
                 = this._entriesCombinedEditor.GetRef(txtsetupFilesSection);
             Dictionary<int, int> renameDestDirDictionary = null;
 
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
 
             if (txtsetupDirSection != null)
             {
@@ -1130,7 +1130,7 @@ namespace Epsilon.WMP11Slipstreamer
                             String.Format(Msg.errHotfixArchMismatch,
                             Path.GetFileName(hotfix)));
                     }
-                    CancelCheckpoint();
+                    CancelOrPauseCheckpoint();
 
                     // Processing Update.inf
                     IniParser updateInfEditor;
@@ -1300,7 +1300,7 @@ namespace Epsilon.WMP11Slipstreamer
             string wmp11cabdirectory = this.CreatePathString(
                 this._workDir, "wmp11cab");
             Directory.CreateDirectory(wmp11cabdirectory);
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
             foreach (KeyValuePair<string, string> pair in this._filesToCompressInCab)
             {
                 string filenameInExtracted = this.CreatePathString(
@@ -1366,7 +1366,7 @@ namespace Epsilon.WMP11Slipstreamer
                 RenameAndCompressArchFile(pair.Key, pair.Value, 
                     this.Parameters.SourceInfo.Arch, true, null);
                 this.OnIncrementCurrentProgress(compProgress);
-                this.CancelCheckpoint();
+                this.CancelOrPauseCheckpoint();
             }
             if (this._filesToCompressInI386 != null)
             {
@@ -1375,7 +1375,7 @@ namespace Epsilon.WMP11Slipstreamer
                     RenameAndCompressArchFile(pair.Key, pair.Value, 
                         TargetArchitecture.x86, true, this._x64i386WorkDir);
                     this.OnIncrementCurrentProgress(compProgress);
-                    this.CancelCheckpoint();
+                    this.CancelOrPauseCheckpoint();
                 }
             }
             foreach (KeyValuePair<string, string> pair in _filesToCopyInArch)
@@ -1383,7 +1383,7 @@ namespace Epsilon.WMP11Slipstreamer
                 RenameAndCompressArchFile(pair.Key, pair.Value,
                     this.Parameters.SourceInfo.Arch, false, null);
                 this.OnIncrementCurrentProgress(compProgress);
-                this.CancelCheckpoint();
+                this.CancelOrPauseCheckpoint();
             }
             this.OnHideCurrentProgress();
             
@@ -1507,7 +1507,7 @@ namespace Epsilon.WMP11Slipstreamer
                         break;
                 }
                 this.OnIncrementCurrentProgress(compProgress);
-                this.CancelCheckpoint();
+                this.CancelOrPauseCheckpoint();
             }
             
             // this.OnIncrementGlobalProgress();
@@ -1556,7 +1556,7 @@ namespace Epsilon.WMP11Slipstreamer
                             );
                     }
 
-                    this.CancelCheckpoint();
+                    this.CancelOrPauseCheckpoint();
                 }
             }
 
@@ -1584,7 +1584,7 @@ namespace Epsilon.WMP11Slipstreamer
                     string driverFolderFileName =
                         this.CreatePathString(this._driverDir, 
                         filename);
-                    CancelCheckpoint();
+                    CancelOrPauseCheckpoint();
                     if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x64)
                     {
                         FileSystem.CopyFile(this.CreatePathString(
@@ -1619,7 +1619,7 @@ namespace Epsilon.WMP11Slipstreamer
                 int numberOfFiles
                     = Directory.GetFiles(this._driverDir).Length;
                 this.OnResetCurrentProgress();
-                CancelCheckpoint();
+                CancelOrPauseCheckpoint();
                 Archival.NativeCabinetCreate(this.CreatePathString(
                     _workDir, _driverCabFile),
                     this._driverDir,
@@ -1645,13 +1645,13 @@ namespace Epsilon.WMP11Slipstreamer
                         _workDir
                     );
                     File.Delete(this.CreatePathString(_workDir, file));
-                    CancelCheckpoint();
+                    CancelOrPauseCheckpoint();
                 }
             }
             
             // this.OnIncrementGlobalProgress();
             
-            CancelCheckpoint();
+            CancelOrPauseCheckpoint();
         }
 
         /// <summary>

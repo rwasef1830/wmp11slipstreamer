@@ -177,5 +177,14 @@ namespace Epsilon.WMP11Slipstreamer
             return new Version(fileVerInfo.FileMajorPart, fileVerInfo.FileMinorPart, 
                 fileVerInfo.FileBuildPart, fileVerInfo.FilePrivatePart);
         }
+
+        public static void LaunchInDefaultHandler(string documentOrUrl)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = documentOrUrl;
+            startInfo.Verb = "open";
+            startInfo.UseShellExecute = true;
+            Process.Start(startInfo);
+        }
     }
 }
