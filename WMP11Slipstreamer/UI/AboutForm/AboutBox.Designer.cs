@@ -27,47 +27,49 @@ namespace Epsilon.WMP11Slipstreamer
         /// </summary>
         void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox));
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.uxTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.uxLabelProductName = new System.Windows.Forms.Label();
             this.uxTextBoxDescription = new System.Windows.Forms.TextBox();
             this.uxLabelVersion = new System.Windows.Forms.Label();
             this.uxLabelCopyright = new System.Windows.Forms.Label();
             this.uxLinkLabelWebSite = new System.Windows.Forms.LinkLabel();
-            this.uxButtonOk = new System.Windows.Forms.Button();
             this.uxLabelTranslator = new System.Windows.Forms.Label();
-            this.tableLayoutPanel.SuspendLayout();
+            this.uxPanelButtons = new System.Windows.Forms.Panel();
+            this.uxButtonUsageInfo = new System.Windows.Forms.Button();
+            this.uxButtonOk = new System.Windows.Forms.Button();
+            this.uxTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.uxPanelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel
+            // uxTableLayoutPanel
             // 
-            this.tableLayoutPanel.ColumnCount = 2;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
-            this.tableLayoutPanel.Controls.Add(this.logoPictureBox, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.uxLabelProductName, 1, 0);
-            this.tableLayoutPanel.Controls.Add(this.uxTextBoxDescription, 1, 4);
-            this.tableLayoutPanel.Controls.Add(this.uxLabelVersion, 1, 1);
-            this.tableLayoutPanel.Controls.Add(this.uxLabelCopyright, 1, 2);
-            this.tableLayoutPanel.Controls.Add(this.uxLinkLabelWebSite, 1, 3);
-            this.tableLayoutPanel.Controls.Add(this.uxButtonOk, 1, 6);
-            this.tableLayoutPanel.Controls.Add(this.uxLabelTranslator, 1, 5);
-            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(11, 11);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 7;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel.Size = new System.Drawing.Size(557, 338);
-            this.tableLayoutPanel.TabIndex = 0;
+            this.uxTableLayoutPanel.ColumnCount = 2;
+            this.uxTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.uxTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
+            this.uxTableLayoutPanel.Controls.Add(this.logoPictureBox, 0, 0);
+            this.uxTableLayoutPanel.Controls.Add(this.uxLabelProductName, 1, 0);
+            this.uxTableLayoutPanel.Controls.Add(this.uxTextBoxDescription, 1, 4);
+            this.uxTableLayoutPanel.Controls.Add(this.uxLabelVersion, 1, 1);
+            this.uxTableLayoutPanel.Controls.Add(this.uxLabelCopyright, 1, 2);
+            this.uxTableLayoutPanel.Controls.Add(this.uxLinkLabelWebSite, 1, 3);
+            this.uxTableLayoutPanel.Controls.Add(this.uxLabelTranslator, 1, 5);
+            this.uxTableLayoutPanel.Controls.Add(this.uxPanelButtons, 1, 6);
+            this.uxTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uxTableLayoutPanel.Location = new System.Drawing.Point(11, 11);
+            this.uxTableLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.uxTableLayoutPanel.Name = "uxTableLayoutPanel";
+            this.uxTableLayoutPanel.RowCount = 7;
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.uxTableLayoutPanel.Size = new System.Drawing.Size(557, 338);
+            this.uxTableLayoutPanel.TabIndex = 0;
             // 
             // logoPictureBox
             // 
@@ -76,7 +78,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.logoPictureBox.Location = new System.Drawing.Point(3, 4);
             this.logoPictureBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 7);
+            this.uxTableLayoutPanel.SetRowSpan(this.logoPictureBox, 7);
             this.logoPictureBox.Size = new System.Drawing.Size(177, 332);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.logoPictureBox.TabIndex = 12;
@@ -106,7 +108,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxTextBoxDescription.Size = new System.Drawing.Size(363, 198);
             this.uxTextBoxDescription.TabIndex = 23;
             this.uxTextBoxDescription.TabStop = false;
-            this.uxTextBoxDescription.Text = resources.GetString("uxTextBoxDescription.Text");
+            this.uxTextBoxDescription.Text = "Placeholder";
             // 
             // uxLabelVersion
             // 
@@ -142,18 +144,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxLinkLabelWebSite.TabIndex = 25;
             this.uxLinkLabelWebSite.TabStop = true;
             this.uxLinkLabelWebSite.Text = "Click here to go to the website";
-            this.uxLinkLabelWebSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // uxButtonOk
-            // 
-            this.uxButtonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.uxButtonOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.uxButtonOk.Location = new System.Drawing.Point(455, 309);
-            this.uxButtonOk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.uxButtonOk.Name = "uxButtonOk";
-            this.uxButtonOk.Size = new System.Drawing.Size(99, 27);
-            this.uxButtonOk.TabIndex = 26;
-            this.uxButtonOk.Text = global::Epsilon.WMP11Slipstreamer.Localization.Msg.dlgAbout_ButtonOK;
+            this.uxLinkLabelWebSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelWebSite_LinkClicked);
             // 
             // uxLabelTranslator
             // 
@@ -164,39 +155,75 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxLabelTranslator.TabIndex = 27;
             this.uxLabelTranslator.Text = "Current translation by:";
             // 
+            // uxPanelButtons
+            // 
+            this.uxPanelButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxPanelButtons.Controls.Add(this.uxButtonUsageInfo);
+            this.uxPanelButtons.Controls.Add(this.uxButtonOk);
+            this.uxPanelButtons.Location = new System.Drawing.Point(186, 306);
+            this.uxPanelButtons.Name = "uxPanelButtons";
+            this.uxPanelButtons.Size = new System.Drawing.Size(368, 31);
+            this.uxPanelButtons.TabIndex = 28;
+            // 
+            // uxButtonUsageInfo
+            // 
+            this.uxButtonUsageInfo.Location = new System.Drawing.Point(27, 3);
+            this.uxButtonUsageInfo.Name = "uxButtonUsageInfo";
+            this.uxButtonUsageInfo.Size = new System.Drawing.Size(236, 27);
+            this.uxButtonUsageInfo.TabIndex = 28;
+            this.uxButtonUsageInfo.Text = "Placeholder";
+            this.uxButtonUsageInfo.UseVisualStyleBackColor = true;
+            this.uxButtonUsageInfo.Click += new System.EventHandler(this.uxButtonUsageInfo_Click);
+            // 
+            // uxButtonOk
+            // 
+            this.uxButtonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.uxButtonOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.uxButtonOk.Location = new System.Drawing.Point(269, 3);
+            this.uxButtonOk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.uxButtonOk.Name = "uxButtonOk";
+            this.uxButtonOk.Size = new System.Drawing.Size(99, 27);
+            this.uxButtonOk.TabIndex = 27;
+            this.uxButtonOk.Text = global::Epsilon.WMP11Slipstreamer.Localization.Msg.dlgAbout_ButtonOK;
+            // 
             // AboutBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(579, 360);
-            this.Controls.Add(this.tableLayoutPanel);
+            this.Controls.Add(this.uxTableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox";
-            this.Padding = new System.Windows.Forms.Padding(11, 11, 11, 11);
+            this.Padding = new System.Windows.Forms.Padding(11);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About WMP11 Slipstreamer";
-            this.tableLayoutPanel.ResumeLayout(false);
-            this.tableLayoutPanel.PerformLayout();
+            this.uxTableLayoutPanel.ResumeLayout(false);
+            this.uxTableLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            this.uxPanelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        System.Windows.Forms.TableLayoutPanel uxTableLayoutPanel;
         System.Windows.Forms.PictureBox logoPictureBox;
         System.Windows.Forms.Label uxLabelProductName;
         System.Windows.Forms.Label uxLabelVersion;
         System.Windows.Forms.Label uxLabelCopyright;
         System.Windows.Forms.TextBox uxTextBoxDescription;
         System.Windows.Forms.LinkLabel uxLinkLabelWebSite;
-        private System.Windows.Forms.Button uxButtonOk;
         private System.Windows.Forms.Label uxLabelTranslator;
+        private System.Windows.Forms.Panel uxPanelButtons;
+        private System.Windows.Forms.Button uxButtonOk;
+        private System.Windows.Forms.Button uxButtonUsageInfo;
     }
 }

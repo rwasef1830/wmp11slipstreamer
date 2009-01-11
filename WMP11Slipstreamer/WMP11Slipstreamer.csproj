@@ -91,6 +91,9 @@
       <LastGenOutput>Msg.Designer.cs</LastGenOutput>
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\AboutForm\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\ErrorForm\ErrorForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ErrorForm.cs</DependentUpon>

@@ -66,7 +66,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxButtonClose.TabIndex = 1;
             this.uxButtonClose.Text = global::Epsilon.WMP11Slipstreamer.Localization.Msg.dlgError_ButtonClose;
             this.uxButtonClose.UseVisualStyleBackColor = true;
-            this.uxButtonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            this.uxButtonClose.Click += new System.EventHandler(this.uxButtonClose_Click);
             // 
             // uxLabelFooter
             // 

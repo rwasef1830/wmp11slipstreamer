@@ -49,28 +49,9 @@ namespace Epsilon.WMP11Slipstreamer
                     {
                         this.CrossThreadControlEnabled(this.uxButtonCancel, true);
                     };
+                
 
-#if DEBUG
-                // Helps in debugging
-                this._backend.Checkpoint
-                    += new Predicate<string>(delegate(string message)
-                        {
-                            DialogResult result =
-                                MessageBox.Show(message, "Checkpoint",
-                                MessageBoxButtons.YesNoCancel, 
-                                MessageBoxIcon.Question,
-                                MessageBoxDefaultButton.Button2);
-
-                            switch (result)
-                            {
-                                case DialogResult.Yes: return true;
-                                case DialogResult.No: return false;
-                                case DialogResult.Cancel: 
-                                    this._backend.Abort(); break;
-                            }
-                            return false;
-                        });
-#endif
+                this.HandleCheckpointEvent();
 
                 // Start the backend's operations
                 this._backend.Slipstream();
@@ -119,6 +100,30 @@ namespace Epsilon.WMP11Slipstreamer
                 this.CrossThreadControlEnabled(this.uxButtonCancel, true);
                 this.CrossThreadControlText(this.uxLabelOperation, String.Empty);
             }
+        }
+
+        [Conditional("DEBUG")]
+        void HandleCheckpointEvent()
+        {
+            // Helps in debugging
+            this._backend.Checkpoint
+                += new Predicate<string>(delegate(string message)
+                {
+                    DialogResult result =
+                        MessageBox.Show(message, "Checkpoint",
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2);
+
+                    switch (result)
+                    {
+                        case DialogResult.Yes: return true;
+                        case DialogResult.No: return false;
+                        case DialogResult.Cancel:
+                            this._backend.Abort(); break;
+                    }
+                    return false;
+                });
         }
 
         void ShowCleanupFailedBox()

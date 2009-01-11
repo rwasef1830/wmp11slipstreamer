@@ -129,11 +129,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Epsilon\Parsers\ParsersMsg.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParsersMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Epsilon\Slipstreamers\SlipstreamersMsg.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SlipstreamersMsg.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

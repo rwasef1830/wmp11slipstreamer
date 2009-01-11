@@ -103,6 +103,24 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to cancel slipstream ?.
+        /// </summary>
+        internal static string dlgCancel_Text {
+            get {
+                return ResourceManager.GetString("dlgCancel_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm cancellation.
+        /// </summary>
+        internal static string dlgCancel_Title {
+            get {
+                return ResourceManager.GetString("dlgCancel_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error during cleanup.
         /// </summary>
         internal static string dlgCleanupFailed_Title {
@@ -432,12 +450,11 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WMP11Slipstreamer.exe /installer:&quot;wmp11-windowsxp-x86-enu.exe&quot; /winsource:&quot;D:\MyWindowsSource&quot; /hotfix:&quot;D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe&quot; /customicon:&quot;[Boooggy|Vista|Custom]&quot; [/customiconpath:&quot;pathToIcon&quot;] /output:&quot;[Normal|Tweaked]&quot; [/nocats] [/slipstream] [/closeonsuccess]
+        ///   Looks up a localized string similar to {0}.exe /installer:&quot;wmp11-windowsxp-x86-enu.exe&quot; /winsource:&quot;D:\MyWindowsSource&quot; /hotfix:&quot;D:\Hotfixes|WMPHotfix1.exe|WMPHotfix2.exe&quot; /output:&quot;Normal|Tweaked&quot; [/customicon:&quot;Boooggy|Vista|Custom&quot;] [/customiconpath:&quot;pathToIcon&quot;] [/nocats] [/slipstream] [/closeonsuccess] [/culture:&quot;en-US&quot;] [/resdir:&quot;.\Resources&quot;]
         ///
-        ////installer - Specifies the full path to the Microsoft WMP11 redistributable installer.
-        ////winsource - Specifies the Windows source to integrate WMP11 in.
-        ////hotfix - Specifies additional WMP11 hotfixes to integrate.
-        ////output -  [rest of string was truncated]&quot;;.
+        ////installer - Specifies the full path to the original WMP11 installer as released by Microsoft.
+        ////winsource - Specifies the Windows source to integrate WMP11 in..
+        ////hotfix - Specifies WMP11 hotfixes  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string dlgUsageInfo_Text {
             get {
@@ -894,6 +911,15 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command Line Usage.
+        /// </summary>
+        internal static string uxButtonUsageInfo {
+            get {
+                return ResourceManager.GetString("uxButtonUsageInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use a custom icon for wmplayer.exe.
         /// </summary>
         internal static string uxCheckboxCustomIcon {
@@ -975,20 +1001,20 @@ namespace Epsilon.WMP11Slipstreamer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About....
+        ///   Looks up a localized string similar to About this program....
         /// </summary>
-        internal static string uxLinkAbout {
+        internal static string uxLinkLabelAbout {
             get {
-                return ResourceManager.GetString("uxLinkAbout", resourceCulture);
+                return ResourceManager.GetString("uxLinkLabelAbout", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to If you don&apos;t have the installation file, click here to download it (Genuine Windows required).
         /// </summary>
-        internal static string uxLinkWMPRedist {
+        internal static string uxLinkLabelWMPRedist {
             get {
-                return ResourceManager.GetString("uxLinkWMPRedist", resourceCulture);
+                return ResourceManager.GetString("uxLinkLabelWMPRedist", resourceCulture);
             }
         }
         

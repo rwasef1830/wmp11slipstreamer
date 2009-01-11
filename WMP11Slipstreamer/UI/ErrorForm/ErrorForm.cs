@@ -40,7 +40,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.ResumeLayout();
         }
 
-        void buttonClose_Click(object sender, EventArgs e)
+        void uxButtonClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }

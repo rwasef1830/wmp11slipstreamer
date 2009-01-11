@@ -8,6 +8,10 @@ using System.Threading;
 using System.Windows.Forms;
 using Epsilon.DebugServices;
 using Epsilon.WMP11Slipstreamer.Localization;
+using System.Collections.Generic;
+using Epsilon.n7Framework.Epsilon.Slipstreamers;
+using Epsilon.n7Framework.Epsilon.Parsers;
+using Epsilon.IO;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -34,7 +38,7 @@ namespace Epsilon.WMP11Slipstreamer
                     0,
                     new string[] { "nocats", "slipstream", "closeonsuccess" },
                     new string[] { "installer", "winsource", "customicon", "output", 
-                        "hotfix", "customiconpath", "resfile" , "culture" },
+                        "hotfix", "customiconpath", "resdir" , "culture" },
                     false
                 );
 
@@ -50,24 +54,42 @@ namespace Epsilon.WMP11Slipstreamer
                 string customiconpath = argParser.GetValue("customiconpath");
 
                 string culture = argParser.GetValue("culture");
-                string resFile = argParser.GetValue("resfile");
+                string resDir = argParser.GetValue("resdir");
 
-                if (!String.IsNullOrEmpty(resFile))
+                if (!String.IsNullOrEmpty(resDir) 
+                    && !String.IsNullOrEmpty(culture))
                 {
-                    if (!File.Exists(resFile))
+                    throw new ArgumentParserException(
+                        "/culture and /resDir cannot be specified together.");
+                }
+
+                if (!String.IsNullOrEmpty(resDir))
+                {
+                    if (!Directory.Exists(resDir))
                     {
-                        throw new FileNotFoundException(
-                            "The resource file was not found.",
-                            resFile);
+                        throw new DirectoryNotFoundException(
+                            "The resource directory could not be found.");
                     }
 
-                    ResourceManager resMan 
-                        = ResourceManager.CreateFileBasedResourceManager(
-                        Path.GetFileNameWithoutExtension(resFile),
-                        Path.GetDirectoryName(resFile), null);
-                    FieldInfo resManInfo = typeof(Msg).GetField("resourceMan",
-                        BindingFlags.Static | BindingFlags.NonPublic);
-                    resManInfo.SetValue(typeof(Msg), resMan); 
+                    Type[] resClassTypes = new Type[] { 
+                        typeof(Msg), 
+                        typeof(SlipstreamersMsg), 
+                        typeof(ParsersMsg) 
+                    };
+
+                    foreach (Type resClassType in resClassTypes)
+                    {
+                        if (File.Exists(FileSystem.CreatePathString(
+                            resDir, resClassType.Name + ".resources")))
+                        {
+                            ResourceManager resMan
+                                = ResourceManager.CreateFileBasedResourceManager(
+                                resClassType.Name, resDir, null);
+                            FieldInfo resManInfo = resClassType.GetField("resourceMan",
+                                BindingFlags.Static | BindingFlags.NonPublic);
+                            resManInfo.SetValue(resClassType, resMan);
+                        }
+                    }
                 }
                 else if (!String.IsNullOrEmpty(culture))
                 {
@@ -100,7 +122,7 @@ namespace Epsilon.WMP11Slipstreamer
             }
             catch (ShowUsageException)
             {
-                ShowUsageInformation();
+                Globals.ShowUsageInformation();
                 return 1;
             }
             catch (ArgumentParserException ex)
@@ -109,7 +131,7 @@ namespace Epsilon.WMP11Slipstreamer
                     + Environment.NewLine + Environment.NewLine
                     + "Click \"OK\" to view usage information.", 
                     "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                ShowUsageInformation();
+                Globals.ShowUsageInformation();
                 return 1;
             }
             catch (Exception ex)
@@ -148,12 +170,6 @@ namespace Epsilon.WMP11Slipstreamer
                 ((NeutralResourcesLanguageAttribute)(
                 Assembly.GetExecutingAssembly().GetCustomAttributes(
                 typeof(NeutralResourcesLanguageAttribute), false)[0])).CultureName);
-        }
-
-        static void ShowUsageInformation()
-        {
-            MessageBox.Show(Msg.dlgUsageInfo_Text, Msg.dlgUsageInfo_Title,
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
