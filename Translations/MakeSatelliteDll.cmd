@@ -26,8 +26,8 @@ set culture=%~5
 set companyName=%~6
 set outputDir=%~7
 set resgenPath=%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\ResGen.exe
-set alPath=%WinDir%\Microsoft.NET\Framework\v2.0.50727\al.exe
-set gsarPath=%WinDir%\gsar.exe
+set alPath=%ProgramFiles%\Microsoft SDKs\Windows\v6.0A\bin\al.exe
+set gsarPath=gsar.exe
 set tempGenPath=%Temp%\%~n0%RANDOM%.tmp
 goto checkDependencies
 
