@@ -89,12 +89,12 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        FileSystem.Delete(extractedName);
+                        FileSystem.DeleteFile(extractedName);
                     }
                 }
                 else
                 {
-                    FileSystem.Delete(extractedName);
+                    FileSystem.DeleteFile(extractedName);
                 }
             }
             if (counter > 0 && !this._state.IgnoreCats)

@@ -166,7 +166,7 @@ namespace Epsilon.WMP11Slipstreamer
                 = new ProgressTracker(filesToExtract.Length + 2);
 
             HelperConsole.InfoWriteLine(this.Parameters.WmpInstallerSource, "NativeExtractHotfix");
-            NativeExtractHotfix(this.Parameters.WmpInstallerSource, _extractDir);
+            NativeExtractHotfix(this.Parameters.WmpInstallerSource, _extractDir, null);
             this.OnIncrementCurrentProgress(currProgress);
 
             // Read control.xml and determine if we're on correct installer or not
@@ -179,11 +179,11 @@ namespace Epsilon.WMP11Slipstreamer
                 HelperConsole.InfoWriteLine(file, "NativeExtractHotfix");
                 NativeExtractHotfix(this.CreatePathString(
                     _extractDir, file), 
-                    _extractDir);
-                if (!HotfixMatchesArch(_extractDir))
-                {
-                    throw new IntegrationException(Msg.errWmpRedistArchMismatch);
-                }
+                    _extractDir,
+                    delegate(string hotfixInstaller)
+                    {
+                        throw new IntegrationException(Msg.errWmpRedistArchMismatch);
+                    });
                 this.OnIncrementCurrentProgress(currProgress);
             }
 
@@ -192,7 +192,7 @@ namespace Epsilon.WMP11Slipstreamer
                 && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
             {
                 NativeExtractHotfix(this.CreatePathString(_extractDir,
-                    "wmpappcompat.exe"), _extractDir);
+                    "wmpappcompat.exe"), _extractDir, null);
             }
             this.OnIncrementCurrentProgress(currProgress);
 
@@ -320,7 +320,7 @@ namespace Epsilon.WMP11Slipstreamer
                 wmfsdkEditor.SaveIni();
             }
 
-            FileSystem.Delete(tempFolder);
+            FileSystem.DeleteFolder(tempFolder);
             CancelOrPauseCheckpoint();
         }
 
@@ -383,13 +383,19 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
 
+        /// <summary>
+        /// Checks if the folder to which the hotfix was extracted
+        /// matches the target windows architecture by checking the
+        /// PE header of the hotfix "Update.exe" installer.
+        /// </summary>
+        /// <param name="folderToCheck"></param>
+        /// <returns></returns>
         bool HotfixMatchesArch(string folderToCheck)
         {
             HelperConsole.InfoWriteLine("HotfixMatchArch", "Backend");
             string updateFilename = this.CreatePathString(folderToCheck,
                 "Update", "Update.exe");
             PeEditor editor = new PeEditor(updateFilename);
-            FileSystem.Delete(updateFilename);
             return (editor.TargetMachineType == Architecture.x86
                 && this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
                 || (editor.TargetMachineType == Architecture.x64
@@ -826,7 +832,7 @@ namespace Epsilon.WMP11Slipstreamer
                     goto case PackageType.Vanilla;
             }
 
-        CancelOrPauseCheckpoint();
+            CancelOrPauseCheckpoint();
 
             // Figure out the external cab filename from the external inf
             if (this.Parameters.SourceInfo.Arch == TargetArchitecture.x86)
@@ -1028,7 +1034,8 @@ namespace Epsilon.WMP11Slipstreamer
             Directory.CreateDirectory(tempCompareFolder);
 
             // Mammoth hotfix apply functions
-            Dictionary<string, IEnumerable<string>> hotfixFileDictionary = StandardHotfixApply(fixesFolder);
+            Dictionary<string, IEnumerable<string>> hotfixFileDictionary 
+                = this.StandardHotfixApply(fixesFolder);
 
             // Get rid of superseded fixes by adding the hotfixes
             // listed in hotfixFileDictionary values only
@@ -1081,7 +1088,7 @@ namespace Epsilon.WMP11Slipstreamer
                             Msg.dlgWarnUxtheme_Title, MessageEventType.Warning);
                     }
 
-                    FileSystem.Delete(uxthemeComparePath);
+                    FileSystem.DeleteFile(uxthemeComparePath);
                 }
 
                 if (CopyOrExpandFromArch("msobmain.dll", tempCompareFolder, true))
@@ -1099,7 +1106,7 @@ namespace Epsilon.WMP11Slipstreamer
                             Msg.dlgWarnOobe_Title, MessageEventType.Warning);
                     }
 
-                    FileSystem.Delete(msobmainComparePath);
+                    FileSystem.DeleteFile(msobmainComparePath);
                 }
             }
 
@@ -1123,13 +1130,13 @@ namespace Epsilon.WMP11Slipstreamer
                 try
                 {
                     NativeExtractHotfix(this.CreatePathString(
-                        this.Parameters.HotfixFolder, hotfix), fixesFolder);
-                    if (!HotfixMatchesArch(fixesFolder))
-                    {
-                        throw new IntegrationException(
-                            String.Format(Msg.errHotfixArchMismatch,
-                            Path.GetFileName(hotfix)));
-                    }
+                        this.Parameters.HotfixFolder, hotfix), fixesFolder,
+                        delegate(string hotfixInstaller)
+                        {
+                            throw new IntegrationException(
+                                String.Format(Msg.errHotfixArchMismatch,
+                                Path.GetFileName(hotfixInstaller)));
+                        });
                     CancelOrPauseCheckpoint();
 
                     // Processing Update.inf
@@ -1233,7 +1240,7 @@ namespace Epsilon.WMP11Slipstreamer
                             }
                             else if (result == FileVersionComparison.Older)
                             {
-                                FileSystem.Delete(fixFullPath);
+                                FileSystem.DeleteFile(fixFullPath);
                             }
                             else if (result == FileVersionComparison.NotFound)
                             {
@@ -1393,7 +1400,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.OnAnnounce(Msg.statDetOverwrite);
 
             // HACK: Delete EULA.txt after it went into the external CAB
-            FileSystem.Delete(this.CreatePathString(this._extractDir, "EULA.TXT"));
+            FileSystem.DeleteFile(this.CreatePathString(this._extractDir, "EULA.TXT"));
 
             string[] filesInExtracted = Directory.GetFiles(
                 this._extractDir, "*", SearchOption.TopDirectoryOnly);
@@ -1717,7 +1724,7 @@ namespace Epsilon.WMP11Slipstreamer
                     filenameInExtracted,
                     destinationFolder
                 );
-                FileSystem.Delete(filenameInExtracted);
+                FileSystem.DeleteFile(filenameInExtracted);
             }
             else
             {
@@ -1750,8 +1757,9 @@ namespace Epsilon.WMP11Slipstreamer
                 catalogName, false);
         }
 
-        void NativeExtractHotfix(string hotfixInstaller,
-            string destinationPath)
+        void NativeExtractHotfix(
+            string hotfixInstaller, string destinationPath,
+            Action<string> archMismatchHandler)
         {
             string tempFolder 
                 = FileSystem.GetGuaranteedTempDirectory(this._workDir);
@@ -1826,16 +1834,28 @@ namespace Epsilon.WMP11Slipstreamer
             {
                 FileSystem.MoveFiles(tempFolder, destinationPath, true);
             }
-            FileSystem.Delete(tempFolder);
+            FileSystem.DeleteFolder(tempFolder);
 
-            // HACK: Delete dangerous files (like EULA and hotfix installer) as they 
+            // Check architecture
+            if (archMismatchHandler != null)
+            {
+                if (!this.HotfixMatchesArch(destinationPath))
+                {
+                    archMismatchHandler(hotfixInstaller);
+                }
+            }
+
+            // HACK: Delete dangerous files (like hotfix installer) as they 
             // can cause problems being detected as overwriting files later on and 
-            // overwriting newer versions that are already present in the destination source
+            // overwriting newer versions that are already present in the 
+            // destination source.
             string[] dangerousFiles = new string[] { 
-                "spmsg.dll", "spuninst.exe", "spupdsvc.exe" };
+                "spmsg.dll", "spuninst.exe", "spupdsvc.exe", 
+                this.CreatePathString("Update", "Update.exe") };
             foreach (string fileName in dangerousFiles)
             {
-                FileSystem.Delete(this.CreatePathString(destinationPath, fileName));
+                string dangerousFilePath = this.CreatePathString(destinationPath, fileName);
+                if (File.Exists(dangerousFilePath)) FileSystem.DeleteFile(dangerousFilePath);
             }
         }
 
