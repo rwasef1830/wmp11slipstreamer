@@ -82,6 +82,7 @@
     <Compile Include="Epsilon\IO\Compression\Delta\Delta.cs" />
     <Compile Include="Epsilon\IO\Compression\Delta\DeltaWin32.cs" />
     <Compile Include="Epsilon\IO\FileSystem.cs" />
+    <Compile Include="Epsilon\IO\FileSystemEntry.cs" />
     <Compile Include="Epsilon\IO\Streams.cs" />
     <Compile Include="Epsilon\Parsers\CSVParser.cs" />
     <Compile Include="Epsilon\Parsers\DelimValueParser.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Epsilon\Slipstreamers\SourceDetector.cs" />
     <Compile Include="Epsilon\Slipstreamers\TxtsetupParser.cs" />
     <Compile Include="Epsilon\Slipstreamers\WindowsSourceInfo.cs" />
+    <Compile Include="Epsilon\Win32\API\AccessMask.cs" />
     <Compile Include="Epsilon\Win32\API\DebugHelp.cs" />
     <Compile Include="Epsilon\Win32\API\DllFunctions.cs" />
     <Compile Include="Epsilon\Win32\API\IO.cs" />
@@ -113,7 +115,7 @@
     <Compile Include="Epsilon\Win32\API\ResourceAPI.cs" />
     <Compile Include="Epsilon\Win32\API\SafeHandles.cs" />
     <Compile Include="Epsilon\Win32\API\Security.cs" />
-    <Compile Include="Epsilon\Win32\API\System.cs" />
+    <Compile Include="Epsilon\Win32\API\Sound.cs" />
     <Compile Include="Epsilon\Win32\API\WinConsole.cs" />
     <Compile Include="Epsilon\Win32\API\Windows.cs">
       <SubType>Code</SubType>
