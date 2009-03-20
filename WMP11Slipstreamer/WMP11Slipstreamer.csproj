@@ -148,7 +148,7 @@
   <PropertyGroup>
     <PostBuildEvent>"%25ProgramFiles%25\Microsoft SDKs\Windows\v6.0A\bin\mt.exe" -nologo -manifest "$(ProjectDir)$(TargetFileName).manifest" -outputresource:"$(TargetPath);#1"
 
-sn.exe -q -R "$(TargetPath)" "$(ProjectDir)WMP11SlipstreamerKey.snk"
+"%25ProgramFiles%25\Microsoft SDKs\Windows\v6.0A\bin\sn.exe" -q -R "$(TargetPath)" "$(ProjectDir)WMP11SlipstreamerKey.snk"
 
 "$(SolutionDir)Dependencies\ILMerge\ILMerge.exe" /keyfile:"$(ProjectDir)WMP11SlipstreamerKey.snk" /out:"$(SolutionDir)Output\$(OutDir)$(TargetFileName)" "$(TargetPath)" "$(TargetDir)n7Framework.dll"</PostBuildEvent>
     <PreBuildEvent>
