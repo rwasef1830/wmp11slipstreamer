@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Epsilon.Parsers;
-using Epsilon.WindowsModTools;
-using Epsilon.IO;
-using System.IO;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -18,26 +14,29 @@ namespace Epsilon.WMP11Slipstreamer
         void FixWbem()
         {
             const string wbemInf = "wbemoc.inf";
-            string[] sectionsToFix = new string[] { "WBEM.CopyMOFs" };
+            var sectionsToFix = new[] { "WBEM.CopyMOFs" };
 
             if (this.CopyOrExpandFromArch(wbemInf, this._extractDir, true))
             {
-                IniParser wbemOcEditor = new IniParser(
-                    this.CreatePathString(this._extractDir, wbemInf), 
+                var wbemOcEditor = new IniParser(
+                    this.CreatePathString(this._extractDir, wbemInf),
                     true);
-                Dictionary<string, string> fixDict
-                    = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
-                fixDict.Add("napclientprov.mof", "napprov.mof");
-                fixDict.Add("napclientschema.mof", "napschem.mof");
+                var fixDict
+                    = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        { "napclientprov.mof", "napprov.mof" },
+                        { "napclientschema.mof", "napschem.mof" }
+                    };
 
                 foreach (string section in sectionsToFix)
                 {
-                    foreach (KeyValuePair<string, string> fix in fixDict)
+                    foreach (var fix in fixDict)
                     {
                         if (wbemOcEditor.LineExists(section, fix.Key))
                         {
                             wbemOcEditor.RemoveLine(section, fix.Key);
-                            wbemOcEditor.Add(section,
+                            wbemOcEditor.Add(
+                                section,
                                 String.Format("{0},{1}", fix.Key, fix.Value),
                                 false);
                         }

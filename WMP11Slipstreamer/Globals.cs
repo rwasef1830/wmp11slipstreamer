@@ -10,13 +10,8 @@ using Epsilon.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.WMP11Slipstreamer
 {
-    internal class Globals
+    class Globals
     {
-        internal static Version Version
-        {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
-        }
-
         internal const string Repo1Key = "e2f2dad638ce726af2f03074eef307cb";
         internal const string Repo2Key = "86fcb6bda64c0a7674179f7d1e09e5fe";
         internal const string LocalizerKey = "dc826746e1b7919b6275ea3f14c5e1bd";
@@ -39,13 +34,20 @@ namespace Epsilon.WMP11Slipstreamer
         internal const string hotfixLineValue = "HotfixesUsed";
         internal const string customIconData = "CustomIconData";
 
+        internal static Version Version
+        {
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+        }
+
         internal static void ShowUsageInformation()
         {
             MessageBox.Show(
-                String.Format(Msg.dlgUsageInfo_Text,
-                Assembly.GetExecutingAssembly().GetName().Name,
-                typeof(Msg).Name, typeof(SlipstreamersMsg).Name, 
-                typeof(ParsersMsg).Name),
+                String.Format(
+                    Msg.dlgUsageInfo_Text,
+                    Assembly.GetExecutingAssembly().GetName().Name,
+                    typeof(Msg).Name,
+                    typeof(SlipstreamersMsg).Name,
+                    typeof(ParsersMsg).Name),
                 Msg.dlgUsageInfo_Title,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

@@ -1,24 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Collections;
+using System.IO;
+using System.Windows.Forms;
 using Epsilon.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.WMP11Slipstreamer
 {
     public partial class ErrorForm : Form
     {
-        Exception _exception;
-        bool _critical;
-        string _tempFolder;
-        string _osString;
-        string _hotfixList;
+        readonly bool _critical;
+        readonly Exception _exception;
+        readonly string _hotfixList;
+        readonly string _osString;
+        readonly string _tempFolder;
 
-        public ErrorForm(Exception ex, bool critical, 
+        public ErrorForm(
+            Exception ex, bool critical,
             string tempFolder, string osString, string hotfixList)
         {
             this.InitializeComponent();
@@ -45,13 +42,14 @@ namespace Epsilon.WMP11Slipstreamer
             this.Close();
         }
 
-        private void ErrorForm_Load(object sender, EventArgs e)
+        void ErrorForm_Load(object sender, EventArgs e)
         {
             try
             {
                 this.uxTextBoxErrorLog.Text
-                        = String.Format("WMP11Slipstreamer v{0}",
-                        Globals.Version.ToString());
+                    = String.Format(
+                        "WMP11Slipstreamer v{0}",
+                        Globals.Version);
                 this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
 
                 this.uxTextBoxErrorLog.AppendText(Msg.dlgError_DetectedSource);
@@ -129,8 +127,9 @@ namespace Epsilon.WMP11Slipstreamer
                     this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     this.uxTextBoxErrorLog.AppendText(
-                        String.Format(Msg.dlgError_TemporaryFolder,
-                        this._tempFolder));
+                        String.Format(
+                            Msg.dlgError_TemporaryFolder,
+                            this._tempFolder));
                     this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     this.uxTextBoxErrorLog.AppendText(Environment.NewLine);
                     this.uxTextBoxErrorLog.AppendText(Msg.dlgError_ApologiesReportBug);
@@ -138,11 +137,14 @@ namespace Epsilon.WMP11Slipstreamer
             }
             catch (Exception unexpected)
             {
-                MessageBox.Show("An error occurred inside the error handling "
-                + "form constructor. Please report this bug."
-                + Environment.NewLine + Environment.NewLine
-                + unexpected.ToString(), "Unhandled Error Form Exception",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "An error occurred inside the error handling "
+                    + "form constructor. Please report this bug."
+                    + Environment.NewLine + Environment.NewLine
+                    + unexpected,
+                    "Unhandled Error Form Exception",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

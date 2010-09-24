@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
+using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using Epsilon.WMP11Slipstreamer.Localization;
-using System.Diagnostics;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -20,12 +17,6 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxLabelTranslator.Text += " " + Msg.LocalizerName;
         }
 
-        [Conditional("BETA")]
-        void AppendBetaToTitle()
-        {
-            this.uxLabelVersion.Text = " BETA";
-        }
-
         void ReadLocalizedMessages()
         {
             this.SuspendLayout();
@@ -37,35 +28,44 @@ namespace Epsilon.WMP11Slipstreamer
             this.ResumeLayout();
         }
 
-        #region Assembly Attribute Accessors
+        static void uxLinkLabelWebSite_LinkClicked(
+            object sender,
+            LinkLabelLinkClickedEventArgs e)
+        {
+            CM.LaunchInDefaultHandler(Globals.WebsiteUrl);
+        }
 
+        static void uxButtonUsageInfo_Click(object sender, EventArgs e)
+        {
+            Globals.ShowUsageInformation();
+        }
+
+        #region Assembly Attribute Accessors
         public static string AssemblyTitle
         {
             get
             {
                 // Get all Title attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
+                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(
+                    typeof(AssemblyTitleAttribute), false);
                 // If there is at least one Title attribute
                 if (attributes.Length > 0)
                 {
                     // Select the first one
-                    AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                    var titleAttribute = (AssemblyTitleAttribute)attributes[0];
                     // If it is not an empty string, return it
                     if (titleAttribute.Title.Length > 0)
                         return titleAttribute.Title;
                 }
                 // If there was no Title attribute, or if the Title attribute was the empty string, return the .exe name
-                return System.IO.Path.GetFileNameWithoutExtension(
+                return Path.GetFileNameWithoutExtension(
                     Assembly.GetExecutingAssembly().CodeBase);
             }
         }
 
         public static string AssemblyVersion
         {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
+            get { return Assembly.GetExecutingAssembly().GetName().Version.ToString(); }
         }
 
         public static string AssemblyDescription
@@ -73,7 +73,8 @@ namespace Epsilon.WMP11Slipstreamer
             get
             {
                 // Get all Description attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
+                object[] attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 // If there aren't any Description attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
@@ -87,7 +88,8 @@ namespace Epsilon.WMP11Slipstreamer
             get
             {
                 // Get all Product attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                object[] attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 // If there aren't any Product attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
@@ -101,7 +103,8 @@ namespace Epsilon.WMP11Slipstreamer
             get
             {
                 // Get all Copyright attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
+                object[] attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 // If there aren't any Copyright attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
@@ -115,7 +118,8 @@ namespace Epsilon.WMP11Slipstreamer
             get
             {
                 // Get all Company attributes on this assembly
-                object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
+                object[] attributes =
+                    Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 // If there aren't any Company attributes, return an empty string
                 if (attributes.Length == 0)
                     return "";
@@ -124,16 +128,5 @@ namespace Epsilon.WMP11Slipstreamer
             }
         }
         #endregion
-
-        void uxLinkLabelWebSite_LinkClicked(object sender, 
-            LinkLabelLinkClickedEventArgs e)
-        {
-            CM.LaunchInDefaultHandler(Globals.WebsiteUrl);
-        }
-
-        void uxButtonUsageInfo_Click(object sender, EventArgs e)
-        {
-            Globals.ShowUsageInformation();
-        }
     }
 }

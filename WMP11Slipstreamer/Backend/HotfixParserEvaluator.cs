@@ -13,8 +13,8 @@ namespace Epsilon.WMP11Slipstreamer
     class HotfixParserEvaluator
     {
         #region Private members
-        string _extractedPath;
-        StringBuilder _hotfixFilePathBuffer;
+        readonly string _extractedPath;
+        readonly StringBuilder _hotfixFilePathBuffer;
         WindowsSourceInfo _sourceInfo;
         #endregion
 
@@ -25,7 +25,8 @@ namespace Epsilon.WMP11Slipstreamer
             this._sourceInfo = sourceInfo;
         }
 
-        public bool EvaluateCondition(CSVParser csvParser,
+        public bool EvaluateCondition(
+            CSVParser csvParser,
             HotfixInfParser.OperationType op, List<string> destFolderOrRootKeyComponents,
             string subKeyOrFilename, Version viConditional, int compareValue)
         {
@@ -34,69 +35,76 @@ namespace Epsilon.WMP11Slipstreamer
             HelperConsole.InfoWriteLine(op.ToString(), "Op");
             HelperConsole.RawWriteLine(String.Empty);
 
-            if (HotfixInfParser.OperationTypeContains(op,
+            bool finalResult;
+
+            if (HotfixInfParser.OperationTypeContains(
+                op,
                 HotfixInfParser.OperationType.RegistryPresentOrComparison))
             {
-                bool finalResult = false;
+                finalResult = false;
                 HelperConsole.RawWrite("Returning ");
                 HelperConsole.RawWriteLine(finalResult.ToString());
-                return finalResult;
+                return false;
             }
+            // TODO: This will break when a conditional x64 fix comes out.
+            // The solution is a way to reach the source file to figure
+            // out whether it is 64-bit or 32-bit
+            string sourceFilePath
+                = this.MapInfFilePathToSourceFilePath(subKeyOrFilename, false);
+            HelperConsole.InfoWriteLine(
+                String.Format("\"{0}\"", sourceFilePath),
+                "Mapped");
+
+            op &= ~HotfixInfParser.OperationType.FilePresentOrVersionComparison;
+
+            if (op == HotfixInfParser.OperationType.Exists)
+            {
+                HelperConsole.InfoWriteLine("File exists, returning true.", "Evaluator");
+                return true;
+            }
+            FileVersionInfo fileVerInfo
+                = FileVersionInfo.GetVersionInfo(sourceFilePath);
+            var verInfo = new Version(
+                fileVerInfo.FileMajorPart,
+                fileVerInfo.FileMinorPart,
+                fileVerInfo.FileBuildPart,
+                fileVerInfo.FilePrivatePart);
+            int result = verInfo.CompareTo(viConditional);
+            HelperConsole.InfoWriteLine(
+                String.Format(
+                    "Source Version: {0}; Conditional Version: {1}",
+                    verInfo.ToString(4),
+                    viConditional.ToString(4)),
+                "Evaluator");
+
+            if (op == HotfixInfParser.OperationType.Equal)
+                finalResult = result == 0;
+            else if (op == HotfixInfParser.OperationType.Greater)
+                finalResult = result > 0;
+            else if (op == (HotfixInfParser.OperationType.Greater
+                            | HotfixInfParser.OperationType.Equal))
+                finalResult = result >= 0;
+            else if (op == HotfixInfParser.OperationType.Less)
+                finalResult = result < 0;
+            else if (op == (HotfixInfParser.OperationType.Less
+                            | HotfixInfParser.OperationType.Equal))
+                finalResult = result <= 0;
             else
             {
-                // TODO: This will break when a conditional x64 fix comes out.
-                // The solution is a way to reach the source file to figure
-                // out whether it is 64-bit or 32-bit
-                string sourceFilePath 
-                    = MapInfFilePathToSourceFilePath(subKeyOrFilename, false);
-                HelperConsole.InfoWriteLine(String.Format("\"{0}\"", sourceFilePath), 
-                    "Mapped");
-
-                op &= ~HotfixInfParser.OperationType.FilePresentOrVersionComparison;
-
-                if (op == HotfixInfParser.OperationType.Exists)
-                {
-                    HelperConsole.InfoWriteLine("File exists, returning true.", "Evaluator");
-                    return true;
-                }
-                else 
-                {
-                    FileVersionInfo fileVerInfo 
-                        = FileVersionInfo.GetVersionInfo(sourceFilePath);
-                    Version verInfo = new Version(fileVerInfo.FileMajorPart,
-                        fileVerInfo.FileMinorPart, fileVerInfo.FileBuildPart,
-                        fileVerInfo.FilePrivatePart);
-                    int result = verInfo.CompareTo(viConditional);
-                    HelperConsole.InfoWriteLine(String.Format(
-                        "Source Version: {0}; Conditional Version: {1}",
-                        verInfo.ToString(4), viConditional.ToString(4)), "Evaluator");
-
-                    bool finalResult;
-                    if (op == HotfixInfParser.OperationType.Equal)
-                        finalResult = result == 0;
-                    else if (op == HotfixInfParser.OperationType.Greater)
-                        finalResult = result > 0;
-                    else if (op == (HotfixInfParser.OperationType.Greater
-                        | HotfixInfParser.OperationType.Equal))
-                        finalResult = result >= 0;
-                    else if (op == HotfixInfParser.OperationType.Less)
-                        finalResult = result < 0;
-                    else if (op == (HotfixInfParser.OperationType.Less
-                        | HotfixInfParser.OperationType.Equal))
-                        finalResult = result <= 0;
-                    else
-                    {
-                        throw new InvalidOperationException(String.Format(
-                            "Invalid operation type specified: '{0}'",
-                            Enum.GetName(typeof(HotfixInfParser.OperationType), 
+                throw new InvalidOperationException(
+                    String.Format(
+                        "Invalid operation type specified: '{0}'",
+                        Enum.GetName(
+                            typeof(HotfixInfParser.OperationType),
                             op)));
-                    }
-
-                    HelperConsole.InfoWriteLine(String.Format("Returning {0}.", 
-                        finalResult), "Evaluator");
-                    return finalResult;
-                }
             }
+
+            HelperConsole.InfoWriteLine(
+                String.Format(
+                    "Returning {0}.",
+                    finalResult),
+                "Evaluator");
+            return finalResult;
         }
 
         string MapInfFilePathToSourceFilePath(string filename, bool is64bitFile)
@@ -109,15 +117,15 @@ namespace Epsilon.WMP11Slipstreamer
             {
                 // 64-bit file in x64 architecture
                 if (File.Exists(poss64Path)) return poss64Path;
-                else if (File.Exists(possPath)) return possPath;
-                else ThrowMapFailed(filename, "[64in64]");
+                if (File.Exists(possPath)) return possPath;
+                ThrowMapFailed(filename, "[64in64]");
             }
             else if (this._sourceInfo.Arch == TargetArchitecture.x64)
             {
                 // 32-bit file in x64 architecture
                 if (File.Exists(poss32Path)) return poss32Path;
-                else if (File.Exists(possPath)) return possPath;
-                else ThrowMapFailed(filename, "[32in64]");
+                if (File.Exists(possPath)) return possPath;
+                ThrowMapFailed(filename, "[32in64]");
             }
             else if (File.Exists(possPath)) return possPath;
             else ThrowMapFailed(filename, "[32]");
@@ -128,9 +136,11 @@ namespace Epsilon.WMP11Slipstreamer
 
         static void ThrowMapFailed(string filename, string mapType)
         {
-            throw new InvalidOperationException(String.Format(
-                "Map {0} failed: \"{1}\", unable to locate file in source files.",
-                mapType, filename));
+            throw new InvalidOperationException(
+                String.Format(
+                    "Map {0} failed: \"{1}\", unable to locate file in source files.",
+                    mapType,
+                    filename));
         }
 
         string CreatePathString(params string[] components)
