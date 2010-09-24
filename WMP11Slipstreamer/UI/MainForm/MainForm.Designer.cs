@@ -96,7 +96,7 @@
             this.uxLinkLabelAbout.TabStop = true;
             this.uxLinkLabelAbout.Text = "Placeholder";
             this.uxLinkLabelAbout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.uxLinkLabelAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelAbout_LinkClicked);
+            this.uxLinkLabelAbout.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(uxLinkLabelAbout_LinkClicked);
             // 
             // uxButtonHotfixPicker
             // 
@@ -196,7 +196,7 @@
             this.uxLinkLabelWmp11SourceDownload.TabIndex = 3;
             this.uxLinkLabelWmp11SourceDownload.TabStop = true;
             this.uxLinkLabelWmp11SourceDownload.Text = "Placeholder";
-            this.uxLinkLabelWmp11SourceDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelWmp11SourceDownload_LinkClicked);
+            this.uxLinkLabelWmp11SourceDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(uxLinkLabelWmp11SourceDownload_LinkClicked);
             // 
             // uxButtonWmpRedistPicker
             // 

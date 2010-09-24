@@ -1,15 +1,9 @@
 using System;
-using System.IO;
-using System.Threading;
 using System.Diagnostics;
-using System.Collections.Generic;
-using Epsilon.Win32.Resources;
-using Epsilon.Win32;
-using Epsilon.Security.Cryptography;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using System.Security.Cryptography;
-using Epsilon.IO;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -25,17 +19,22 @@ namespace Epsilon.WMP11Slipstreamer
         /// <param name="stringB">2nd string</param>
         /// <param name="caseInsensitive">True for case-insensitive compare</param>
         /// <returns>True if equal</returns>
-        public static bool SEqCC(string stringA, string stringB,
+        public static bool SEqCC(
+            string stringA, string stringB,
             bool caseInsensitive)
         {
             if (caseInsensitive)
             {
-                return String.Compare(stringA, stringB,
+                return String.Compare(
+                    stringA,
+                    stringB,
                     StringComparison.CurrentCultureIgnoreCase) == 0;
             }
             else
             {
-                return String.Compare(stringA, stringB,
+                return String.Compare(
+                    stringA,
+                    stringB,
                     StringComparison.CurrentCulture) == 0;
             }
         }
@@ -47,17 +46,22 @@ namespace Epsilon.WMP11Slipstreamer
         /// <param name="stringB">2nd string</param>
         /// <param name="caseInsensitive">True for case-insensitive compare</param>
         /// <returns>True if equal</returns>
-        public static bool SEqO(string stringA, string stringB,
+        public static bool SEqO(
+            string stringA, string stringB,
             bool caseInsensitive)
         {
             if (caseInsensitive)
             {
-                return String.Compare(stringA, stringB,
+                return String.Compare(
+                    stringA,
+                    stringB,
                     StringComparison.OrdinalIgnoreCase) == 0;
             }
             else
             {
-                return String.Compare(stringA, stringB,
+                return String.Compare(
+                    stringA,
+                    stringB,
                     StringComparison.Ordinal) == 0;
             }
         }
@@ -71,7 +75,7 @@ namespace Epsilon.WMP11Slipstreamer
         /// <returns>Filename selected by user</returns>
         public static string OpenFileDialogStandard(string title, string filter)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog();
             dialog.Title = title;
             dialog.CheckFileExists = true;
             dialog.CheckPathExists = true;
@@ -94,7 +98,7 @@ namespace Epsilon.WMP11Slipstreamer
         /// <returns>Filename selected by user</returns>
         public static string SaveFileDialogStandard(string title, string filter)
         {
-            SaveFileDialog dialog = new SaveFileDialog();
+            var dialog = new SaveFileDialog();
             dialog.Title = title;
             dialog.CheckFileExists = false;
             dialog.CheckPathExists = true;
@@ -115,7 +119,7 @@ namespace Epsilon.WMP11Slipstreamer
         /// <returns>String array of selected files</returns>
         public static string[] OpenFileDialogMulti(string title, string filter)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog();
             dialog.Title = title;
             dialog.CheckFileExists = true;
             dialog.CheckPathExists = true;
@@ -128,17 +132,18 @@ namespace Epsilon.WMP11Slipstreamer
             dialog.ShowDialog();
             return dialog.FileNames;
         }
-        
+
         /// <summary>
         /// Opens a standard win32 choose folder dialog
         /// </summary>
         /// <param name="title">Text to display above treeview</param>
         /// <param name="showMakeNewFolderButton">Show "Make New Folder" button</param>
         /// <returns>Selected folder path</returns>
-        public static string OpenFolderDialog(string title, 
+        public static string OpenFolderDialog(
+            string title,
             bool showMakeNewFolderButton)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            var dialog = new FolderBrowserDialog();
             dialog.Description = title;
             dialog.ShowNewFolderButton = false;
             dialog.RootFolder = Environment.SpecialFolder.MyComputer;
@@ -153,9 +158,9 @@ namespace Epsilon.WMP11Slipstreamer
         /// <param name="filename">Full path to the file to calculate the hash for</param>
         /// <returns>md5 string</returns>
         public static string MD5(string filename)
-        {            
-            StringBuilder sb = new StringBuilder(32);
-            FileStream fs = new FileStream(filename, FileMode.Open);
+        {
+            var sb = new StringBuilder(32);
+            var fs = new FileStream(filename, FileMode.Open);
             MD5 md5 = new MD5CryptoServiceProvider();
             byte[] hash = md5.ComputeHash(fs);
             fs.Close();
@@ -167,20 +172,24 @@ namespace Epsilon.WMP11Slipstreamer
         public static string GetCompressedFileName(string filePath)
         {
             string extension = Path.GetExtension(filePath);
-            string compressedFile = Path.ChangeExtension(filePath,
+            string compressedFile = Path.ChangeExtension(
+                filePath,
                 extension.Substring(0, extension.Length - 1) + "_");
             return compressedFile;
         }
 
         public static Version VerFromFileVer(FileVersionInfo fileVerInfo)
         {
-            return new Version(fileVerInfo.FileMajorPart, fileVerInfo.FileMinorPart, 
-                fileVerInfo.FileBuildPart, fileVerInfo.FilePrivatePart);
+            return new Version(
+                fileVerInfo.FileMajorPart,
+                fileVerInfo.FileMinorPart,
+                fileVerInfo.FileBuildPart,
+                fileVerInfo.FilePrivatePart);
         }
 
         public static void LaunchInDefaultHandler(string documentOrUrl)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
+            var startInfo = new ProcessStartInfo();
             startInfo.FileName = documentOrUrl;
             startInfo.Verb = "open";
             startInfo.UseShellExecute = true;

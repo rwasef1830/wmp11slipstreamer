@@ -144,7 +144,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxLinkLabelWebSite.TabIndex = 25;
             this.uxLinkLabelWebSite.TabStop = true;
             this.uxLinkLabelWebSite.Text = "Click here to go to the website";
-            this.uxLinkLabelWebSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.uxLinkLabelWebSite_LinkClicked);
+            this.uxLinkLabelWebSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(uxLinkLabelWebSite_LinkClicked);
             // 
             // uxLabelTranslator
             // 
@@ -175,7 +175,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxButtonUsageInfo.TabIndex = 28;
             this.uxButtonUsageInfo.Text = "Placeholder";
             this.uxButtonUsageInfo.UseVisualStyleBackColor = true;
-            this.uxButtonUsageInfo.Click += new System.EventHandler(this.uxButtonUsageInfo_Click);
+            this.uxButtonUsageInfo.Click += new System.EventHandler(uxButtonUsageInfo_Click);
             // 
             // uxButtonOk
             // 

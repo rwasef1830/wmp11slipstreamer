@@ -7,11 +7,10 @@ using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
 using Epsilon.DebugServices;
-using Epsilon.WMP11Slipstreamer.Localization;
-using System.Collections.Generic;
-using Epsilon.n7Framework.Epsilon.Slipstreamers;
-using Epsilon.n7Framework.Epsilon.Parsers;
 using Epsilon.IO;
+using Epsilon.n7Framework.Epsilon.Parsers;
+using Epsilon.n7Framework.Epsilon.Slipstreamers;
+using Epsilon.WMP11Slipstreamer.Localization;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -30,17 +29,20 @@ namespace Epsilon.WMP11Slipstreamer
 
                 StartDebugConsole();
 
-                ArgumentParser argParser = new ArgumentParser(args);
+                var argParser = new ArgumentParser(args);
                 argParser.Parse(
                     0,
                     10,
                     0,
                     0,
-                    new string[] { "nocats", "slipstream", "closeonsuccess" },
-                    new string[] { "installer", "winsource", "customicon", "output", 
-                        "hotfix", "customiconpath", "resdir" , "culture" },
+                    new[] { "nocats", "slipstream", "closeonsuccess" },
+                    new[]
+                    {
+                        "installer", "winsource", "customicon", "output",
+                        "hotfix", "customiconpath", "resdir", "culture"
+                    },
                     false
-                );
+                    );
 
                 string installer = argParser.GetValue("installer");
                 string winsource = argParser.GetValue("winsource");
@@ -49,14 +51,14 @@ namespace Epsilon.WMP11Slipstreamer
                 string customicon = argParser.GetValue("customicon");
                 bool nocats = argParser.IsSpecified("nocats");
                 bool slipstream = argParser.IsSpecified("slipstream");
-                bool closeonsuccess 
+                bool closeonsuccess
                     = argParser.IsSpecified("closeonsuccess") && slipstream;
                 string customiconpath = argParser.GetValue("customiconpath");
 
                 string culture = argParser.GetValue("culture");
                 string resDir = argParser.GetValue("resdir");
 
-                if (!String.IsNullOrEmpty(resDir) 
+                if (!String.IsNullOrEmpty(resDir)
                     && !String.IsNullOrEmpty(culture))
                 {
                     throw new ArgumentParserException(
@@ -71,21 +73,24 @@ namespace Epsilon.WMP11Slipstreamer
                             "The resource directory could not be found.");
                     }
 
-                    Type[] resClassTypes = new Type[] { 
-                        typeof(Msg), 
-                        typeof(SlipstreamersMsg), 
-                        typeof(ParsersMsg) 
+                    var resClassTypes = new[]
+                    {
+                        typeof(Msg),
+                        typeof(SlipstreamersMsg),
+                        typeof(ParsersMsg)
                     };
 
                     foreach (Type resClassType in resClassTypes)
                     {
-                        if (File.Exists(FileSystem.CreatePathString(
-                            resDir, resClassType.Name + ".resources")))
+                        if (File.Exists(
+                            FileSystem.CreatePathString(
+                                resDir, resClassType.Name + ".resources")))
                         {
                             ResourceManager resMan
                                 = ResourceManager.CreateFileBasedResourceManager(
-                                resClassType.Name, resDir, null);
-                            FieldInfo resManInfo = resClassType.GetField("resourceMan",
+                                    resClassType.Name, resDir, null);
+                            FieldInfo resManInfo = resClassType.GetField(
+                                "resourceMan",
                                 BindingFlags.Static | BindingFlags.NonPublic);
                             resManInfo.SetValue(resClassType, resMan);
                         }
@@ -97,11 +102,16 @@ namespace Epsilon.WMP11Slipstreamer
                     {
                         CultureInfo overrideCulture = CultureInfo.GetCultureInfo(culture);
                         Assembly.GetExecutingAssembly()
-                            .GetSatelliteAssembly(overrideCulture, new Version(
-                            ((SatelliteContractVersionAttribute)(
-                            Assembly.GetExecutingAssembly().GetCustomAttributes(
-                            typeof(SatelliteContractVersionAttribute), false)[0]))
-                            .Version));
+                            .GetSatelliteAssembly(
+                                overrideCulture,
+                                new Version(
+                                    ((SatelliteContractVersionAttribute)(
+                                                                            Assembly.GetExecutingAssembly().
+                                                                            GetCustomAttributes(
+                                                                                typeof(SatelliteContractVersionAttribute
+                                                                                    ),
+                                                                                false)[0]))
+                                        .Version));
                         Thread.CurrentThread.CurrentUICulture = overrideCulture;
                     }
                     catch (Exception ex)
@@ -109,14 +119,24 @@ namespace Epsilon.WMP11Slipstreamer
                         MessageBox.Show(
                             "An error occurred while overriding the culture of the application. Maybe the culture string is invalid."
                             + Environment.NewLine + Environment.NewLine + ex.Message,
-                            "Culture override failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "Culture override failed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
                     }
                 }
 
                 ValidateResource();
-                Application.Run(new MainForm(installer, winsource, hotfixes,
-                    output, customicon, nocats, slipstream, closeonsuccess,
-                    customiconpath));
+                Application.Run(
+                    new MainForm(
+                        installer,
+                        winsource,
+                        hotfixes,
+                        output,
+                        customicon,
+                        nocats,
+                        slipstream,
+                        closeonsuccess,
+                        customiconpath));
 
                 return 0;
             }
@@ -127,10 +147,13 @@ namespace Epsilon.WMP11Slipstreamer
             }
             catch (ArgumentParserException ex)
             {
-                MessageBox.Show(ex.Message
+                MessageBox.Show(
+                    ex.Message
                     + Environment.NewLine + Environment.NewLine
-                    + "Click \"OK\" to view usage information.", 
-                    "Argument Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    + "Click \"OK\" to view usage information.",
+                    "Argument Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 Globals.ShowUsageInformation();
                 return 1;
             }
@@ -144,22 +167,26 @@ namespace Epsilon.WMP11Slipstreamer
         [Conditional("DEBUG")]
         static void StartDebugConsole()
         {
-            string filename 
-                = CM.SaveFileDialogStandard("Choose location to save debug log...",
-                "Log files (*.log)|*.log|All files (*.*)|*.*");
+            string filename
+                = CM.SaveFileDialogStandard(
+                    "Choose location to save debug log...",
+                    "Log files (*.log)|*.log|All files (*.*)|*.*");
             HelperConsole.InitializeDefaultConsole(filename);
         }
 
         static void ValidateResource()
         {
-            if (!String.Equals(Msg.LocalizerKey, Globals.LocalizerKey,
+            if (!String.Equals(
+                Msg.LocalizerKey,
+                Globals.LocalizerKey,
                 StringComparison.Ordinal))
             {
                 MessageBox.Show(
                     "Localizer key mismatch. Switching back to default culture.",
                     "Satellite assembly error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error
-                );
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
                 ResetCultureToDefault();
             }
         }
@@ -168,8 +195,9 @@ namespace Epsilon.WMP11Slipstreamer
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(
                 ((NeutralResourcesLanguageAttribute)(
-                Assembly.GetExecutingAssembly().GetCustomAttributes(
-                typeof(NeutralResourcesLanguageAttribute), false)[0])).CultureName);
+                                                        Assembly.GetExecutingAssembly().GetCustomAttributes(
+                                                            typeof(NeutralResourcesLanguageAttribute), false)[0])).
+                    CultureName);
         }
     }
 }

@@ -1,55 +1,61 @@
 #region Using statements
 using System;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using Epsilon.IO;
-using Epsilon.Win32.Resources;
-using Epsilon.Win32;
-using Epsilon.DebugServices;
 using Epsilon.Slipstreamers;
-using Epsilon.WindowsModTools;
+using Epsilon.Win32.Resources;
 using Epsilon.WMP11Slipstreamer.Localization;
+using Microsoft.Win32;
+
 #endregion
 
 namespace Epsilon.WMP11Slipstreamer
 {
     partial class MainForm : Form
     {
-        bool _immediateLauch;
+        readonly bool _immediateLauch;
+        readonly StringBuilder _pathBuffer;
         bool _closeOnSuccess;
-        bool _wmp11PathIsReady;
-        bool _winSrcPathIsReady;
         byte[] _customIconRaw;
         bool _noShowCustomIcoDialog;
+        bool _winSrcPathIsReady;
+        bool _wmp11PathIsReady;
         Thread _workerThread;
-        StringBuilder _pathBuffer;
 
-        public MainForm(string installer, string winsource, string hotfixes,
-            string output, string customicon, bool nocats, bool slipstream, 
+        public MainForm(
+            string installer, string winsource, string hotfixes,
+            string output, string customicon, bool nocats, bool slipstream,
             bool close, string customIconPath)
         {
-        	// Initialise the buffer
-            _pathBuffer = new StringBuilder(FileSystem.MaximumPathLength);
-        	
-            InitializeComponent();
+            // Initialise the buffer
+            this._pathBuffer = new StringBuilder(FileSystem.MaximumPathLength);
+
+            this.InitializeComponent();
 
             this.uxComboBoxCustomIcon.SelectedIndex = 0;
             this.uxComboType.SelectedIndex = 0;
 
-            int readiness = ProcessParameters(installer, winsource, hotfixes, 
-				output, customicon, nocats, slipstream, customIconPath);
+            int readiness = this.ProcessParameters(
+                installer,
+                winsource,
+                hotfixes,
+                output,
+                customicon,
+                nocats,
+                slipstream,
+                customIconPath);
 
             if (slipstream && readiness == 4)
             {
-                _immediateLauch = true;
-                _closeOnSuccess = close;
+                this._immediateLauch = true;
+                this._closeOnSuccess = close;
             }
         }
-        
+
         public void GetControlMessages()
         {
             bool rtl = Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft;
@@ -70,96 +76,102 @@ namespace Epsilon.WMP11Slipstreamer
             this.uxStatusLabelSourceType.Text = Msg.uxStatusBarDefaultText;
             this.uxButtonIntegrate.Text = Msg.uxButtonIntegrate;
             this.uxButtonCancel.Text = Msg.uxButtonExit;
-            
+
             this.uxComboType.Items[0] = Msg.uxTypeVanilla;
             this.uxComboType.Items[1] = Msg.uxTypeTweaked;
         }
 
-        int ProcessParameters(string installer, string winsource, 
-            string hotfixes, string output, string customicon, bool nocats, 
+        int ProcessParameters(
+            string installer, string winsource,
+            string hotfixes, string output, string customicon, bool nocats,
             bool slipstream, string customIconPath)
         {
-            Microsoft.Win32.RegistryKey wmp11Key
-                = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
-                Globals.wmp11SlipstreamerKey);
+            RegistryKey wmp11Key
+                = Registry.CurrentUser.OpenSubKey(
+                    Globals.wmp11SlipstreamerKey);
 
             int readiness = 0;
             if (!String.IsNullOrEmpty(installer))
             {
                 if (File.Exists(installer))
                 {
-                    uxTextBoxWmpRedist.Text = installer;
+                    this.uxTextBoxWmpRedist.Text = installer;
                     readiness++;
                 }
             }
             else if (wmp11Key != null && !slipstream)
             {
                 string installerFromReg
-                    = wmp11Key.GetValue(Globals.wmp11InstallerValue,
-                    String.Empty).ToString();
+                    = wmp11Key.GetValue(
+                        Globals.wmp11InstallerValue,
+                        String.Empty).ToString();
                 if (!String.IsNullOrEmpty(installerFromReg))
                 {
                     if (File.Exists(installerFromReg))
                     {
-                        uxTextBoxWmpRedist.Text = installerFromReg;
+                        this.uxTextBoxWmpRedist.Text = installerFromReg;
                     }
                 }
             }
-            
+
             if (!String.IsNullOrEmpty(winsource))
             {
-                if (SourceMinimumValid(winsource))
+                if (this.SourceMinimumValid(winsource))
                 {
-                    uxTextBoxWinSrc.Text = winsource.TrimEnd(Path.DirectorySeparatorChar);
+                    this.uxTextBoxWinSrc.Text = winsource.TrimEnd(Path.DirectorySeparatorChar);
                     readiness++;
                 }
             }
             else if (wmp11Key != null && !slipstream)
             {
                 string sourceFromReg
-                        = wmp11Key.GetValue(Globals.winSourceValue,
+                    = wmp11Key.GetValue(
+                        Globals.winSourceValue,
                         String.Empty).ToString();
                 if (!String.IsNullOrEmpty(sourceFromReg))
                 {
-                    if (SourceMinimumValid(sourceFromReg))
+                    if (this.SourceMinimumValid(sourceFromReg))
                     {
-                        uxTextBoxWinSrc.Text = sourceFromReg;
+                        this.uxTextBoxWinSrc.Text = sourceFromReg;
                     }
                 }
             }
-        
+
             if (!String.IsNullOrEmpty(output))
             {
                 if (CM.SEqO(output, "Normal", true))
-                    uxComboType.SelectedIndex = 0;
+                    this.uxComboType.SelectedIndex = 0;
                 else if (CM.SEqO(output, "Tweaked", true))
-                    uxComboType.SelectedIndex = 1;
+                    this.uxComboType.SelectedIndex = 1;
                 readiness++;
             }
             else if (wmp11Key != null && !slipstream)
             {
                 int outputFromReg;
-                if (int.TryParse(wmp11Key.GetValue(Globals.addonTypeValue,
-                        0).ToString(), out outputFromReg))
+                if (int.TryParse(
+                    wmp11Key.GetValue(
+                        Globals.addonTypeValue,
+                        0).ToString(),
+                    out outputFromReg))
                 {
-                    if (outputFromReg < uxComboType.Items.Count)
+                    if (outputFromReg < this.uxComboType.Items.Count)
                     {
-                        uxComboType.SelectedIndex = outputFromReg;
+                        this.uxComboType.SelectedIndex = outputFromReg;
                     }
                 }
             }
 
             if (!String.IsNullOrEmpty(customicon))
             {
-                if (CM.SEqO(customicon, "Boooggy", true)) 
+                if (CM.SEqO(customicon, "Boooggy", true))
                 {
-                    uxCheckBoxCustomIcon.Checked = true;
-                    uxComboBoxCustomIcon.SelectedIndex = 0;
+                    this.uxCheckBoxCustomIcon.Checked = true;
+                    this.uxComboBoxCustomIcon.SelectedIndex = 0;
                 }
                 else if (CM.SEqO(customicon, "Vista", true))
                 {
-                    uxCheckBoxCustomIcon.Checked = true;
-                    uxComboBoxCustomIcon.SelectedIndex = 1;
+                    this.uxCheckBoxCustomIcon.Checked = true;
+                    this.uxComboBoxCustomIcon.SelectedIndex = 1;
                 }
                 else if (CM.SEqO(customicon, "Custom", true))
                 {
@@ -171,16 +183,18 @@ namespace Epsilon.WMP11Slipstreamer
                         FileStream icoStream = File.OpenRead(customIconPath);
                         if (ResourceEditor.IsValidIcon(icoStream))
                         {
-                            _customIconRaw = new byte[icoStream.Length];
-                            icoStream.Read(_customIconRaw, 0,
-                                _customIconRaw.Length);
+                            this._customIconRaw = new byte[icoStream.Length];
+                            icoStream.Read(
+                                this._customIconRaw,
+                                0,
+                                this._customIconRaw.Length);
                             icoStream.Seek(0, SeekOrigin.Begin);
-                            uxPictureBoxCustomIconPreview.Image
+                            this.uxPictureBoxCustomIconPreview.Image
                                 = new Icon(icoStream).ToBitmap();
                             icoStream.Close();
-                            _noShowCustomIcoDialog = true;
-                            uxCheckBoxCustomIcon.Checked = true;
-                            uxComboBoxCustomIcon.SelectedIndex = 2;
+                            this._noShowCustomIcoDialog = true;
+                            this.uxCheckBoxCustomIcon.Checked = true;
+                            this.uxComboBoxCustomIcon.SelectedIndex = 2;
                         }
                         else
                         {
@@ -193,55 +207,59 @@ namespace Epsilon.WMP11Slipstreamer
             }
             else if (wmp11Key != null && !slipstream)
             {
-                int iconIndexFromReg = 0;
-                if (int.TryParse(wmp11Key.GetValue(Globals.whichCustomIconValue, 0).ToString(),
-                    out iconIndexFromReg) && iconIndexFromReg < uxComboBoxCustomIcon.Items.Count
+                int iconIndexFromReg;
+                if (int.TryParse(
+                    wmp11Key.GetValue(Globals.whichCustomIconValue, 0).ToString(),
+                    out iconIndexFromReg) && iconIndexFromReg < this.uxComboBoxCustomIcon.Items.Count
                     && iconIndexFromReg == 2)
                 {
                     try
                     {
-                        byte[] data =
+                        var data =
                             (byte[])wmp11Key.GetValue(
-                            Globals.customIconData, new byte[1]);
+                                Globals.customIconData, new byte[1]);
                         if (data.Length > 0)
                         {
-                            MemoryStream icoStream
+                            var icoStream
                                 = new MemoryStream(data);
                             if (ResourceEditor.IsValidIcon(icoStream))
                             {
-                                _customIconRaw
+                                this._customIconRaw
                                     = new byte[icoStream.Length];
-                                icoStream.Read(_customIconRaw, 0,
-                                    _customIconRaw.Length);
+                                icoStream.Read(
+                                    this._customIconRaw,
+                                    0,
+                                    this._customIconRaw.Length);
                                 icoStream.Seek(0, SeekOrigin.Begin);
-                                uxPictureBoxCustomIconPreview.Image
+                                this.uxPictureBoxCustomIconPreview.Image
                                     = new Icon(icoStream).ToBitmap();
                                 icoStream.Close();
-                                _noShowCustomIcoDialog = true;
+                                this._noShowCustomIcoDialog = true;
                             }
                         }
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
-                        uxComboBoxCustomIcon.SelectedIndex = 0;
+                        this.uxComboBoxCustomIcon.SelectedIndex = 0;
                     }
                 }
-                uxComboBoxCustomIcon.SelectedIndex = iconIndexFromReg;
-                
+                this.uxComboBoxCustomIcon.SelectedIndex = iconIndexFromReg;
+
 
                 int useCustomIconFromReg;
-                if (int.TryParse(wmp11Key.GetValue(Globals.useCustomIconValue, 0).ToString(), 
+                if (int.TryParse(
+                    wmp11Key.GetValue(Globals.useCustomIconValue, 0).ToString(),
                     out useCustomIconFromReg))
                 {
                     switch (useCustomIconFromReg)
                     {
                         case 0:
-                            uxCheckBoxCustomIcon.Checked = false;
+                            this.uxCheckBoxCustomIcon.Checked = false;
                             break;
 
                         case 1:
-                            uxCheckBoxCustomIcon.Checked = true;
+                            this.uxCheckBoxCustomIcon.Checked = true;
                             break;
 
                         default:
@@ -249,12 +267,12 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                 }
             }
-            
+
             if (!String.IsNullOrEmpty(hotfixes))
             {
-                if (HotfixesExist(hotfixes))
+                if (this.HotfixesExist(hotfixes))
                 {
-                    uxTextBoxHotfixLine.Text = hotfixes;
+                    this.uxTextBoxHotfixLine.Text = hotfixes;
                 }
                 else if (readiness > 0)
                 {
@@ -264,52 +282,66 @@ namespace Epsilon.WMP11Slipstreamer
             else if (wmp11Key != null && !slipstream)
             {
                 string hotfixLineFromReg
-                        = wmp11Key.GetValue(Globals.hotfixLineValue,
+                    = wmp11Key.GetValue(
+                        Globals.hotfixLineValue,
                         String.Empty).ToString();
                 if (!String.IsNullOrEmpty(hotfixLineFromReg))
                 {
-                    if (HotfixesExist(hotfixLineFromReg))
+                    if (this.HotfixesExist(hotfixLineFromReg))
                     {
-                        uxTextBoxHotfixLine.Text = hotfixLineFromReg;
+                        this.uxTextBoxHotfixLine.Text = hotfixLineFromReg;
                     }
                 }
             }
-            
-            if (nocats) uxCheckBoxNoCats.Checked = true;
+
+            if (nocats) this.uxCheckBoxNoCats.Checked = true;
             readiness++;
             return readiness;
         }
 
         bool SourceMinimumValid(string sourceFolder)
         {
-            return this.CheckEssentialFiles(sourceFolder, "LAYOUT.INF", 
-				"TXTSETUP.SIF", "DOSNET.INF", "SYSOC.INF");
+            return this.CheckEssentialFiles(
+                sourceFolder,
+                "LAYOUT.INF",
+                "TXTSETUP.SIF",
+                "DOSNET.INF",
+                "SYSOC.INF");
         }
 
         void SyncUI()
         {
-            uxButtonIntegrate.Enabled = _wmp11PathIsReady && _winSrcPathIsReady;
+            this.uxButtonIntegrate.Enabled = this._wmp11PathIsReady && this._winSrcPathIsReady;
         }
-        
+
         bool CheckEssentialWMPFiles(string sourceFolder)
         {
-        	// Check for essential files
+            // Check for essential files
             return this.CheckEssentialFiles(sourceFolder, "wmp.inf", "wmplayer.exe", "mplayer2.exe");
         }
 
         bool CheckEssentialFiles(string sourceFolder, params string[] essentialFiles)
         {
-        	string amd64Path = this.CreatePathString(sourceFolder, "amd64");
-        	string i386Path = this.CreatePathString(sourceFolder, "i386");
+            string amd64Path = this.CreatePathString(sourceFolder, "amd64");
+            string i386Path = this.CreatePathString(sourceFolder, "i386");
 
             foreach (string file in essentialFiles)
             {
-            	if (!SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
-                    file, i386Path, true) 
-            	    && !SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
-                    "w" + file, i386Path, true)
-            	    && !SlipstreamerBase.FileExistsInSourceFolder(this._pathBuffer, 
-                    file, amd64Path, true))
+                if (!SlipstreamerBase.FileExistsInSourceFolder(
+                    this._pathBuffer,
+                    file,
+                    i386Path,
+                    true)
+                    && !SlipstreamerBase.FileExistsInSourceFolder(
+                        this._pathBuffer,
+                        "w" + file,
+                        i386Path,
+                        true)
+                    && !SlipstreamerBase.FileExistsInSourceFolder(
+                        this._pathBuffer,
+                        file,
+                        amd64Path,
+                        true))
                 {
                     return false;
                 }
@@ -320,106 +352,113 @@ namespace Epsilon.WMP11Slipstreamer
 
         void StartIntegration()
         {
-            uxTextBoxWinSrc.Text = uxTextBoxWinSrc.Text.TrimEnd(
+            this.uxTextBoxWinSrc.Text = this.uxTextBoxWinSrc.Text.TrimEnd(
                 Path.DirectorySeparatorChar);
-            if (!File.Exists(uxTextBoxWmpRedist.Text))
+            if (!File.Exists(this.uxTextBoxWmpRedist.Text))
             {
-                MessageBox.Show(Msg.dlgText_WmpRedistNotFound,
-                    Msg.dlgTitle_WmpRedistNotFound, MessageBoxButtons.OK,
+                MessageBox.Show(
+                    Msg.dlgText_WmpRedistNotFound,
+                    Msg.dlgTitle_WmpRedistNotFound,
+                    MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                _closeOnSuccess = false;
+                this._closeOnSuccess = false;
             }
             else
             {
-                if (!CheckEssentialWMPFiles(uxTextBoxWinSrc.Text))
+                if (!this.CheckEssentialWMPFiles(this.uxTextBoxWinSrc.Text))
                 {
-                    MessageBox.Show(Msg.dlgText_Wmp64FilesMissing,
-                        Msg.dlgTitle_Wmp64FilesMissing, MessageBoxButtons.OK,
+                    MessageBox.Show(
+                        Msg.dlgText_Wmp64FilesMissing,
+                        Msg.dlgTitle_Wmp64FilesMissing,
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-                    _closeOnSuccess = false;
+                    this._closeOnSuccess = false;
                 }
-                else if (!HotfixesExist(uxTextBoxHotfixLine.Text))
+                else if (!this.HotfixesExist(this.uxTextBoxHotfixLine.Text))
                 {
-                    MessageBox.Show(Msg.dlgText_InvalidHotfixLine,
-                        Msg.dlgTitle_InvalidHotfixLine, MessageBoxButtons.OK,
+                    MessageBox.Show(
+                        Msg.dlgText_InvalidHotfixLine,
+                        Msg.dlgTitle_InvalidHotfixLine,
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-                    _closeOnSuccess = false;
+                    this._closeOnSuccess = false;
                 }
                 else
                 {
-                    try
-                    {
-                        // Disable UI
-                        ControlUserInterface(false);
+                    // Disable UI
+                    this.ControlUserInterface(false);
 
-                        // Detect source type
-                        this.uxLabelOperation.Text = Msg.statDetectingSource;
-                        WindowsSourceInfo winSrcInfo = new WindowsSourceInfo();
-                        Thread sourceDetector = new Thread(delegate()
+                    // Detect source type
+                    this.uxLabelOperation.Text = Msg.statDetectingSource;
+                    var winSrcInfo = new WindowsSourceInfo();
+                    var sourceDetector = new Thread(
+                        delegate()
                         {
-                           winSrcInfo = SourceDetector.Detect(
-                               this.uxTextBoxWinSrc.Text, 
-                               this._pathBuffer);
+                            winSrcInfo = SourceDetector.Detect(
+                                this.uxTextBoxWinSrc.Text,
+                                this._pathBuffer);
                         });
-                        this.uxButtonCancel.Enabled = false;
-                        sourceDetector.Start();
-                        while (sourceDetector.IsAlive)
-                        {
-                            Application.DoEvents();
-                            Thread.Sleep(50);
-                        }
-                        this.uxStatusLabelSourceType.Text 
-                            = "Source Type: " + winSrcInfo.ToString();
-                        this.uxButtonCancel.Enabled = true;
-
-                        BackendParams settings = new BackendParams(
-                            uxTextBoxWinSrc.Text, winSrcInfo, uxTextBoxWmpRedist.Text, 
-                            uxTextBoxHotfixLine.Text, 
-                            (PackageType)(uxComboType.SelectedIndex + 1),
-                            (uxCheckBoxCustomIcon.Checked) ? _customIconRaw : null,
-                            uxCheckBoxNoCats.Checked);
-
-                        _workerThread = new Thread(WorkerMethod);
-                        _workerThread.CurrentUICulture 
-                            = Thread.CurrentThread.CurrentUICulture;
-                        _workerThread.Start(settings);
-
-                        while (_workerThread.IsAlive)
-                        {
-                            Thread.Sleep(10);
-                            Application.DoEvents();
-                        }
-
-                        if (settings.Status == SlipstreamerStatus.Cancelled)
-                        {
-                            MessageBox.Show(Msg.dlgText_Cancelled,
-                                Msg.dlgTitle_Cancelled, MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                        }
-                        else if (!_immediateLauch && !_closeOnSuccess
-                            && settings.Status == SlipstreamerStatus.Success)
-                        {
-                            MessageBox.Show(Msg.dlgText_Success,
-                                Msg.dlgTitle_Success, MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                        }
-
-                        if (_closeOnSuccess 
-                            && settings.Status == SlipstreamerStatus.Success)
-                        {
-                            Application.Exit();
-                        }
-                        else
-                        {
-                            // Release memory held by Backend (which is quite a lot)
-                            this._backend = null;
-                            GC.Collect();
-                            ControlUserInterface(true);
-                        }
-                    }
-                    catch (Exception)
+                    this.uxButtonCancel.Enabled = false;
+                    sourceDetector.Start();
+                    while (sourceDetector.IsAlive)
                     {
-                        throw;
+                        Application.DoEvents();
+                        Thread.Sleep(50);
+                    }
+                    this.uxStatusLabelSourceType.Text
+                        = "Source Type: " + winSrcInfo;
+                    this.uxButtonCancel.Enabled = true;
+
+                    var settings = new BackendParams(
+                        this.uxTextBoxWinSrc.Text,
+                        winSrcInfo,
+                        this.uxTextBoxWmpRedist.Text,
+                        this.uxTextBoxHotfixLine.Text,
+                        (PackageType)(this.uxComboType.SelectedIndex + 1),
+                        (this.uxCheckBoxCustomIcon.Checked) ? this._customIconRaw : null,
+                        this.uxCheckBoxNoCats.Checked);
+
+                    this._workerThread = new Thread(this.WorkerMethod)
+                    {
+                        CurrentUICulture = Thread.CurrentThread.CurrentUICulture
+                    };
+                    this._workerThread.Start(settings);
+
+                    while (this._workerThread.IsAlive)
+                    {
+                        Thread.Sleep(10);
+                        Application.DoEvents();
+                    }
+
+                    if (settings.Status == SlipstreamerStatus.Cancelled)
+                    {
+                        MessageBox.Show(
+                            Msg.dlgText_Cancelled,
+                            Msg.dlgTitle_Cancelled,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                    else if (!this._immediateLauch && !this._closeOnSuccess
+                             && settings.Status == SlipstreamerStatus.Success)
+                    {
+                        MessageBox.Show(
+                            Msg.dlgText_Success,
+                            Msg.dlgTitle_Success,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+
+                    if (this._closeOnSuccess
+                        && settings.Status == SlipstreamerStatus.Success)
+                    {
+                        Application.Exit();
+                    }
+                    else
+                    {
+                        // Release memory held by Backend (which is quite a lot)
+                        this._backend = null;
+                        GC.Collect();
+                        this.ControlUserInterface(true);
                     }
                 }
             }
@@ -427,36 +466,36 @@ namespace Epsilon.WMP11Slipstreamer
 
         void ControlUserInterface(bool state)
         {
-            SuspendLayout();
-            uxTextBoxWinSrc.Enabled = state;
-            uxTextBoxWmpRedist.Enabled = state;
-            uxTextBoxHotfixLine.Enabled = state;
-            uxTextBoxWinSrc.BackColor = SystemColors.ControlLightLight;
-            uxTextBoxWmpRedist.BackColor = SystemColors.ControlLightLight;
-            uxTextBoxHotfixLine.BackColor = SystemColors.ControlLightLight;        
-            uxComboType.Enabled = state;
-            uxButtonWmpRedistPicker.Enabled = state;
-            uxButtonWinSrcPicker.Enabled = state;
-            uxButtonHotfixPicker.Enabled = state;
-            uxCheckBoxNoCats.Enabled = state;
-            uxButtonIntegrate.Enabled = state;
-            uxCheckBoxCustomIcon.Enabled = state;
-            uxComboBoxCustomIcon.Enabled = state;
-            uxPictureBoxCustomIconPreview.Enabled = state;
-            uxLabelOperation.Visible = !state;
-            uxLinkLabelAbout.Visible = state;
-            uxLinkLabelWmp11SourceDownload.Enabled = state;
+            this.SuspendLayout();
+            this.uxTextBoxWinSrc.Enabled = state;
+            this.uxTextBoxWmpRedist.Enabled = state;
+            this.uxTextBoxHotfixLine.Enabled = state;
+            this.uxTextBoxWinSrc.BackColor = SystemColors.ControlLightLight;
+            this.uxTextBoxWmpRedist.BackColor = SystemColors.ControlLightLight;
+            this.uxTextBoxHotfixLine.BackColor = SystemColors.ControlLightLight;
+            this.uxComboType.Enabled = state;
+            this.uxButtonWmpRedistPicker.Enabled = state;
+            this.uxButtonWinSrcPicker.Enabled = state;
+            this.uxButtonHotfixPicker.Enabled = state;
+            this.uxCheckBoxNoCats.Enabled = state;
+            this.uxButtonIntegrate.Enabled = state;
+            this.uxCheckBoxCustomIcon.Enabled = state;
+            this.uxComboBoxCustomIcon.Enabled = state;
+            this.uxPictureBoxCustomIconPreview.Enabled = state;
+            this.uxLabelOperation.Visible = !state;
+            this.uxLinkLabelAbout.Visible = state;
+            this.uxLinkLabelWmp11SourceDownload.Enabled = state;
             if (state)
             {
-                uxProgressBarOverall.Value = 0;
-                uxStatusLabelSourceType.Text = String.Empty;
-                uxButtonCancel.Text = Msg.uxButtonExit;
+                this.uxProgressBarOverall.Value = 0;
+                this.uxStatusLabelSourceType.Text = String.Empty;
+                this.uxButtonCancel.Text = Msg.uxButtonExit;
             }
             if (!state)
             {
-                uxButtonCancel.Text = Msg.uxButtonCancel;
+                this.uxButtonCancel.Text = Msg.uxButtonCancel;
             }
-            ResumeLayout();
+            this.ResumeLayout();
         }
 
         bool HotfixesExist(string hotfixLine)
@@ -464,31 +503,26 @@ namespace Epsilon.WMP11Slipstreamer
             string hotfixLineCleaned = hotfixLine.Trim();
             if (hotfixLineCleaned.Length > 0)
             {
-                string[] hotfixData = hotfixLineCleaned.Split(new char[] { '|' },
+                string[] hotfixData = hotfixLineCleaned.Split(
+                    new[] { '|' },
                     StringSplitOptions.RemoveEmptyEntries);
                 string folder = hotfixData[0];
                 if (!Directory.Exists(folder))
                 {
                     return false;
                 }
-                else if (hotfixData.Length == 1)
+                if (hotfixData.Length == 1)
                 {
                     return false;
                 }
-                else
+                for (int i = 1; i < hotfixData.Length; i++)
                 {
-                    for (int i = 1; i < hotfixData.Length; i++)
-                    {
-                        string fix = hotfixData[i];
-                        if (!File.Exists(this.CreatePathString(folder, fix))) return false;
-                    }
-                    return true;
+                    string fix = hotfixData[i];
+                    if (!File.Exists(this.CreatePathString(folder, fix))) return false;
                 }
-            }
-            else
-            {
                 return true;
             }
+            return true;
         }
 
         string CreatePathString(params string[] components)

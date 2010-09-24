@@ -8,25 +8,26 @@ namespace Epsilon.WMP11Slipstreamer
     class HotfixInfParser
     {
         #region Fields
-        ConditionalOpExecuterDelegate _conditionOpTester;
-        CSVParser _csvParser;
-        WindowsSourceInfo _sourceInfo;
-        IDictionary<string, string> _variableDict;
+        readonly ConditionalOpExecuterDelegate _conditionOpTester;
+        readonly CSVParser _csvParser;
         readonly IniParser _updateInf;
+        readonly IDictionary<string, string> _variableDict;
+        WindowsSourceInfo _sourceInfo;
         #endregion
 
         #region Public properties
-        public readonly string HotfixName;
-        public readonly string ProductName;
         public readonly Dictionary<string, string> Catalogs;
         public readonly List<FileListSection> FileList;
+        public readonly string HotfixName;
+        public readonly string ProductName;
         #endregion
 
         #region Private constants
         const int c_NumOpLineValues = 5;
         #endregion
 
-        public HotfixInfParser(IniParser updateInfEditor, 
+        public HotfixInfParser(
+            IniParser updateInfEditor,
             ConditionalOpExecuterDelegate conditionExecuter,
             WindowsSourceInfo sourceInfo)
         {
@@ -38,19 +39,26 @@ namespace Epsilon.WMP11Slipstreamer
 
             if (updateInfEditor == null)
             {
-                throw new ArgumentException("Argument cannot be null.",
+                throw new ArgumentException(
+                    "Argument cannot be null.",
                     updateInfEditor.ToString());
             }
-            else if (conditionExecuter == null)
+            
+            if (conditionExecuter == null)
             {
-                throw new ArgumentException("Argument cannot be null.",
+                throw new ArgumentException(
+                    "Argument cannot be null.",
                     conditionExecuter.ToString());
             }
 
-            this.HotfixName = this._updateInf.ReadValue(Strings.StringsSection,
-                Strings.SpShortTitle, true);
-            this.ProductName = this._updateInf.ReadValue(Strings.StringsSection,
-                Strings.UsProductName, true);
+            this.HotfixName = this._updateInf.ReadValue(
+                Strings.StringsSection,
+                Strings.SpShortTitle,
+                true);
+            this.ProductName = this._updateInf.ReadValue(
+                Strings.StringsSection,
+                Strings.UsProductName,
+                true);
 
             this.Catalogs = new Dictionary<string, string>(
                 StringComparer.OrdinalIgnoreCase);
@@ -62,17 +70,18 @@ namespace Epsilon.WMP11Slipstreamer
             {
                 List<string[]> catCsv = this._updateInf.ReadCsvLines(
                     Strings.ProdCatsToInstall, 2, this._variableDict);
-                foreach (string[] value in catCsv)
+                foreach (var value in catCsv)
                 {
-                    this.Catalogs.Add(value[0], (value[1] != null) ? 
-                        value[1] : value[0]);
+                    this.Catalogs.Add(
+                        value[0],
+                        value[1] ?? value[0]);
                 }
             }
 
-            List<string> copyFilesSections = new List<string>();
-            copyFilesSections.AddRange(GetMandatoryCopyFilesSections());
-            copyFilesSections.AddRange(GetOptionalCopyFilesSections());
-            GetFileEntries(copyFilesSections);
+            var copyFilesSections = new List<string>();
+            copyFilesSections.AddRange(this.GetMandatoryCopyFilesSections());
+            copyFilesSections.AddRange(this.GetOptionalCopyFilesSections());
+            this.GetFileEntries(copyFilesSections);
 
             this.FileList.TrimExcess();
         }
@@ -89,26 +98,31 @@ namespace Epsilon.WMP11Slipstreamer
 
                 // Skip dllcache file list section
                 if (SEqOIC(destDirComponents[0], "65619")) continue;
+
                 // Check if we are an x64 source and we found a 32-bit file-list
-                else if (SEqOIC(destDirComponents[0], "10")
+                if (SEqOIC(destDirComponents[0], "10")
                     && SEqOIC(destDirComponents[1], "SysWOW64"))
                 {
-                    if (this._sourceInfo.Arch == TargetArchitecture.x86)
-                        throw new InvalidOperationException(
-                            "Hotfix target architecture mismatch.");
-                    else
+                    switch (this._sourceInfo.Arch)
                     {
-                        is6432FileList = true;
+                        case TargetArchitecture.x86:
+                            throw new InvalidOperationException(
+                                "Hotfix target architecture mismatch.");
+                        default:
+                            is6432FileList = true;
+                            break;
                     }
                 }
 
-                Dictionary<string, string> files = new Dictionary<string, string>(
+                var files = new Dictionary<string, string>(
                     StringComparer.OrdinalIgnoreCase);
                 List<string[]> copyFileData
-                    = this._updateInf.ReadCsvLines(copyFileSection, 4, 
-                    this._variableDict);
+                    = this._updateInf.ReadCsvLines(
+                        copyFileSection,
+                        4,
+                        this._variableDict);
 
-                foreach (string[] copyFile in copyFileData)
+                foreach (var copyFile in copyFileData)
                 {
                     string sourceFileName = copyFile[1];
                     string destinationFileName = copyFile[0];
@@ -122,65 +136,75 @@ namespace Epsilon.WMP11Slipstreamer
                     }
                     else
                     {
-                        throw new InvalidOperationException(String.Format(
-                            "Duplicate file specification in file list section [{0}]; "
-                            + "File \"{1}\" already exists in dictionary. File: \"{2}\"",
-                            copyFileSection, sourceFileName, 
-                            this._updateInf.IniFileInfo.Name)
-                        );
+                        throw new InvalidOperationException(
+                            String.Format(
+                                "Duplicate file specification in file list section [{0}]; "
+                                + "File \"{1}\" already exists in dictionary. File: \"{2}\"",
+                                copyFileSection,
+                                sourceFileName,
+                                this._updateInf.IniFileInfo.Name)
+                            );
                     }
                 }
-                this.FileList.Add(new FileListSection(is6432FileList, 
-                    destDirComponents, files));
+                this.FileList.Add(
+                    new FileListSection(
+                        is6432FileList,
+                        destDirComponents,
+                        files));
             }
         }
 
-        List<string> GetMandatoryCopyFilesSections()
+        IEnumerable<string> GetMandatoryCopyFilesSections()
         {
             if (this._updateInf.SectionExists(Strings.PICopyFilesAlways))
-                return GetFileListSections(Strings.PICopyFilesAlways);
-            else 
-                return new List<string>();
+                return this.GetFileListSections(Strings.PICopyFilesAlways);
+            return new List<string>();
         }
 
-        List<string> GetOptionalCopyFilesSections()
+        IEnumerable<string> GetOptionalCopyFilesSections()
         {
-            List<string> finalOutput = new List<string>();
+            var finalOutput = new List<string>();
             if (this._updateInf.SectionExists(Strings.PIReplaceIfExisting))
-                finalOutput.AddRange(GetFileListSections(Strings.PIReplaceIfExisting));
+                finalOutput.AddRange(this.GetFileListSections(Strings.PIReplaceIfExisting));
             if (this._updateInf.SectionExists(Strings.PIExtendedCommands))
-                finalOutput.AddRange(ParseExtConditions());
+                finalOutput.AddRange(this.ParseExtConditions());
             return finalOutput;
         }
 
-        List<string> ParseExtConditions()
+        IEnumerable<string> ParseExtConditions()
         {
             List<string> conditions = this._updateInf.ReadAllValues(
-                Strings.PIExtendedCommands, Strings.ConditionInstall,
+                Strings.PIExtendedCommands,
+                Strings.ConditionInstall,
                 this._variableDict);
-            List<string> fileListSections = new List<string>(conditions.Count);
-            
+            var fileListSections = new List<string>(conditions.Count);
+
             foreach (string conditionalSection in conditions)
             {
                 List<string> conditionsLinesCombined = this._updateInf.ReadAllValues(
                     conditionalSection, Strings.Condition, this._variableDict);
-                string conditionalEntryPoint = 
-                    this._updateInf.ReadValue(conditionalSection, 
+                string conditionalEntryPoint =
+                    this._updateInf.ReadValue(
+                        conditionalSection,
                         Strings.ConditionalOperations);
                 if (String.IsNullOrEmpty(conditionalEntryPoint))
                 {
-                    throw new InvalidOperationException(String.Format(
-                        "Conditional section [{0}] does not have a setup "
-                        + "entry point.", conditionalSection));
+                    throw new InvalidOperationException(
+                        String.Format(
+                            "Conditional section [{0}] does not have a setup "
+                            + "entry point.",
+                            conditionalSection));
                 }
-                
+
                 if (conditionsLinesCombined.Count == 0)
                 {
-                    throw new InvalidOperationException(String.Format(
-                        "Conditional operations list section [{0}] contains no "
-                        + "defined condition statements.", conditionalSection));
+                    throw new InvalidOperationException(
+                        String.Format(
+                            "Conditional operations list section [{0}] contains no "
+                            + "defined condition statements.",
+                            conditionalSection));
                 }
-                
+
                 bool executeConditionalEntryPoint = false;
                 for (int i = 0; i < conditionsLinesCombined.Count; i += 2)
                 {
@@ -189,33 +213,35 @@ namespace Epsilon.WMP11Slipstreamer
 
                     if (!this._updateInf.SectionExists(opSection))
                     {
-                        throw new InvalidOperationException(String.Format(
-                            "[{0}] references op-section [{1}] which does "
-                            + "not exist.", conditionalSection, opSection));
+                        throw new InvalidOperationException(
+                            String.Format(
+                                "[{0}] references op-section [{1}] which does "
+                                + "not exist.",
+                                conditionalSection,
+                                opSection));
                     }
+                    
+                    bool resultOfConditionLine = this.ProcessOpSection(opSection);
+                    if (SEqOIC(opType, Strings.opType_Single))
+                        executeConditionalEntryPoint = resultOfConditionLine;
+                    else if (SEqOIC(opType, Strings.opType_Or))
+                        executeConditionalEntryPoint |= resultOfConditionLine;
+                    else if (SEqOIC(opType, Strings.opType_And))
+                        executeConditionalEntryPoint &= resultOfConditionLine;
                     else
-                    {
-                        bool resultOfConditionLine = ProcessOpSection(opSection);
-                        if (SEqOIC(opType, Strings.opType_Single))
-                            executeConditionalEntryPoint = resultOfConditionLine;
-                        else if (SEqOIC(opType, Strings.opType_Or))
-                            executeConditionalEntryPoint |= resultOfConditionLine;
-                        else if (SEqOIC(opType, Strings.opType_And))
-                            executeConditionalEntryPoint &= resultOfConditionLine;
-                        else
-                            ThrowNotImplemented(opType);
-                    }
+                        ThrowNotImplemented(opType);
                 }
 
                 if (executeConditionalEntryPoint)
                 {
                     List<string> installSections = this._updateInf.ReadAllValues(
-                        conditionalEntryPoint, Strings.FileOperation,
+                        conditionalEntryPoint,
+                        Strings.FileOperation,
                         this._variableDict);
                     foreach (string section in installSections)
                     {
                         fileListSections.AddRange(
-                            GetFileListSections(section));
+                            this.GetFileListSections(section));
                     }
                 }
             }
@@ -225,27 +251,30 @@ namespace Epsilon.WMP11Slipstreamer
 
         bool ProcessOpSection(string opSection)
         {
-            ICollection<KeyValuePair<string, string>> opSectionData = 
+            ICollection<KeyValuePair<string, string>> opSectionData =
                 this._updateInf.ReadSectionJoinedValues(opSection, null, true);
             bool conditionLinesResult = true;
-            foreach (KeyValuePair<string, string> pair in opSectionData)
+            foreach (var pair in opSectionData)
             {
-                conditionLinesResult &= ProcessOpLine(pair.Value);
+                conditionLinesResult &= this.ProcessOpLine(pair.Value);
             }
             return conditionLinesResult;
         }
 
         bool ProcessOpLine(string line)
         {
-            string[] opArguments = this._csvParser.Parse(line, c_NumOpLineValues,
+            string[] opArguments = this._csvParser.Parse(
+                line,
+                c_NumOpLineValues,
                 this._variableDict);
             string operation = opArguments[0];
 
             if (String.IsNullOrEmpty(operation))
             {
-                throw new InvalidOperationException(String.Format(
-                    "No operation specified in conditional operation line [{0}].",
-                    line));
+                throw new InvalidOperationException(
+                    String.Format(
+                        "No operation specified in conditional operation line [{0}].",
+                        line));
             }
 
             if (SEqOIC(operation, Strings.opCmd_CheckReg))
@@ -261,7 +290,8 @@ namespace Epsilon.WMP11Slipstreamer
                 ThrowNotImplemented(operation);
                 return false;
             }
-            else if (SEqOIC(operation, Strings.opCmd_CheckFileVer))
+            
+            if (SEqOIC(operation, Strings.opCmd_CheckFileVer))
             {
                 string copyFileSection = opArguments[1];
                 string fileName = opArguments[2];
@@ -269,28 +299,37 @@ namespace Epsilon.WMP11Slipstreamer
                     OperationType.FilePresentOrVersionComparison
                     | GetOperationType(opArguments[3]);
                 Version fileVersion = (op != (OperationType.FilePresentOrVersionComparison
-                    | OperationType.Exists)) ? new Version(opArguments[4]) : null;
+                                              | OperationType.Exists))
+                                          ? new Version(opArguments[4])
+                                          : null;
                 // FIXED: Implement ReadAllValues overload with support for vars
                 List<string> filePathComponents;
                 if (!this._updateInf.TryReadAllValues(
-                    Strings.DestinationDirs, copyFileSection, this._variableDict,
+                    Strings.DestinationDirs,
+                    copyFileSection,
+                    this._variableDict,
                     out filePathComponents))
                 {
                     filePathComponents = null;
                 }
-                return this._conditionOpTester(this._csvParser, op, 
-                    filePathComponents, fileName, fileVersion, 0);
+                return this._conditionOpTester(
+                    this._csvParser,
+                    op,
+                    filePathComponents,
+                    fileName,
+                    fileVersion,
+                    0);
             }
-            else
-            {
-                ThrowNotImplemented(operation);
-                return false;
-            }
+
+            ThrowNotImplemented(operation);
+            return false;
         }
 
-        List<string> GetFileListSections(string section)
+        IEnumerable<string> GetFileListSections(string section)
         {
-            return this._updateInf.ReadAllValues(section, Strings.CopyFiles,
+            return this._updateInf.ReadAllValues(
+                section,
+                Strings.CopyFiles,
                 this._variableDict);
         }
 
@@ -307,13 +346,13 @@ namespace Epsilon.WMP11Slipstreamer
                 String.Format(
                     "This operation has not been implemented: [{0}]",
                     operationLine)
-            );
+                );
         }
         #endregion
 
         #region Public static methods
         internal static bool OperationTypeContains(
-            OperationType combined, 
+            OperationType combined,
             OperationType singleFlag)
         {
             return ((combined & singleFlag) == singleFlag);
@@ -321,7 +360,29 @@ namespace Epsilon.WMP11Slipstreamer
         #endregion
 
         #region Callback plumbing
-        OperationType GetOperationType(string opSymbol)
+
+        #region Delegates
+        public delegate bool ConditionalOpExecuterDelegate(CSVParser csvParser,
+                                                           OperationType op, List<string> destFolderOrRootKeyComponents,
+                                                           string subKeyOrFilename, Version fileVersionInfo,
+                                                           int compareValue);
+        #endregion
+
+        [Flags]
+        public enum OperationType
+        {
+            None = 0,
+
+            FilePresentOrVersionComparison = 0x1000,
+            RegistryPresentOrComparison = 0x2000,
+
+            Exists = 0x10,
+            Greater = 0x20,
+            Less = 0x30,
+            Equal = 0x40
+        }
+
+        static OperationType GetOperationType(string opSymbol)
         {
             switch (opSymbol)
             {
@@ -348,37 +409,22 @@ namespace Epsilon.WMP11Slipstreamer
                 default:
                     throw new InvalidCastException(
                         String.Format("Invalid comparison symbol: '{0}'", opSymbol)
-                    );
+                        );
             }
         }
-
-        [Flags]
-        public enum OperationType
-        {
-            None = 0, 
-
-            FilePresentOrVersionComparison = 0x1000, 
-            RegistryPresentOrComparison = 0x2000,
-
-            Exists = 0x10,
-            Greater = 0x20,
-            Less = 0x30,
-            Equal = 0x40
-        }
-
-        public delegate bool ConditionalOpExecuterDelegate(CSVParser csvParser,
-            OperationType op, List<string> destFolderOrRootKeyComponents,
-            string subKeyOrFilename, Version fileVersionInfo, int compareValue);
         #endregion
 
         #region Subclasses
+
+        #region Nested type: FileListSection
         public class FileListSection
         {
-            public readonly bool Is64Bit32BitFileList;
-            public readonly IEnumerable<string> InfDestDirComponents;
             public readonly IDictionary<string, string> FileDictionary;
+            public readonly IEnumerable<string> InfDestDirComponents;
+            public readonly bool Is64Bit32BitFileList;
 
-            public FileListSection(bool is6432Files, IEnumerable<string> infDestDir,
+            public FileListSection(
+                bool is6432Files, IEnumerable<string> infDestDir,
                 IDictionary<string, string> fileDict)
             {
                 this.Is64Bit32BitFileList = is6432Files;
@@ -386,7 +432,9 @@ namespace Epsilon.WMP11Slipstreamer
                 this.FileDictionary = fileDict;
             }
         }
+        #endregion
 
+        #region Nested type: Strings
         /// <summary>
         /// Strings used in this class
         /// </summary>
@@ -396,12 +444,16 @@ namespace Epsilon.WMP11Slipstreamer
             public const string StringsSection = "Strings";
             public const string SpShortTitle = "SP_SHORT_TITLE";
             public const string UsProductName = "US_PRODUCT_NAME";
+
             public const string PICopyFilesAlways
                 = "ProductInstall.CopyFilesAlways";
+
             public const string PIExtendedCommands
                 = "ProductInstall.ExtendedConditional";
+
             public const string PIReplaceIfExisting
                 = "ProductInstall.ReplaceFilesIfExist";
+
             public const string CopyFiles = "CopyFiles";
             public const string DestinationDirs = "DestinationDirs";
             public const string ConditionInstall = "ConditionInstall";
@@ -416,6 +468,8 @@ namespace Epsilon.WMP11Slipstreamer
             public const string opCmd_CheckFileVer = "CheckFilever";
             public const string opCmd_CheckReg = "CheckReg";
         }
+        #endregion
+
         #endregion
     }
 }

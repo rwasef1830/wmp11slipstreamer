@@ -4,6 +4,7 @@ using System.IO;
 using Epsilon.IO;
 using Epsilon.Parsers;
 using Epsilon.Slipstreamers;
+using Epsilon.WMP11Slipstreamer.Properties;
 
 namespace Epsilon.WMP11Slipstreamer
 {
@@ -11,39 +12,45 @@ namespace Epsilon.WMP11Slipstreamer
     {
         void IntegrateKB913800(string fixesFolder)
         {
-            string kbName = "KB913800";
-            string[] kbFiles = new string[] { 
-                "EasyCD.inf", "KB913800.exe", "Wpdtrace.dll" };
+            const string kbName = "KB913800";
+            var kbFiles = new[]
+            {
+                "EasyCD.inf", "KB913800.exe", "Wpdtrace.dll"
+            };
 
-            Archival.NativeCabinetExtract(new MemoryStream(
-                Properties.Resources.KB913800), fixesFolder);
+            Archival.NativeCabinetExtract(
+                new MemoryStream(
+                    Resources.KB913800),
+                fixesFolder);
 
             foreach (string file in kbFiles)
             {
                 FileSystem.MoveFileOverwrite(
                     this.CreatePathString(fixesFolder, file),
                     this.CreatePathString(this._extractDir, file)
-                );
+                    );
             }
             if (!this._state.IgnoreCats)
             {
-                this.AddSvcpackCatalog(this.CreatePathString(
-                    "Update", kbName + ".cat"), fixesFolder);
+                this.AddSvcpackCatalog(
+                    this.CreatePathString(
+                        "Update", kbName + ".cat"),
+                    fixesFolder);
             }
         }
 
-        void ProcessKB926239(string tempCompareFolder, string catalogFolder)
+        void ProcessKB926239(string tempCompareFolder)
         {
-            string kbName = "KB926239";
-            string[] kbFiles = new string[] {
+            const string kbName = "KB926239";
+            var kbFiles = new[]
+            {
                 "acadproc.dll", "apph_sp.sdb", "apphelp.sdb", "sysmain.sdb"
             };
-            bool allFourExist = this.FilesExistInArch(kbFiles, 0);
             bool onlyThreeExist = this.FilesExistInArch(kbFiles, 1);
 
-            KeyValuePair<string, string> acadprocTxtPair =
+            var acadprocTxtPair =
                 new KeyValuePair<string, string>("acadproc.dll", "100,,,,,,,60,0,0");
-            string acadprocDosLine = "d1,acadproc.dll";
+            const string acadprocDosLine = "d1,acadproc.dll";
 
             int counter = 0;
 
@@ -53,8 +60,10 @@ namespace Epsilon.WMP11Slipstreamer
                     this._extractDir, file);
                 string tempCompareName = this.CreatePathString(
                     tempCompareFolder, file);
-                bool isAcadProc = String.Equals(file, "acadproc.dll",
-                            StringComparison.OrdinalIgnoreCase);
+                bool isAcadProc = String.Equals(
+                    file,
+                    "acadproc.dll",
+                    StringComparison.OrdinalIgnoreCase);
                 bool resultOfCopyOrExpand =
                     this.CopyOrExpandFromArch(file, tempCompareFolder, true);
                 if (resultOfCopyOrExpand || isAcadProc)
@@ -65,15 +74,17 @@ namespace Epsilon.WMP11Slipstreamer
                             tempCompareName);
                     if ((result == FileVersionComparison.Newer && onlyThreeExist)
                         || (result == FileVersionComparison.NotFound
-                        && isAcadProc && onlyThreeExist))
+                            && isAcadProc && onlyThreeExist))
                     {
                         if (isAcadProc)
                         {
-                            if (!base._txtsetupSif.KeyExists(
+                            if (!this._txtsetupSif.KeyExists(
                                 "SourceDisksFiles", file))
                             {
-                                base._txtsetupSif.Add("SourceDisksFiles",
-                                    acadprocTxtPair.Key, acadprocTxtPair.Value, 
+                                this._txtsetupSif.Add(
+                                    "SourceDisksFiles",
+                                    acadprocTxtPair.Key,
+                                    acadprocTxtPair.Value,
                                     IniParser.KeyExistsPolicy.Ignore);
                             }
                             this._dosnetInf.Add("Files", acadprocDosLine, false);
@@ -99,8 +110,9 @@ namespace Epsilon.WMP11Slipstreamer
             }
             if (counter > 0 && !this._state.IgnoreCats)
             {
-                this.AddSvcpackCatalog(this.CreatePathString(
-                    "Update", kbName + ".cat"), 
+                this.AddSvcpackCatalog(
+                    this.CreatePathString(
+                        "Update", kbName + ".cat"),
                     this._extractDir);
             }
         }

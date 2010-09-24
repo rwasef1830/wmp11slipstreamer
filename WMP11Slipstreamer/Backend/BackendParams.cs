@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using Epsilon.Slipstreamers;
@@ -6,14 +7,15 @@ namespace Epsilon.WMP11Slipstreamer
 {
     public class BackendParams : SlipstreamerArgumentsBase
     {
-        public readonly string WmpInstallerSource;
-        public readonly string HotfixFolder;
-        public readonly ReadOnlyCollection<string> HotfixFiles;
-        public readonly PackageType RequestedType;
         public readonly byte[] CustomIcon;
+        public readonly ReadOnlyCollection<string> HotfixFiles;
+        public readonly string HotfixFolder;
+        public readonly PackageType RequestedType;
+        public readonly string WmpInstallerSource;
 
-        public BackendParams(string winSrc, WindowsSourceInfo srcInfo, 
-            string wmpInstallerSource, string hotfixLine, PackageType addonType, 
+        public BackendParams(
+            string winSrc, WindowsSourceInfo srcInfo,
+            string wmpInstallerSource, string hotfixLine, PackageType addonType,
             byte[] customIcon, bool ignoreCats) : base(winSrc, srcInfo, ignoreCats)
         {
             this.WmpInstallerSource = Path.GetFullPath(wmpInstallerSource);
