@@ -14,13 +14,15 @@ namespace Epsilon.WMP11Slipstreamer
     {
         #region Private members
         readonly string _extractedPath;
+        readonly string _archPath;
         readonly StringBuilder _hotfixFilePathBuffer;
         WindowsSourceInfo _sourceInfo;
         #endregion
 
-        public HotfixParserEvaluator(string extractedPath, WindowsSourceInfo sourceInfo)
+        public HotfixParserEvaluator(string extractedPath, string archPath, WindowsSourceInfo sourceInfo)
         {
             this._extractedPath = extractedPath;
+            this._archPath = archPath;
             this._hotfixFilePathBuffer = new StringBuilder();
             this._sourceInfo = sourceInfo;
         }
@@ -51,6 +53,11 @@ namespace Epsilon.WMP11Slipstreamer
             // out whether it is 64-bit or 32-bit
             string sourceFilePath
                 = this.MapInfFilePathToSourceFilePath(subKeyOrFilename, false);
+            if (sourceFilePath == null)
+            {
+                return false;
+            }
+
             HelperConsole.InfoWriteLine(
                 String.Format("\"{0}\"", sourceFilePath),
                 "Mapped");
@@ -112,35 +119,66 @@ namespace Epsilon.WMP11Slipstreamer
             string possPath = this.CreatePathString(this._extractedPath, filename);
             string poss64Path = this.CreatePathString(this._extractedPath, "amd64", filename);
             string poss32Path = this.CreatePathString(this._extractedPath, "i386", filename);
+            string possArchPath = this.CreatePathString(this._archPath, filename);
+            string possArch32Path = this.CreatePathString(Path.GetDirectoryName(this._archPath), "i386", "w" + filename);
 
             if (is64bitFile)
             {
                 // 64-bit file in x64 architecture
                 if (File.Exists(poss64Path)) return poss64Path;
                 if (File.Exists(possPath)) return possPath;
-                ThrowMapFailed(filename, "[64in64]");
+
+                if (this.CopyOrExtract(possArchPath, Path.GetDirectoryName(possPath)))
+                {
+                    return possPath;
+                }
+
+                return null;
             }
-            else if (this._sourceInfo.Arch == TargetArchitecture.x64)
+            
+            if (this._sourceInfo.Arch == TargetArchitecture.x64)
             {
                 // 32-bit file in x64 architecture
                 if (File.Exists(poss32Path)) return poss32Path;
                 if (File.Exists(possPath)) return possPath;
-                ThrowMapFailed(filename, "[32in64]");
+
+                if (this.CopyOrExtract(possArch32Path, Path.GetDirectoryName(poss32Path)))
+                {
+                    return poss32Path;
+                }
+
+                return null;
             }
-            else if (File.Exists(possPath)) return possPath;
-            else ThrowMapFailed(filename, "[32]");
+            
+            if (File.Exists(possPath)) return possPath;
+            
+            if (this.CopyOrExtract(possArchPath, Path.GetDirectoryName(possPath)))
+            {
+                return possPath;
+            }
 
             // Should never reach here, this is just to shut the compiler up
             return null;
         }
 
-        static void ThrowMapFailed(string filename, string mapType)
+        bool CopyOrExtract(string path, string destinationFolder)
         {
-            throw new InvalidOperationException(
-                String.Format(
-                    "Map {0} failed: \"{1}\", unable to locate file in source files.",
-                    mapType,
-                    filename));
+            var compressedPath = CM.GetCompressedFileName(path);
+            var destFilePath = this.CreatePathString(destinationFolder, Path.GetFileName(path));
+
+            if (File.Exists(path))
+            {
+                File.Copy(path, destFilePath);
+                return true;
+            }
+
+            if (File.Exists(compressedPath))
+            {
+                Archival.NativeCabinetExtract(compressedPath, destinationFolder);
+                if (File.Exists(destFilePath)) return true;
+            }
+
+            return false;
         }
 
         string CreatePathString(params string[] components)

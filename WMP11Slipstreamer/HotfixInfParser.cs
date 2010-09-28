@@ -167,7 +167,9 @@ namespace Epsilon.WMP11Slipstreamer
             if (this._updateInf.SectionExists(Strings.PIReplaceIfExisting))
                 finalOutput.AddRange(this.GetFileListSections(Strings.PIReplaceIfExisting));
             if (this._updateInf.SectionExists(Strings.PIExtendedCommands))
+            {
                 finalOutput.AddRange(this.ParseExtConditions());
+            }
             return finalOutput;
         }
 
@@ -205,7 +207,7 @@ namespace Epsilon.WMP11Slipstreamer
                             conditionalSection));
                 }
 
-                bool executeConditionalEntryPoint = false;
+                bool executeConditionalEntryPoint = true;
                 for (int i = 0; i < conditionsLinesCombined.Count; i += 2)
                 {
                     string opType = conditionsLinesCombined[i];
@@ -220,16 +222,11 @@ namespace Epsilon.WMP11Slipstreamer
                                 conditionalSection,
                                 opSection));
                     }
-                    
-                    bool resultOfConditionLine = this.ProcessOpSection(opSection);
-                    if (SEqOIC(opType, Strings.opType_Single))
-                        executeConditionalEntryPoint = resultOfConditionLine;
-                    else if (SEqOIC(opType, Strings.opType_Or))
-                        executeConditionalEntryPoint |= resultOfConditionLine;
-                    else if (SEqOIC(opType, Strings.opType_And))
-                        executeConditionalEntryPoint &= resultOfConditionLine;
-                    else
-                        ThrowNotImplemented(opType);
+
+                    bool resultOfConditionLine = this.ProcessOpSection(opSection, opType);
+                    executeConditionalEntryPoint &= resultOfConditionLine;
+
+                    if (!executeConditionalEntryPoint) break;
                 }
 
                 if (executeConditionalEntryPoint)
@@ -249,15 +246,28 @@ namespace Epsilon.WMP11Slipstreamer
             return fileListSections;
         }
 
-        bool ProcessOpSection(string opSection)
+        bool ProcessOpSection(string opSection, string opType)
         {
             ICollection<KeyValuePair<string, string>> opSectionData =
                 this._updateInf.ReadSectionJoinedValues(opSection, null, true);
+
             bool conditionLinesResult = true;
             foreach (var pair in opSectionData)
             {
-                conditionLinesResult &= this.ProcessOpLine(pair.Value);
+                bool lineResult = this.ProcessOpLine(pair.Value);
+
+                if (SEqOIC(opType, Strings.opType_Single))
+                    conditionLinesResult = lineResult;
+                else if (SEqOIC(opType, Strings.opType_Or))
+                    conditionLinesResult |= lineResult;
+                else if (SEqOIC(opType, Strings.opType_And))
+                    conditionLinesResult &= lineResult;
+                else
+                    ThrowNotImplemented(opType);
+
+                if (!conditionLinesResult) break;
             }
+
             return conditionLinesResult;
         }
 
