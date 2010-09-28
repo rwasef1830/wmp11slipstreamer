@@ -1254,7 +1254,7 @@ namespace Epsilon.WMP11Slipstreamer
 
                     // Hotfix Update.inf processor condition evaluator
                     var evaluator = new HotfixParserEvaluator(
-                        this._extractDir, this.Parameters.SourceInfo);
+                        this._extractDir, this._archDir, this.Parameters.SourceInfo);
 
                     // Hotfix Update.inf processor
                     var hotfixParser = new HotfixInfParser(
