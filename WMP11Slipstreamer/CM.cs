@@ -169,28 +169,6 @@ namespace Epsilon.WMP11Slipstreamer
             return sb.ToString();
         }
 
-        public static string GetCompressedFileName(string filePath)
-        {
-            string extension = Path.GetExtension(filePath);
-            string compressedExtension;
-
-            if (extension == null) compressedExtension = "_";
-            else if (extension.Length >= 4)
-            {
-                compressedExtension = extension.Substring(0, extension.Length - 1) + "_";
-            }
-            else
-            {
-                compressedExtension = extension + "_";
-            }
-
-            string compressedFile = Path.ChangeExtension(
-                filePath,
-                compressedExtension);
-
-            return compressedFile;
-        }
-
         public static Version VerFromFileVer(FileVersionInfo fileVerInfo)
         {
             return new Version(

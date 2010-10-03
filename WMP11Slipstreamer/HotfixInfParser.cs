@@ -251,7 +251,7 @@ namespace Epsilon.WMP11Slipstreamer
             ICollection<KeyValuePair<string, string>> opSectionData =
                 this._updateInf.ReadSectionJoinedValues(opSection, null, true);
 
-            bool conditionLinesResult = true;
+            bool conditionLinesResult = SEqOIC(opType, Strings.opType_And);
             foreach (var pair in opSectionData)
             {
                 bool lineResult = this.ProcessOpLine(pair.Value);

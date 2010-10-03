@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("boooggy and n7Epsilon")]
 [assembly: AssemblyProduct("Windows Media Player 11 Slipstreamer")]
-[assembly: AssemblyCopyright("Copyright © 2008 boooggy and n7Epsilon")]
+[assembly: AssemblyCopyright("Copyright © 2010 boooggy and n7Epsilon")]
 [assembly:
     AssemblyTrademark(
         "Windows™ is a registered trademark of Microsoft Corporation. WMP11Slipstreamer is not developed, affiliated, endorsed or supported by Microsoft in any way."
