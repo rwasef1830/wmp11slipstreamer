@@ -163,7 +163,7 @@ namespace Epsilon.WMP11Slipstreamer
 
         bool CopyOrExtract(string path, string destinationFolder)
         {
-            var compressedPath = CM.GetCompressedFileName(path);
+            var compressedPath = Archival.GetCabinetCompressedFileName(path);
             var destFilePath = this.CreatePathString(destinationFolder, Path.GetFileName(path));
 
             if (File.Exists(path))

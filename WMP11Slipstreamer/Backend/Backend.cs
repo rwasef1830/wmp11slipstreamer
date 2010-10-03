@@ -1530,7 +1530,7 @@ namespace Epsilon.WMP11Slipstreamer
             for (int i = 0; i < filesInExtracted.Length; i++)
             {
                 string filename = Path.GetFileName(filesInExtracted[i]);
-                string compressedFilename = CM.GetCompressedFileName(filename);
+                string compressedFilename = Archival.GetCabinetCompressedFileName(filename);
 
                 // For standard arch files
                 string archName = this.CreatePathString(
@@ -1545,7 +1545,7 @@ namespace Epsilon.WMP11Slipstreamer
                     // Windows Setup when installed to SysWOW64 (via txtsetup.sif)
                     string i386Name = this.CreatePathString(
                         this._x64i386ArchDir, "w" + filename);
-                    string i386CompressedName = CM.GetCompressedFileName(i386Name);
+                    string i386CompressedName = Archival.GetCabinetCompressedFileName(i386Name);
 
                     // Then the file I have now could be the 32-bit version
                     // and a 64-bit version could exist in an AMD64 subfolder
@@ -1784,7 +1784,7 @@ namespace Epsilon.WMP11Slipstreamer
             this.OnAnnounce(Msg.statCompressEdited);
             foreach (string file in this._possCompArchFile)
             {
-                string compressedFile = CM.GetCompressedFileName(file);
+                string compressedFile = Archival.GetCabinetCompressedFileName(file);
                 if (File.Exists(
                     this.CreatePathString(
                         this._archDir, compressedFile)))
