@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMP11Slipstreamer", "WMP11Slipstreamer\WMP11Slipstreamer.csproj", "{CE55098A-D00A-42E1-AB3C-173DD35AE700}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "n7Framework", "n7Framework\n7Framework.csproj", "{F4596242-DBC4-4EEF-AB53-78A9A100D48F}"
