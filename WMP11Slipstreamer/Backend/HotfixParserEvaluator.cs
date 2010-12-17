@@ -142,9 +142,17 @@ namespace Epsilon.WMP11Slipstreamer
                 if (File.Exists(poss32Path)) return poss32Path;
                 if (File.Exists(possPath)) return possPath;
 
-                if (this.CopyOrExtract(possArch32Path, Path.GetDirectoryName(poss32Path)))
+                if (this.CopyOrExtract(possArch32Path, Path.GetDirectoryName(possPath)))
                 {
-                    return poss32Path;
+                    string possPrefixedPath = this.CreatePathString(
+                        Path.GetDirectoryName(possPath), "w" + filename);
+
+                    if (File.Exists(possPrefixedPath))
+                    {
+                        File.Move(possPrefixedPath, possPath);
+                    }
+
+                    return possPath;
                 }
 
                 return null;
