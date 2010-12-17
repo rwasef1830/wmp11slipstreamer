@@ -1286,15 +1286,19 @@ namespace Epsilon.WMP11Slipstreamer
                             // HACK: Try to correct filepaths for x64 WMP11 
                             // and x64 hotfixes, Is64Bit32BitFileList will only
                             // be true on a x64 hotfix
-                            if (fList.Is64Bit32BitFileList)
+                            if (fList.Is64Bit32BitFileList && !File.Exists(orgFullPath))
                             {
-                                var peReader = new PeEditor(orgFullPath);
-                                if (peReader.TargetMachineType == Architecture.x64)
+                                // Not sure if I should use relativeFilePath here;
+                                // There are no subfolders in amd64 or i386 in extracted
+                                orgFullPath = this.CreatePathString(
+                                    Path.GetDirectoryName(orgFullPath),
+                                    "w" + Path.GetFileName(orgFullPath));
+
+                                if (!File.Exists(orgFullPath))
                                 {
-                                    // Not sure if I should use relativeFilePath here;
-                                    // There are no subfolders in amd64 or i386 in extracted
-                                    orgFullPath = this.CreatePathString(
-                                        this._extractDir, "i386", fileNameOnly);
+                                    orgFullPath =
+                                        this.CreatePathString(
+                                            this._extractDir, "i386", fileNameOnly);
                                 }
                             }
                             else

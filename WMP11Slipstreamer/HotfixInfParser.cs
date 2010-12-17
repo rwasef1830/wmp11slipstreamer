@@ -82,8 +82,6 @@ namespace Epsilon.WMP11Slipstreamer
             copyFilesSections.AddRange(this.GetMandatoryCopyFilesSections());
             copyFilesSections.AddRange(this.GetOptionalCopyFilesSections());
             this.GetFileEntries(copyFilesSections);
-
-            this.FileList.TrimExcess();
         }
 
         void GetFileEntries(IEnumerable<string> fileListSections)
