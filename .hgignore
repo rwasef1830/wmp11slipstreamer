@@ -1,0 +1,9 @@
+syntax: glob
+_ReSharper.WMP11Slipstreamer/*
+bin/
+obj/
+Output/x86/*
+Output/x64/*
+*.suo
+*.user
+VersionInfo.cs

@@ -149,8 +149,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)Dependencies\ILMerge\ILMerge.exe" /keyfile:"$(ProjectDir)WMP11SlipstreamerKey.snk" /out:"$(SolutionDir)Output\$(OutDir)$(TargetFileName)" "$(TargetPath)" "$(TargetDir)n7Framework.dll"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)Dependencies\ILMerge\ILMerge.exe" /keyfile:"$(ProjectDir)WMP11SlipstreamerKey.snk" /out:"$(SolutionDir)Output\$(PlatformName)\$(TargetFileName)" "$(TargetPath)" "$(TargetDir)n7Framework.dll"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <Import Project="..\Build\HgTasks.xml" />
 </Project>
