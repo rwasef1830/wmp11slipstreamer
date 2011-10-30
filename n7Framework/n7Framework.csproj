@@ -170,4 +170,5 @@
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
+  <Import Project="..\Build\HgTasks.xml" />
 </Project>
