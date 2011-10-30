@@ -1,5 +1,6 @@
 @Echo Off
 setlocal
+PUSHD %dp0
 set entriesfile=entries_wmp11_combined.ini
 set dirs=xp xpmce xp64 2k3
 set passfile=pass.txt
@@ -22,6 +23,7 @@ AESCrypt /E /in:"xp\xp.cab" /pass:"%infkey%" /out:"%destination%\repository3"
 AESCrypt /E /in:"xpmce\xpmce.cab" /pass:"%infkey%" /out:"%destination%\repository4"
 AESCrypt /E /in:"2k3\2k3.cab" /pass:"%infkey%" /out:"%destination%\repository5"
 AESCrypt /E /in:"xp64\xp64.cab" /pass:"%infkey%" /out:"%destination%\repository7"
+for %%i IN (%dirs%) DO (del %%i\%%i.cab)
 :end
-PAUSE
 endlocal
+POPD

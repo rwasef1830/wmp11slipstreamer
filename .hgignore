@@ -7,3 +7,4 @@ Output/x64/*
 *.suo
 *.user
 VersionInfo.cs
+WMP11Slipstreamer/Data/embed/repository*
