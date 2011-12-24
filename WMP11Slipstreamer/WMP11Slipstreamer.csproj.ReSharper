@@ -1,0 +1,6 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>CE55098A-D00A-42E1-AB3C-173DD35AE700/d:Backend</SkipFolder>
+    <SkipFolder>CE55098A-D00A-42E1-AB3C-173DD35AE700/d:UI</SkipFolder>
+  </NamespaceFolders>
+</Configuration>
